@@ -15,14 +15,39 @@ public partial class MainWindow
 
     private readonly Dictionary<string, System.Windows.Controls.CheckBox> _aiSectionChecks = new(StringComparer.Ordinal);
 
+    private bool _loadingPrompt;
+
     private void AiToggle_Click(object sender, RoutedEventArgs e)
     {
         RebuildAiSectionList();
+        LoadPromptIntoEditor();
         ToggleFlyout(AiPanel);
     }
 
     private void AiClose_Click(object sender, RoutedEventArgs e) =>
         AiPanel.Visibility = Visibility.Collapsed;
+
+    private void PromptType_Checked(object sender, RoutedEventArgs e) => LoadPromptIntoEditor();
+
+    private void LoadPromptIntoEditor()
+    {
+        if (PromptEditBox == null) return;
+        _loadingPrompt = true;
+        PromptEditBox.Text = GetPrompt(SelectedAiPromptType);
+        _loadingPrompt = false;
+    }
+
+    private void PromptEditBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_loadingPrompt || PromptEditBox == null) return;
+        SettingsStore.SavePrompt(SelectedAiPromptType.ToString(), PromptEditBox.Text);
+    }
+
+    private void PromptReset_Click(object sender, RoutedEventArgs e)
+    {
+        SettingsStore.SavePrompt(SelectedAiPromptType.ToString(), null);
+        LoadPromptIntoEditor();
+    }
 
     private void RebuildAiSectionList()
     {

@@ -252,17 +252,35 @@
                                                      GroupName="AiPromptType"
                                                      IsChecked="True"
                                                      Style="{StaticResource BtnModel}"
-                                                     Margin="0,0,4,0"/>
+                                                     Margin="0,0,4,0"
+                                                     Checked="PromptType_Checked"/>
                                         <RadioButton x:Name="PromptTypeLottery"
                                                      Content="หวย"
                                                      GroupName="AiPromptType"
                                                      Style="{StaticResource BtnModel}"
-                                                     Margin="0,0,4,0"/>
+                                                     Margin="0,0,4,0"
+                                                     Checked="PromptType_Checked"/>
                                         <RadioButton x:Name="PromptTypeSlot"
                                                      Content="สล็อต"
                                                      GroupName="AiPromptType"
-                                                     Style="{StaticResource BtnModel}"/>
+                                                     Style="{StaticResource BtnModel}"
+                                                     Checked="PromptType_Checked"/>
                                     </UniformGrid>
+                                    <Grid Margin="0,10,0,5">
+                                        <TextBlock x:Name="PromptEditLabel" Text="PROMPT (แก้ไขได้)"
+                                                   FontSize="10" FontWeight="Bold"
+                                                   Foreground="#555555" VerticalAlignment="Center"/>
+                                        <Button Content="คืนค่าเริ่มต้น" HorizontalAlignment="Right"
+                                                Style="{StaticResource Btn}"
+                                                Height="24" Padding="10,0" FontSize="10"
+                                                Click="PromptReset_Click"/>
+                                    </Grid>
+                                    <TextBox x:Name="PromptEditBox"
+                                             Style="{StaticResource Input}"
+                                             Height="160" TextWrapping="Wrap"
+                                             AcceptsReturn="True" FontSize="11"
+                                             VerticalScrollBarVisibility="Auto"
+                                             TextChanged="PromptEditBox_TextChanged"/>
                                     <TextBlock Text="เลือก Section ที่จะส่ง"
                                                FontSize="10" FontWeight="Bold"
                                                Foreground="#555555" Margin="0,10,0,5"/>
