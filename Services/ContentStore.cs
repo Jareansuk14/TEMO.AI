@@ -37,7 +37,7 @@ internal static class ContentStore
     {
         var heroFile = SectionFile("Hero");
         fields.Add(new("main-seo", "Main Heading", "HERO", heroFile,
-            @"(<h1[^>]*\bid=""main-seo""[^>]*><span[^>]*>[^<]*</span>)([\s\S]*?)(</h1>)"));
+            @"(<h1[^>]*\bid=""main-seo""[^>]*>(?:<span[^>]*>[^<]*</span>)?)([\s\S]*?)(</h1>)"));
         fields.Add(new("sub-main-seo", "Hero Description", "HERO", heroFile,
             @"(<p[^>]*\bid=""sub-main-seo""[^>]*>)\s*([\s\S]*?)\s*(</p>)", Multi: true));
     }
@@ -58,7 +58,7 @@ internal static class ContentStore
     {
         var ctaFile = SectionFile("Cta");
         fields.Add(new("cta-seo", "CTA Heading", "CTA", ctaFile,
-            @"(<h2[^>]*\bid=""cta-seo""[^>]*><span[^>]*>[^<]*</span>)([\s\S]*?)(</h2>)"));
+            @"(<h2[^>]*\bid=""cta-seo""[^>]*>(?:<span[^>]*>[^<]*</span>)?)([\s\S]*?)(</h2>)"));
         fields.Add(new("sub-cta-seo", "CTA Description", "CTA", ctaFile,
             @"(<p[^>]*\bid=""sub-cta-seo""[^>]*>)([\s\S]*?)(</p>)", Multi: true));
     }
@@ -75,12 +75,12 @@ internal static class ContentStore
     private static void AddPageFields(List<FieldDef> fields)
     {
         fields.Add(new("promotion-seo", "Heading", "PROMOTIONS", @"pages\promotions.astro",
-            @"(<h1[^>]*\bid=""promotion-seo""[^>]*><span[^>]*>[^<]*</span>)([\s\S]*?)(</h1>)"));
+            @"(<h1[^>]*\bid=""promotion-seo""[^>]*>(?:<span[^>]*>[^<]*</span>)?)([\s\S]*?)(</h1>)"));
         fields.Add(new("sub-promo-seo", "Description", "PROMOTIONS", @"pages\promotions.astro",
             @"(<p[^>]*\bid=""sub-promotion-seo""[^>]*>)([\s\S]*?)(</p>)", Multi: true));
 
         fields.Add(new("contact-seo", "Heading", "CONTACT", @"pages\contact.astro",
-            @"(<h1[^>]*\bid=""contact-seo""[^>]*><span[^>]*>[^<]*</span>)([\s\S]*?)(</h1>)"));
+            @"(<h1[^>]*\bid=""contact-seo""[^>]*>(?:<span[^>]*>[^<]*</span>)?)([\s\S]*?)(</h1>)"));
         fields.Add(new("sub-cont-seo", "Description", "CONTACT", @"pages\contact.astro",
             @"(<p[^>]*\bid=""sub-contact-seo""[^>]*>)([\s\S]*?)(</p>)", Multi: true));
     }
