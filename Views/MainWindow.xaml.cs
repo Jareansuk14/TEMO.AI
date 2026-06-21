@@ -144,6 +144,7 @@ public partial class MainWindow : Window
             SectionCatalog.Reload();
             LoadLayoutComponents();
             ProjectComponentSync.Sync(_projectPath, _layoutComponents);
+            ProjectMigrations.Run(_projectPath);
             BuildFields();
             BuildContentPanel();
             PullAllToBoxes();
