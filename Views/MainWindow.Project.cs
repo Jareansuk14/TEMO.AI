@@ -21,15 +21,8 @@ public partial class MainWindow
             return;
         }
 
-        string parentDir;
-        using (var dlg = new WinForms.FolderBrowserDialog
-        {
-            Description = "เลือกที่จะเก็บโปรเจคใหม่",
-        })
-        {
-            if (dlg.ShowDialog() != WinForms.DialogResult.OK) return;
-            parentDir = dlg.SelectedPath;
-        }
+        var parentDir = ProjectPaths.Root;
+        Directory.CreateDirectory(parentDir);
 
         var templateName = new DirectoryInfo(template.TrimEnd('\\', '/')).Name;
         var prompt = new PromptDialog("ตั้งชื่อโปรเจคใหม่", "ชื่อโฟลเดอร์โปรเจค",
@@ -54,21 +47,25 @@ public partial class MainWindow
             StopServer();
         }
 
-        using var dlg = new WinForms.FolderBrowserDialog
-        {
-            Description = "เลือกโฟลเดอร์ Project",
-            SelectedPath = Directory.Exists(_projectPath) ? _projectPath : "",
-        };
-        if (dlg.ShowDialog() != WinForms.DialogResult.OK) return;
+        var gallery = new ProjectGalleryDialog { Owner = this };
+        var result = gallery.ShowDialog();
 
-        if (!File.Exists(Path.Combine(dlg.SelectedPath, "package.json")))
-        {
-            ShowMsg("⚠️  โฟลเดอร์นี้ไม่ใช่โปรเจค (ไม่พบ package.json)");
-            return;
-        }
+        if (!string.IsNullOrEmpty(_projectPath) && !Directory.Exists(_projectPath))
+            ResetProject();
 
-        SwitchProject(dlg.SelectedPath);
+        if (result != true || gallery.SelectedProject is not { } path) return;
+
+        SwitchProject(path);
         ShowMsg("โหลดโปรเจคแล้ว — กด START เพื่อเริ่มโปรเจค");
+    }
+
+    private void ResetProject()
+    {
+        _projectPath = "";
+        FolderPathBox.Text = "ยังไม่ได้เลือกโปรเจค";
+        FolderPathBox.ToolTip = null;
+        SettingsStore.SaveLastProject("");
+        UpdateDeployUi();
     }
 
     private async void SaveTemplate_Click(object sender, RoutedEventArgs e)
@@ -262,11 +259,15 @@ public partial class MainWindow
     private void SwitchProject(string path)
     {
         _projectPath = path;
-        FolderPathBox.Text = path;
+        FolderPathBox.Text = ProjectDisplayName(path);
+        FolderPathBox.ToolTip = path;
         SettingsStore.SaveLastProject(path);
         LoadProject();
         UpdateDeployUi();
     }
+
+    private static string ProjectDisplayName(string path) =>
+        new DirectoryInfo(path.TrimEnd('\\', '/')).Name;
 
     private static string SanitizeName(string name)
     {
