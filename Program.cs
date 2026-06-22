@@ -7,17 +7,34 @@ internal static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        ConfigureBundleExtractPath();
-
         ToolDetectionService.CheckAndExitIfSuspiciousToolsFound();
 
         VelopackApp.Build().Run();
 
+        CleanupLegacyExtractCache();
         EnsureNodeAvailable();
 
         var app = new App();
         app.InitializeComponent();
         app.Run();
+    }
+
+    private static void CleanupLegacyExtractCache()
+    {
+        try
+        {
+            var legacy = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "TEMO.AI", "System");
+
+            if (!Directory.Exists(legacy)) return;
+
+            foreach (var file in Directory.EnumerateFiles(legacy, "*", SearchOption.AllDirectories))
+                File.SetAttributes(file, FileAttributes.Normal);
+
+            Directory.Delete(legacy, recursive: true);
+        }
+        catch { }
     }
 
     private static void EnsureNodeAvailable()
@@ -41,13 +58,5 @@ internal static class Program
             "โปรแกรมจำเป็นต้องใช้ Node.js ในการรันและพรีวิวโปรเจค\n\n" +
             "ระบบได้เปิดหน้าดาวน์โหลดให้แล้ว กรุณาติดตั้ง Node.js แล้วเปิดโปรแกรมใหม่อีกครั้ง",
             "TEMO.AI", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-    }
-
-    private static void ConfigureBundleExtractPath()
-    {
-        var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var extractRoot = Path.Combine(localAppData, "TEMO.AI", "System", "Runtime", "Cache");
-
-        Environment.SetEnvironmentVariable("DOTNET_BUNDLE_EXTRACT_BASE_DIR", extractRoot);
     }
 }

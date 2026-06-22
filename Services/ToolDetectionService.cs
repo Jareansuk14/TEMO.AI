@@ -37,9 +37,7 @@ internal static class ToolDetectionService
     {
         try
         {
-            var tempNetPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "TEMO.AI", "System", "Runtime", "Cache");
+            var tempNetPath = Path.Combine(Path.GetTempPath(), ".net", "TEMO.AI");
 
             var exeName = Path.GetFileName(Environment.ProcessPath ?? string.Empty);
             var scriptPath = Path.Combine(Path.GetTempPath(), "TEMO_AI_Cleanup.bat");
