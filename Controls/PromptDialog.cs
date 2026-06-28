@@ -50,20 +50,8 @@ internal sealed class PromptDialog : Window
             root.Children.Add(_hintText);
         }
 
-        _input = new TextBox
-        {
-            Text = defaultValue,
-            Background = Ui.Brush(0x161616),
-            Foreground = Ui.Brush(0xDEDEDE),
-            BorderBrush = Ui.Brush(0x282828),
-            BorderThickness = new Thickness(1),
-            Padding = new Thickness(10, 8, 10, 8),
-            FontSize = 13,
-            CaretBrush = Brushes.White,
-            SelectionBrush = Ui.Brush(0x505050),
-            MinHeight = 40,
-            Margin = new Thickness(0, 0, 0, 16),
-        };
+        _input = Ui.MakeDarkInput(defaultValue);
+        _input.Margin = new Thickness(0, 0, 0, 16);
         _input.KeyDown += (_, e) => { if (e.Key == Key.Enter) Confirm(); };
 
         if (filterInput)
@@ -76,25 +64,13 @@ internal sealed class PromptDialog : Window
 
         root.Children.Add(_input);
 
-        var btnRow = new Grid();
-        btnRow.ColumnDefinitions.Add(new ColumnDefinition());
-        btnRow.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-        btnRow.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8) });
-        btnRow.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
         var okBtn = Ui.DialogButton("ตกลง", accent: true);
-        okBtn.Padding = new Thickness(18, 0, 18, 0);
-        Grid.SetColumn(okBtn, 1);
         okBtn.Click += (_, _) => Confirm();
 
         var cancelBtn = Ui.DialogButton("ยกเลิก", accent: false);
-        cancelBtn.Padding = new Thickness(18, 0, 18, 0);
-        Grid.SetColumn(cancelBtn, 3);
         cancelBtn.Click += (_, _) => { DialogResult = false; };
 
-        btnRow.Children.Add(okBtn);
-        btnRow.Children.Add(cancelBtn);
-        root.Children.Add(btnRow);
+        root.Children.Add(Ui.BuildOkCancelRow(okBtn, cancelBtn));
 
         Content = root;
         Loaded += (_, _) => { _input.Focus(); _input.SelectAll(); };

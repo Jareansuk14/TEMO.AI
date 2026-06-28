@@ -26,19 +26,4 @@ internal static class VercelAuthStore
         }
         return null;
     }
-
-    public static bool IsLoggedIn() => TryGetToken() is not null;
-
-    public static void ClearToken()
-    {
-        foreach (var path in AuthPaths)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(path)) continue;
-                File.Delete(path);
-            }
-            catch { }
-        }
-    }
 }

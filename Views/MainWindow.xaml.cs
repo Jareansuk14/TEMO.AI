@@ -6,19 +6,24 @@ namespace TEMO.AI;
 public partial class MainWindow : Window
 {
     private const string SiteConfig = @"config\site.ts";
-    private const string ThemeCss = @"styles\theme.css";
     private const string ServerUrl = "http://localhost:4321";
 
-    private readonly List<FieldDef> _fields = [];
-    private readonly Dictionary<string, TextBox> _boxes = [];
-    private readonly Dictionary<string, TextBox> _cssBoxes = [];
+    private readonly MainViewModel _vm = new();
+    private ProjectSession _session => _vm.Session;
+
+    private List<FieldDef> _fields => _session.Fields;
+    private Dictionary<string, TextBox> _boxes => _session.Boxes;
+    private Dictionary<string, TextBox> _cssBoxes => _session.CssBoxes;
+    private List<LayoutComponent> _layoutComponents => _session.LayoutComponents;
+
     private readonly Dictionary<string, Border> _cssColorPreviews = [];
-    private readonly List<LayoutComponent> _layoutComponents = [];
 
     private Process? _devProcess;
-    private string _projectPath;
+    private string _projectPath { get => _session.ProjectPath; set => _session.ProjectPath = value; }
+    private string? _loadedProjectPath;
     private bool _waitingForPreview;
     private bool _navScheduled;
+    private readonly List<string> _serverLog = [];
     private int _selectedIndexForSwap = -1;
     private DispatcherTimer? _msgTimer;
 
@@ -26,15 +31,19 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        ApplyDevLayoutMode();
+
         Title = AppInfo.AppName;
         BrandTitleText.Text = AppInfo.TitleWithVersion;
         LoadingBrandText.Text = AppInfo.AppName;
         _projectPath = "";
         FolderPathBox.Text = "ยังไม่ได้เลือกโปรเจค";
         LoadingText.Text = "New Project or Load Project";
+        GenBtn.Visibility = Visibility.Visible;
         UpdateDeployUi();
         TakeSavedSnapshot();
         Loaded += (_, _) => LoadApiKey();
+        Loaded += (_, _) => { ProjectPaths.MigrateExisting(); RefreshNewBadge(); };
         Loaded += async (_, _) => await InitWebViewAsync();
         Closing += OnWindowClosing;
         Closed += (_, _) => StopServer();
@@ -120,6 +129,10 @@ public partial class MainWindow : Window
 
     private bool HasOpenProject() => ProjectPaths.IsProject(_projectPath);
 
+    private void RefreshNewBadge() =>
+        LoadProjectNewBadge.Visibility =
+            ProjectPaths.HasAnyNew() ? Visibility.Visible : Visibility.Collapsed;
+
     private void UpdateDeployUi()
     {
         var hasProject = HasOpenProject();
@@ -153,10 +166,12 @@ public partial class MainWindow : Window
             PullSiteSettings();
             BuildKeywordsPanel();
             PullKeywords();
+            ImagesStore.NormalizeStandardDimensions(_projectPath);
             BuildImagesPanel();
             PullImages();
             _undoHistory.Clear();
             TakeSavedSnapshot();
+            _loadedProjectPath = _projectPath;
         }
         finally
         {

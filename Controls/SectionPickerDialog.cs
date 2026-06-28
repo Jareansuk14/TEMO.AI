@@ -94,7 +94,7 @@ internal sealed class SectionPickerDialog : Window
     {
         foreach (var option in _sections
             .GroupBy(x => x.Kind, StringComparer.Ordinal)
-            .Select(g => new SectionKindOption(g.Key, SectionMeta.DisplayName(g.Key)))
+            .Select(g => new SectionKindOption(g.Key, SectionCatalog.DisplayName(g.Key)))
             .OrderBy(x => x.DisplayName, StringComparer.Ordinal))
         {
             _kindList.Items.Add(option);
@@ -103,25 +103,13 @@ internal sealed class SectionPickerDialog : Window
 
     private Grid BuildButtons()
     {
-        var buttons = new Grid();
-        buttons.ColumnDefinitions.Add(new ColumnDefinition());
-        buttons.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-        buttons.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8) });
-        buttons.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
         var okBtn = Ui.DialogButton("ใช้ Section นี้", accent: true);
-        okBtn.Padding = new Thickness(18, 0, 18, 0);
         okBtn.Click += (_, _) => Confirm();
-        Grid.SetColumn(okBtn, 1);
 
         var cancelBtn = Ui.DialogButton("ยกเลิก", accent: false);
-        cancelBtn.Padding = new Thickness(18, 0, 18, 0);
         cancelBtn.Click += (_, _) => DialogResult = false;
-        Grid.SetColumn(cancelBtn, 3);
 
-        buttons.Children.Add(okBtn);
-        buttons.Children.Add(cancelBtn);
-        return buttons;
+        return Ui.BuildOkCancelRow(okBtn, cancelBtn);
     }
 
     private void FocusInitialList()

@@ -8,10 +8,23 @@ namespace TEMO.AI;
 
 internal static class Ui
 {
-    public static SolidColorBrush Brush(uint rgb) => new(Color.FromRgb(
-        (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb));
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<uint, SolidColorBrush> BrushCache = new();
 
-    public static SolidColorBrush Brush(Color color) => new(color);
+    public static SolidColorBrush Brush(uint rgb) => BrushCache.GetOrAdd(rgb, static value =>
+    {
+        var brush = new SolidColorBrush(Color.FromRgb((byte)(value >> 16), (byte)(value >> 8), (byte)value));
+        brush.Freeze();
+        return brush;
+    });
+
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Color, SolidColorBrush> ColorBrushCache = new();
+
+    public static SolidColorBrush Brush(Color color) => ColorBrushCache.GetOrAdd(color, static c =>
+    {
+        var brush = new SolidColorBrush(c);
+        brush.Freeze();
+        return brush;
+    });
 
     public static TextBox MakeInput(FrameworkElement host, double fontSize = 14, double minHeight = 40) => new()
     {
@@ -85,14 +98,49 @@ internal static class Ui
         };
     }
 
-    public static TextBlock SectionLabel(string text) => new()
+    public static Grid BuildOkCancelRow(Button okBtn, Button cancelBtn)
     {
-        Text = text,
-        FontSize = 14,
-        FontWeight = FontWeights.SemiBold,
-        Foreground = Brush(0xEDEDED),
-        VerticalAlignment = VerticalAlignment.Center,
+        var row = new Grid();
+        row.ColumnDefinitions.Add(new ColumnDefinition());
+        row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8) });
+        row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+        okBtn.Padding = new Thickness(18, 0, 18, 0);
+        cancelBtn.Padding = new Thickness(18, 0, 18, 0);
+        Grid.SetColumn(okBtn, 1);
+        Grid.SetColumn(cancelBtn, 3);
+        row.Children.Add(okBtn);
+        row.Children.Add(cancelBtn);
+        return row;
+    }
+
+    public static Border ChromeHeader(UIElement child, Thickness padding) => new()
+    {
+        Background = Brush(0x0D0D0D),
+        BorderBrush = Brush(0x1E1E1E),
+        BorderThickness = new Thickness(0, 0, 0, 1),
+        Padding = padding,
+        Child = child,
     };
+
+    public static Border ChromeFooter(UIElement child, Thickness padding) => new()
+    {
+        Background = Brush(0x0D0D0D),
+        BorderBrush = Brush(0x1E1E1E),
+        BorderThickness = new Thickness(0, 1, 0, 0),
+        Padding = padding,
+        Child = child,
+    };
+
+    public static Border ChromeTitleHeader(string title) =>
+        ChromeHeader(new TextBlock
+        {
+            Text = title,
+            FontSize = 18,
+            FontWeight = FontWeights.Bold,
+            Foreground = Brush(0xEDEDED),
+        }, new Thickness(24, 18, 24, 18));
 
     public static void RunOnUi(DispatcherObject owner, Action action)
     {
@@ -273,6 +321,34 @@ internal static class Ui
         Child = content,
         ToolTip = tooltip,
     };
+
+    public static Border MakeGalleryThumbHost(UIElement child, int height = 175) => new()
+    {
+        Height = height,
+        Background = Brush(0x070707),
+        CornerRadius = new CornerRadius(4, 4, 0, 0),
+        ClipToBounds = true,
+        Cursor = Cursors.Hand,
+        Child = child,
+    };
+
+    public static Border MakeGalleryCard(UIElement thumbArea, UIElement info, int width = 220)
+    {
+        var body = new StackPanel();
+        body.Children.Add(thumbArea);
+        body.Children.Add(info);
+
+        return new Border
+        {
+            Width = width,
+            Background = Brush(0x141414),
+            BorderBrush = Brush(0x282828),
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(5),
+            Margin = new Thickness(0, 0, 12, 12),
+            Child = body,
+        };
+    }
 
     public static Border MakeFixedImageCard(UIElement preview, string label, string tooltip, int width = 168)
     {

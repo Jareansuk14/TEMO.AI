@@ -163,7 +163,13 @@ internal sealed class ImageScrapeDialog : Window
         root.Children.Add(contentArea);
 
         Content = root;
-        Closed += (_, _) => { _cts?.Cancel(); _web.Dispose(); };
+        Closed += (_, _) =>
+        {
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _scraper?.Dispose();
+            _web.Dispose();
+        };
         Loaded += async (_, _) => { _urlBox.Focus(); _urlBox.SelectAll(); await EnsureWebAsync(); };
     }
 
@@ -359,7 +365,7 @@ internal sealed class ImageScrapeDialog : Window
         {
             try
             {
-                var fileName = BaseName(card.Image.Url) + card.Image.Extension;
+                var fileName = UniqueFileName(targetDir, BaseName(card.Image.Url), card.Image.Extension);
                 File.WriteAllBytes(Path.Combine(targetDir, fileName), card.Image.Data);
                 saved++;
             }
@@ -439,6 +445,15 @@ internal sealed class ImageScrapeDialog : Window
             name = name.Replace(c, '-');
         name = name.Trim('-', '.', ' ');
         return name.Length > 60 ? name[..60] : name;
+    }
+
+    private static string UniqueFileName(string dir, string baseName, string ext)
+    {
+        var candidate = baseName + ext;
+        var i = 2;
+        while (File.Exists(Path.Combine(dir, candidate)))
+            candidate = $"{baseName}-{i++}{ext}";
+        return candidate;
     }
 
     private static string FormatSize(int bytes) => bytes switch

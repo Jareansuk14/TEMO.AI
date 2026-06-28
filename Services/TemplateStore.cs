@@ -20,19 +20,58 @@ internal static class TemplateStore
     private static readonly HashSet<string> ExcludedFiles = new(StringComparer.OrdinalIgnoreCase)
     {
         ".DS_Store", "Thumbs.db", LocalMarker,
+        ProjectPaths.CompleteMarker, ProjectPaths.NewMarker,
     };
 
     public static bool IsLocal(string templatePath) =>
         File.Exists(Path.Combine(templatePath, LocalMarker));
 
-    public static void Delete(string templatePath) =>
-        DeleteDirectory(templatePath, ignoreErrors: false);
+    public static void Delete(string templatePath)
+    {
+        if (IsWorkspace(templatePath))
+            throw new InvalidOperationException("ลบ Template ในโฟลเดอร์ Templates ของโปรเจคไม่ได้");
+        Io.DeleteDirectory(templatePath, ignoreErrors: false);
+    }
 
     public static string Root => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Templates");
 
-    public static List<string> List() =>
-        Directory.Exists(Root) ? Directory.GetDirectories(Root).OrderBy(Path.GetFileName).ToList() : [];
+    private static readonly Lazy<string?> LocalRootLazy = new(ResolveLocalRoot);
+
+    public static string? LocalRoot => LocalRootLazy.Value;
+
+    private static string? ResolveLocalRoot() =>
+        Workspace.FindAncestorDir(Path.Combine("Templates", ComponentDirName)) is { } componentDir
+            ? Path.GetDirectoryName(componentDir)
+            : null;
+
+    private static bool IsWorkspace(string templatePath) =>
+        LocalRoot is { } local &&
+        Path.GetFullPath(templatePath).StartsWith(Path.GetFullPath(local), StringComparison.OrdinalIgnoreCase);
+
+    private static IEnumerable<string> EnumerateRoots()
+    {
+        if (LocalRoot is { } local) yield return local;
+        yield return Root;
+    }
+
+    public static List<string> List()
+    {
+        var byName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var root in EnumerateRoots())
+        {
+            if (!Directory.Exists(root)) continue;
+            foreach (var dir in Directory.GetDirectories(root))
+            {
+                var name = Path.GetFileName(dir);
+                if (ExcludedDirs.Contains(name)
+                    || string.Equals(name, ComponentDirName, StringComparison.OrdinalIgnoreCase))
+                    continue;
+                byName.TryAdd(name, dir);
+            }
+        }
+        return byName.Values.OrderBy(Path.GetFileName).ToList();
+    }
 
     public static async Task UpdateFromRemoteAsync(IProgress<string>? progress = null)
     {
@@ -62,7 +101,7 @@ internal static class TemplateStore
         }
         finally
         {
-            DeleteDirectory(tempRoot, ignoreErrors: true);
+            Io.DeleteDirectory(tempRoot);
         }
     }
 
@@ -94,7 +133,7 @@ internal static class TemplateStore
         if (componentDir is not null)
         {
             progress?.Report("กำลังอัปเดต Component...");
-            DeleteDirectory(ComponentStore.Root, ignoreErrors: false);
+            Io.DeleteDirectory(ComponentStore.Root, ignoreErrors: false);
             Copy(componentDir, ComponentStore.Root);
         }
 
@@ -124,7 +163,7 @@ internal static class TemplateStore
 
     public static void SaveAsTemplate(string projectPath, string destDir)
     {
-        if (Directory.Exists(destDir)) DeleteDirectory(destDir, ignoreErrors: true);
+        if (Directory.Exists(destDir)) Io.DeleteDirectory(destDir);
         Directory.CreateDirectory(destDir);
 
         foreach (var name in TemplateDirs)
@@ -173,26 +212,7 @@ internal static class TemplateStore
         foreach (var dir in Directory.GetDirectories(Root))
         {
             if (IsLocal(dir)) continue;
-            DeleteDirectory(dir, ignoreErrors: false);
-        }
-    }
-
-    private static void DeleteDirectory(string path, bool ignoreErrors)
-    {
-        try
-        {
-            if (!Directory.Exists(path)) return;
-
-            foreach (var file in Directory.EnumerateFiles(path, "*", SearchOption.AllDirectories))
-                File.SetAttributes(file, FileAttributes.Normal);
-
-            foreach (var dir in Directory.EnumerateDirectories(path, "*", SearchOption.AllDirectories))
-                File.SetAttributes(dir, FileAttributes.Normal);
-
-            Directory.Delete(path, recursive: true);
-        }
-        catch when (ignoreErrors)
-        {
+            Io.DeleteDirectory(dir, ignoreErrors: false);
         }
     }
 }

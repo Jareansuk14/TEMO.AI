@@ -105,10 +105,18 @@ internal sealed class ImageEditDialog : Window
 
     private void Save_Click(object sender, RoutedEventArgs e)
     {
-        var name = _nameBox.Text.Trim().Trim('/');
+        var name = SanitizeFileName(_nameBox.Text);
         ResultSrc = string.IsNullOrEmpty(name) ? ResultSrc : $"{_dir}/{name}{_ext}";
         ResultAlt = _altBox?.Text ?? "";
         DialogResult = true;
+    }
+
+    private static string SanitizeFileName(string raw)
+    {
+        var name = raw.Trim();
+        foreach (var c in Path.GetInvalidFileNameChars())
+            name = name.Replace(c, '-');
+        return name.Trim('-', '.', ' ');
     }
 
     private string PublicPath(string src) =>

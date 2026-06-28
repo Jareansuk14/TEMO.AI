@@ -14,11 +14,7 @@ public static class AuthApiService
     private static readonly HttpClient Http = new();
     private const string BaseUrl = "https://temo-backend.onrender.com/api";
 
-    private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
-
-    public static string? CurrentToken { get; private set; }
-    public static string? CurrentRole { get; private set; }
-    public static string? CurrentUsername { get; private set; }
+    private static readonly JsonSerializerOptions Json = JsonFile.CaseInsensitive;
 
     public static async Task<(bool Success, string? Error, bool Locked)> LoginAsync(string username, string password)
     {
@@ -34,9 +30,6 @@ public static class AuthApiService
             }
             var result = await response.Content.ReadFromJsonAsync<LoginResult>(Json);
             if (result?.Token == null) return (false, "Invalid server response", false);
-            CurrentToken = result.Token;
-            CurrentRole = result.Role;
-            CurrentUsername = result.Username;
             return (true, null, false);
         }
         catch (HttpRequestException)

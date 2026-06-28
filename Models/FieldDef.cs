@@ -1,15 +1,15 @@
 namespace TEMO.AI;
 
-internal enum FieldKind { Pattern, Brand, Faq }
-
 internal sealed record FieldDef(
     string Id,
     string Label,
     string Section,
-    string RelFile,
-    string Pattern,
-    FieldKind Kind = FieldKind.Pattern,
-    bool Multi = false)
+    string DataFile,
+    string DataConst,
+    string Key,
+    bool Multi = false,
+    int ArrayIndex = -1)
 {
-    public bool IsPattern => Kind == FieldKind.Pattern && !string.IsNullOrEmpty(Pattern);
+    public bool IsArray => ArrayIndex >= 0;
+    public bool IsBrand => Id == "brand";
 }

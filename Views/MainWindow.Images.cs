@@ -2,31 +2,74 @@ namespace TEMO.AI;
 
 public partial class MainWindow
 {
-    private readonly List<ImageEntry> _imageEntries = [];
+    private List<ImageEntry> _imageEntries => _session.ImageEntries;
 
-    private void BuildImagesPanel()
+    private void ImgAiToggle_Click(object sender, RoutedEventArgs e) =>
+        ToggleFlyout(ImgAiPanel);
+
+    private void ImgAiClose_Click(object sender, RoutedEventArgs e) =>
+        ImgAiPanel.Visibility = Visibility.Collapsed;
+
+    private async void ImgAiGen_Click(object sender, RoutedEventArgs e)
     {
-        _imageEntries.Clear();
-        var content = ImagesStore.ReadConfig(_projectPath);
-        var defs = ImagesStore.DiscoverDefs(content, ImagesStore.IsPlayButtonUsed(_projectPath),
-            ImagesStore.SeoImageNumbers(_projectPath));
-        foreach (var (id, label, group, hasAlt) in defs)
-            _imageEntries.Add(new ImageEntry { Id = id, Label = label, Group = group, HasAlt = hasAlt });
+        if (!HasOpenProject()) { ShowMsg("⚠️  เปิดโปรเจคก่อน"); return; }
+        if (_vm.Ai.Busy) { ShowMsg("AI กำลังทำงานอยู่"); return; }
+        if (!TryGetApiKey(out var apiKey)) return;
+
+        var brand = ContentStore.CurrentBrandName(_projectPath);
+        if (string.IsNullOrWhiteSpace(brand)) { ShowMsg("⚠️  ไม่พบชื่อแบรนด์"); return; }
+
+        var type = ContentTypes.FromRadios(ImgAiLottery.IsChecked == true, ImgAiSlot.IsChecked == true);
+
+        var rng = new Random();
+        var palette = PaletteStore.Random(rng);
+        var options = new GenerationOptions(brand, type, null, AiModels.TextDefault,
+            Style: ImageStyleCatalog.Random(rng), Render: ImageRenderCatalog.Random(rng));
+
+        _vm.Ai.Busy = true;
+        ShowAiOverlayLoading();
+        ImgAiGenBtn.IsEnabled = false;
+        try
+        {
+            await Task.Run(() => ThemeRandomizer.Apply(_projectPath, palette));
+
+            var (ok, error, count) = await ImageCssRegenerator.RunAsync(
+                _projectPath, options, palette, apiKey,
+                m => Dispatcher.Invoke(() => AiOverlayStatusText.Text = m));
+            if (!ok)
+            {
+                ShowAiError(error, "สร้างรูป/CSS ล้มเหลว");
+                return;
+            }
+
+            HideAiOverlay();
+            ImgAiPanel.Visibility = Visibility.Collapsed;
+
+            BuildImagesPanel();
+            PullImages();
+            LoadCssVariables();
+
+            if (_devProcess is { HasExited: false })
+                WebView.CoreWebView2?.Reload();
+
+            ShowMsg($"🤖  สร้างรูป + CSS ใหม่แล้ว ({count} รูป)");
+        }
+        catch (Exception ex)
+        {
+            ShowAiOverlayError($"❌  {ex.Message}");
+        }
+        finally
+        {
+            _vm.Ai.Busy = false;
+            ImgAiGenBtn.IsEnabled = true;
+        }
     }
+
+    private void BuildImagesPanel() => _vm.Images.LoadEntries();
 
     private void PullImages()
     {
-        var content = ImagesStore.ReadConfig(_projectPath);
-        if (content.Length == 0) return;
-
-        foreach (var e in _imageEntries)
-        {
-            var (src, alt) = ImagesStore.ReadValues(content, e.Id);
-            e.SrcValue = src;
-            e.AltValue = alt;
-            e.OriginalSrc = src;
-        }
-
+        if (!_vm.Images.PullValues()) return;
         RebuildImageGrid();
     }
 
@@ -58,7 +101,7 @@ public partial class MainWindow
 
     private const string PromoGroup = "โปรโมชั่น";
 
-    private int PromoCount => _imageEntries.Count(e => e.Id.StartsWith("promo-"));
+    private int PromoCount => _vm.Images.PromoCount;
 
     private UIElement MakePromoHeader()
     {
@@ -117,7 +160,7 @@ public partial class MainWindow
         {
             if (blocks.Count >= ImagesStore.MaxPromos) { ShowMsg($"เพิ่มรูปโปรโมชั่นได้สูงสุด {ImagesStore.MaxPromos} รูป"); return false; }
             int next = ImagesStore.NextPromoNumber(blocks);
-            blocks.Add($"{{ src: \"/images/promo{next}.webp\", alt: \"\", width: 800, height: 500 }}");
+            blocks.Add(ImagesStore.NewImageBlock($"/images/promo{next}.webp", "", $"promo-{blocks.Count}"));
             return true;
         });
         if (!ok) return;
@@ -141,7 +184,7 @@ public partial class MainWindow
         });
         if (!ok) return;
 
-        if (!string.IsNullOrEmpty(removedSrc)) TryDelete(PublicPath(removedSrc));
+        if (!string.IsNullOrEmpty(removedSrc)) Io.DeleteFile(PublicPath(removedSrc));
         BuildImagesPanel();
         PullImages();
         ShowMsg("ลบรูปโปรโมชั่นแล้ว");
@@ -243,7 +286,7 @@ public partial class MainWindow
 
             if (!newSrc.Equals(entry.OriginalSrc, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrEmpty(entry.OriginalSrc))
-                TryDelete(PublicPath(entry.OriginalSrc));
+                Io.DeleteFile(PublicPath(entry.OriginalSrc));
 
             ConvertToWebP(filePath, targetAbs);
         }
@@ -254,7 +297,7 @@ public partial class MainWindow
         }
 
         entry.SrcValue = newSrc;
-        ImagesStore.SaveEntry(_projectPath, oldSrc, entry.SrcValue, entry.AltValue, entry.HasAlt);
+        ImagesStore.SaveEntry(_projectPath, oldSrc, entry.SrcValue, entry.AltValue, entry.HasAlt, entry.Id);
         entry.OriginalSrc = entry.SrcValue;
 
         RebuildImageGrid();
@@ -332,17 +375,12 @@ public partial class MainWindow
 
         entry.SrcValue = dialog.ResultSrc;
         entry.AltValue = dialog.ResultAlt;
-        ImagesStore.SaveEntry(_projectPath, oldSrc, entry.SrcValue, entry.AltValue, entry.HasAlt);
+        ImagesStore.SaveEntry(_projectPath, oldSrc, entry.SrcValue, entry.AltValue, entry.HasAlt, entry.Id);
         entry.OriginalSrc = entry.SrcValue;
 
         RebuildImageGrid();
         if (entry == _siteQrEntry) RefreshSiteQrThumb();
         ShowMsg($"บันทึกรูปแล้ว: {entry.Label}");
-    }
-
-    private static void TryDelete(string path)
-    {
-        try { if (File.Exists(path)) File.Delete(path); } catch { }
     }
 
     private static void ConvertToWebP(string sourcePath, string destPath, int quality = 90)
@@ -353,6 +391,8 @@ public partial class MainWindow
             return;
         }
         using var bitmap = SkiaSharp.SKBitmap.Decode(sourcePath);
+        if (bitmap is null)
+            throw new InvalidOperationException($"ไม่สามารถอ่านไฟล์รูปภาพ: {Path.GetFileName(sourcePath)}");
         using var image = SkiaSharp.SKImage.FromBitmap(bitmap);
         using var data = image.Encode(SkiaSharp.SKEncodedImageFormat.Webp, quality);
         using var stream = File.Create(destPath);

@@ -1,0 +1,461 @@
+{
+  "nodes": [
+    {
+      "id": "file:Views/MainWindow.Panels.cs",
+      "type": "file",
+      "name": "MainWindow.Panels.cs",
+      "filePath": "Views/MainWindow.Panels.cs",
+      "summary": "MainWindow partial with small helpers to toggle and collapse the various editor flyout panels.",
+      "tags": ["partial-class", "ui", "flyout", "helper"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Views/MainWindow.Project.cs",
+      "type": "file",
+      "name": "MainWindow.Project.cs",
+      "filePath": "Views/MainWindow.Project.cs",
+      "summary": "MainWindow partial handling project lifecycle: creating new projects from templates, loading existing ones, saving templates with preview capture, and project switching.",
+      "tags": ["partial-class", "project", "template", "event-handler", "lifecycle"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Views/MainWindow.Project.cs:NewProject_Click",
+      "type": "function",
+      "name": "NewProject_Click",
+      "filePath": "Views/MainWindow.Project.cs",
+      "lineRange": [7, 40],
+      "summary": "Handles creating a new project: picks a template, names the project, and scaffolds it on disk.",
+      "tags": ["event-handler", "project", "creation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.Project.cs:LoadOldProject_Click",
+      "type": "function",
+      "name": "LoadOldProject_Click",
+      "filePath": "Views/MainWindow.Project.cs",
+      "lineRange": [42, 62],
+      "summary": "Opens the project gallery to select and load a previously created project.",
+      "tags": ["event-handler", "project", "load"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.Project.cs:SaveTemplate_Click",
+      "type": "function",
+      "name": "SaveTemplate_Click",
+      "filePath": "Views/MainWindow.Project.cs",
+      "lineRange": [74, 103],
+      "summary": "Saves the current project as a reusable template, capturing a preview image.",
+      "tags": ["event-handler", "template", "save"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.Project.cs:WaitForMediaAsync",
+      "type": "function",
+      "name": "WaitForMediaAsync",
+      "filePath": "Views/MainWindow.Project.cs",
+      "lineRange": [131, 141],
+      "summary": "Waits for media/assets in the preview WebView to finish loading before capture.",
+      "tags": ["async", "preview", "webview"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Project.cs:CapturePreviewAsync",
+      "type": "function",
+      "name": "CapturePreviewAsync",
+      "filePath": "Views/MainWindow.Project.cs",
+      "lineRange": [143, 206],
+      "summary": "Renders the project in the WebView and captures a screenshot preview image for the template thumbnail.",
+      "tags": ["async", "preview", "screenshot", "webview"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Views/MainWindow.Project.cs:NavigateAndWaitAsync",
+      "type": "function",
+      "name": "NavigateAndWaitAsync",
+      "filePath": "Views/MainWindow.Project.cs",
+      "lineRange": [215, 230],
+      "summary": "Navigates the preview WebView to a URL and awaits navigation completion.",
+      "tags": ["async", "webview", "navigation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Project.cs:CreateProjectAsync",
+      "type": "function",
+      "name": "CreateProjectAsync",
+      "filePath": "Views/MainWindow.Project.cs",
+      "lineRange": [241, 265],
+      "summary": "Copies a template into a new destination directory to scaffold a fresh project.",
+      "tags": ["async", "project", "creation", "io"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Views/MainWindow.Server.cs",
+      "type": "file",
+      "name": "MainWindow.Server.cs",
+      "filePath": "Views/MainWindow.Server.cs",
+      "summary": "MainWindow partial managing the local Astro dev server: start/stop lifecycle, capturing process output, phase tracking, error reporting, and WebView navigation controls.",
+      "tags": ["partial-class", "dev-server", "process", "event-handler", "lifecycle"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Views/MainWindow.Server.cs:ToggleServer_Click",
+      "type": "function",
+      "name": "ToggleServer_Click",
+      "filePath": "Views/MainWindow.Server.cs",
+      "lineRange": [7, 17],
+      "summary": "Starts or stops the local dev server depending on its current state.",
+      "tags": ["event-handler", "dev-server", "toggle"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Server.cs:StartServer",
+      "type": "function",
+      "name": "StartServer",
+      "filePath": "Views/MainWindow.Server.cs",
+      "lineRange": [27, 82],
+      "summary": "Launches the Astro dev server process, wiring up output/exit handlers and updating the UI.",
+      "tags": ["dev-server", "process", "start"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Views/MainWindow.Server.cs:OnServerOut",
+      "type": "function",
+      "name": "OnServerOut",
+      "filePath": "Views/MainWindow.Server.cs",
+      "lineRange": [84, 101],
+      "summary": "Receives the dev server's stdout lines, appends them to the log, and updates phase text.",
+      "tags": ["event-handler", "dev-server", "output"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Server.cs:HandleServerExit",
+      "type": "function",
+      "name": "HandleServerExit",
+      "filePath": "Views/MainWindow.Server.cs",
+      "lineRange": [116, 129],
+      "summary": "Handles dev server process exit, updating UI and surfacing errors for non-zero exit codes.",
+      "tags": ["dev-server", "process", "exit"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Server.cs:ShowServerError",
+      "type": "function",
+      "name": "ShowServerError",
+      "filePath": "Views/MainWindow.Server.cs",
+      "lineRange": [131, 142],
+      "summary": "Displays a server error message with detail derived from the process exit code.",
+      "tags": ["dev-server", "error", "ui"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Server.cs:ServerErrorDetail",
+      "type": "function",
+      "name": "ServerErrorDetail",
+      "filePath": "Views/MainWindow.Server.cs",
+      "lineRange": [144, 154],
+      "summary": "Builds a human-readable detail string explaining a dev server failure.",
+      "tags": ["dev-server", "error", "formatting"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Server.cs:UpdatePhaseText",
+      "type": "function",
+      "name": "UpdatePhaseText",
+      "filePath": "Views/MainWindow.Server.cs",
+      "lineRange": [156, 178],
+      "summary": "Parses server output lines to update the displayed startup phase status.",
+      "tags": ["dev-server", "ui", "status"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.Server.cs:StopServer",
+      "type": "function",
+      "name": "StopServer",
+      "filePath": "Views/MainWindow.Server.cs",
+      "lineRange": [180, 201],
+      "summary": "Terminates the running dev server process and resets server-related UI state.",
+      "tags": ["dev-server", "process", "stop"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.Server.cs:UpdateServerUi",
+      "type": "function",
+      "name": "UpdateServerUi",
+      "filePath": "Views/MainWindow.Server.cs",
+      "lineRange": [203, 223],
+      "summary": "Synchronizes server control buttons and indicators with the current server state.",
+      "tags": ["dev-server", "ui", "state"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Views/MainWindow.Site.cs",
+      "type": "file",
+      "name": "MainWindow.Site.cs",
+      "filePath": "Views/MainWindow.Site.cs",
+      "summary": "MainWindow partial managing the site settings panel: site URL validation, QR generation, and persisting site config to site.ts, astro.config, and robots.txt.",
+      "tags": ["partial-class", "ui", "site-settings", "seo", "validation"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Views/MainWindow.Site.cs:BuildSitePanel",
+      "type": "function",
+      "name": "BuildSitePanel",
+      "filePath": "Views/MainWindow.Site.cs",
+      "lineRange": [10, 65],
+      "summary": "Builds the site settings panel UI including URL input and QR preview controls.",
+      "tags": ["ui", "site-settings", "factory"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Views/MainWindow.Site.cs:PullSiteSettings",
+      "type": "function",
+      "name": "PullSiteSettings",
+      "filePath": "Views/MainWindow.Site.cs",
+      "lineRange": [76, 92],
+      "summary": "Loads the saved site URL and related settings into the site panel.",
+      "tags": ["site-settings", "load", "data"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Site.cs:PullSiteQr",
+      "type": "function",
+      "name": "PullSiteQr",
+      "filePath": "Views/MainWindow.Site.cs",
+      "lineRange": [94, 105],
+      "summary": "Loads or regenerates the QR code thumbnail for the configured site URL.",
+      "tags": ["site-settings", "qr", "image"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Site.cs:TryGetValidatedSiteUrl",
+      "type": "function",
+      "name": "TryGetValidatedSiteUrl",
+      "filePath": "Views/MainWindow.Site.cs",
+      "lineRange": [113, 146],
+      "summary": "Validates and normalizes the user-entered site URL, reporting errors for invalid input.",
+      "tags": ["site-settings", "validation", "url"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.Site.cs:ShowInvalidSiteUrl",
+      "type": "function",
+      "name": "ShowInvalidSiteUrl",
+      "filePath": "Views/MainWindow.Site.cs",
+      "lineRange": [148, 158],
+      "summary": "Highlights the URL input and shows a validation error message for an invalid site URL.",
+      "tags": ["site-settings", "validation", "ui"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Site.cs:SaveSiteTs",
+      "type": "function",
+      "name": "SaveSiteTs",
+      "filePath": "Views/MainWindow.Site.cs",
+      "lineRange": [167, 186],
+      "summary": "Writes the validated site URL into the project's site.ts configuration file.",
+      "tags": ["site-settings", "save", "io"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Views/MainWindow.Unsaved.cs",
+      "type": "file",
+      "name": "MainWindow.Unsaved.cs",
+      "filePath": "Views/MainWindow.Unsaved.cs",
+      "summary": "MainWindow partial implementing unsaved-change tracking: editor state snapshots, undo history, autosave scheduling, and unsaved-changes confirmation on close.",
+      "tags": ["partial-class", "state-management", "undo", "autosave", "dirty-tracking"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Views/MainWindow.Unsaved.cs:CollectEditorState",
+      "type": "function",
+      "name": "CollectEditorState",
+      "filePath": "Views/MainWindow.Unsaved.cs",
+      "lineRange": [20, 40],
+      "summary": "Gathers the current editor field values into a state snapshot object.",
+      "tags": ["state-management", "snapshot", "editor"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.Unsaved.cs:CaptureUnsavedKeysExceptLayout",
+      "type": "function",
+      "name": "CaptureUnsavedKeysExceptLayout",
+      "filePath": "Views/MainWindow.Unsaved.cs",
+      "lineRange": [42, 53],
+      "summary": "Captures the set of editor keys with unsaved changes, excluding layout-specific keys.",
+      "tags": ["state-management", "dirty-tracking"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Unsaved.cs:MarkLayoutAutosaveSnapshot",
+      "type": "function",
+      "name": "MarkLayoutAutosaveSnapshot",
+      "filePath": "Views/MainWindow.Unsaved.cs",
+      "lineRange": [55, 77],
+      "summary": "Records an autosave snapshot for layout changes while optionally preserving other unsaved keys.",
+      "tags": ["state-management", "autosave", "undo"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.Unsaved.cs:RestoreEditorState",
+      "type": "function",
+      "name": "RestoreEditorState",
+      "filePath": "Views/MainWindow.Unsaved.cs",
+      "lineRange": [82, 127],
+      "summary": "Restores a previously captured editor state, reapplying field values across the UI.",
+      "tags": ["state-management", "undo", "restore"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Views/MainWindow.Unsaved.cs:UndoLastSave_Click",
+      "type": "function",
+      "name": "UndoLastSave_Click",
+      "filePath": "Views/MainWindow.Unsaved.cs",
+      "lineRange": [164, 181],
+      "summary": "Reverts the most recent save by restoring the prior editor state from undo history.",
+      "tags": ["event-handler", "undo", "state-management"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Unsaved.cs:HasUnsavedChanges",
+      "type": "function",
+      "name": "HasUnsavedChanges",
+      "filePath": "Views/MainWindow.Unsaved.cs",
+      "lineRange": [183, 195],
+      "summary": "Determines whether the editor has any unsaved changes versus the last saved snapshot.",
+      "tags": ["state-management", "dirty-tracking"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.Unsaved.cs:ConfirmUnsavedChanges",
+      "type": "function",
+      "name": "ConfirmUnsavedChanges",
+      "filePath": "Views/MainWindow.Unsaved.cs",
+      "lineRange": [197, 212],
+      "summary": "Prompts the user to save, discard, or cancel when unsaved changes exist.",
+      "tags": ["state-management", "dialog", "confirmation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Views/MainWindow.xaml",
+      "type": "file",
+      "name": "MainWindow.xaml",
+      "filePath": "Views/MainWindow.xaml",
+      "summary": "XAML markup defining the main application window layout: editor panels, preview WebView, toolbars, flyouts, and AI overlay used by the MainWindow code-behind.",
+      "tags": ["markup", "xaml", "ui", "main-window", "layout"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:Views/MainWindow.xaml.cs",
+      "type": "file",
+      "name": "MainWindow.xaml.cs",
+      "filePath": "Views/MainWindow.xaml.cs",
+      "summary": "Primary MainWindow code-behind: constructor/initialization, WebView setup, global key handling, project loading, content panel locking, and shared helpers used by all MainWindow partials.",
+      "tags": ["entry-point", "partial-class", "main-window", "code-behind", "initialization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.xaml.cs:MainWindow",
+      "type": "function",
+      "name": "MainWindow",
+      "filePath": "Views/MainWindow.xaml.cs",
+      "lineRange": [26, 45],
+      "summary": "Constructor that initializes window components, builds panels, and wires up event handlers and the WebView.",
+      "tags": ["constructor", "initialization", "main-window"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.xaml.cs:OnGlobalKeyDown",
+      "type": "function",
+      "name": "OnGlobalKeyDown",
+      "filePath": "Views/MainWindow.xaml.cs",
+      "lineRange": [47, 56],
+      "summary": "Handles global keyboard shortcuts (e.g., save/undo) at the window level.",
+      "tags": ["event-handler", "keyboard", "shortcut"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.xaml.cs:UnlockContentPanel",
+      "type": "function",
+      "name": "UnlockContentPanel",
+      "filePath": "Views/MainWindow.xaml.cs",
+      "lineRange": [85, 102],
+      "summary": "Enables the content editing panel once a project is open and ready.",
+      "tags": ["ui", "state", "content-panel"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.xaml.cs:LockContentPanel",
+      "type": "function",
+      "name": "LockContentPanel",
+      "filePath": "Views/MainWindow.xaml.cs",
+      "lineRange": [104, 122],
+      "summary": "Disables the content editing panel when no project is loaded.",
+      "tags": ["ui", "state", "content-panel"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Views/MainWindow.xaml.cs:LoadProject",
+      "type": "function",
+      "name": "LoadProject",
+      "filePath": "Views/MainWindow.xaml.cs",
+      "lineRange": [142, 175],
+      "summary": "Loads a project into the window, pulling content/images/keywords/layout and refreshing the preview.",
+      "tags": ["project", "load", "orchestration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Views/MainWindow.xaml.cs:ShowMsg",
+      "type": "function",
+      "name": "ShowMsg",
+      "filePath": "Views/MainWindow.xaml.cs",
+      "lineRange": [181, 194],
+      "summary": "Shared helper that displays a transient status/toast message in the window.",
+      "tags": ["ui", "notification", "helper"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {"source": "file:Views/MainWindow.Project.cs", "target": "function:Views/MainWindow.Project.cs:NewProject_Click", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Project.cs", "target": "function:Views/MainWindow.Project.cs:LoadOldProject_Click", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Project.cs", "target": "function:Views/MainWindow.Project.cs:SaveTemplate_Click", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Project.cs", "target": "function:Views/MainWindow.Project.cs:WaitForMediaAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Project.cs", "target": "function:Views/MainWindow.Project.cs:CapturePreviewAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Project.cs", "target": "function:Views/MainWindow.Project.cs:NavigateAndWaitAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Project.cs", "target": "function:Views/MainWindow.Project.cs:CreateProjectAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Server.cs", "target": "function:Views/MainWindow.Server.cs:ToggleServer_Click", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Server.cs", "target": "function:Views/MainWindow.Server.cs:StartServer", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Server.cs", "target": "function:Views/MainWindow.Server.cs:OnServerOut", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Server.cs", "target": "function:Views/MainWindow.Server.cs:HandleServerExit", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Server.cs", "target": "function:Views/MainWindow.Server.cs:ShowServerError", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Server.cs", "target": "function:Views/MainWindow.Server.cs:ServerErrorDetail", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Server.cs", "target": "function:Views/MainWindow.Server.cs:UpdatePhaseText", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Server.cs", "target": "function:Views/MainWindow.Server.cs:StopServer", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Server.cs", "target": "function:Views/MainWindow.Server.cs:UpdateServerUi", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Site.cs", "target": "function:Views/MainWindow.Site.cs:BuildSitePanel", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Site.cs", "target": "function:Views/MainWindow.Site.cs:PullSiteSettings", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Site.cs", "target": "function:Views/MainWindow.Site.cs:PullSiteQr", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Site.cs", "target": "function:Views/MainWindow.Site.cs:TryGetValidatedSiteUrl", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Site.cs", "target": "function:Views/MainWindow.Site.cs:ShowInvalidSiteUrl", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Site.cs", "target": "function:Views/MainWindow.Site.cs:SaveSiteTs", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Unsaved.cs", "target": "function:Views/MainWindow.Unsaved.cs:CollectEditorState", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Unsaved.cs", "target": "function:Views/MainWindow.Unsaved.cs:CaptureUnsavedKeysExceptLayout", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Unsaved.cs", "target": "function:Views/MainWindow.Unsaved.cs:MarkLayoutAutosaveSnapshot", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Unsaved.cs", "target": "function:Views/MainWindow.Unsaved.cs:RestoreEditorState", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Unsaved.cs", "target": "function:Views/MainWindow.Unsaved.cs:UndoLastSave_Click", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Unsaved.cs", "target": "function:Views/MainWindow.Unsaved.cs:HasUnsavedChanges", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.Unsaved.cs", "target": "function:Views/MainWindow.Unsaved.cs:ConfirmUnsavedChanges", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.xaml.cs", "target": "function:Views/MainWindow.xaml.cs:MainWindow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.xaml.cs", "target": "function:Views/MainWindow.xaml.cs:OnGlobalKeyDown", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.xaml.cs", "target": "function:Views/MainWindow.xaml.cs:UnlockContentPanel", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.xaml.cs", "target": "function:Views/MainWindow.xaml.cs:LockContentPanel", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.xaml.cs", "target": "function:Views/MainWindow.xaml.cs:LoadProject", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.xaml.cs", "target": "function:Views/MainWindow.xaml.cs:ShowMsg", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Views/MainWindow.xaml", "target": "file:Views/MainWindow.xaml.cs", "type": "related", "direction": "forward", "weight": 0.5},
+    {"source": "file:Views/MainWindow.Project.cs", "target": "file:Views/MainWindow.xaml.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Views/MainWindow.Project.cs", "target": "file:Views/MainWindow.Server.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Views/MainWindow.Server.cs", "target": "file:Views/MainWindow.xaml.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Views/MainWindow.Site.cs", "target": "file:Views/MainWindow.xaml.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Views/MainWindow.Unsaved.cs", "target": "file:Views/MainWindow.xaml.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Views/MainWindow.Panels.cs", "target": "file:Views/MainWindow.xaml.cs", "type": "depends_on", "direction": "forward", "weight": 0.6}
+  ]
+}

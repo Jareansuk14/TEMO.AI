@@ -1,0 +1,107 @@
+namespace TEMO.AI.Ai;
+
+internal static class ImagePromptCatalog
+{
+    public static string ThemeLabel(AiPromptType type) => type switch
+    {
+        AiPromptType.Lottery => "หวยออนไลน์",
+        AiPromptType.Slot => "สล็อตออนไลน์",
+        _ => "คาสิโนออนไลน์",
+    };
+
+    public static string BuildPrompt(
+        ImagePlanItem item, GenerationOptions options, ThemePalette palette,
+        string composition, string promo, bool hasLogoReference)
+    {
+        var theme = ThemeLabel(options.ContentType);
+        var style = options.Style ?? ImageStyleCatalog.All[0];
+        var render = options.Render ?? ImageRenderCatalog.All[0];
+        var subject = string.IsNullOrEmpty(composition)
+            ? ""
+            : $" โดยมี{composition} ให้แต่งกายและออกแบบตัวละครให้เข้ากับสไตล์{style.Name}";
+        var backdrop = $" และมีองค์ประกอบย่อยอยู่เบื้องหลังที่สื่อถึง{theme}";
+        var logo = hasLogoReference ? " และนำรูปโลโก้ที่แนบมาไปไว้ในภาพด้วย" : "";
+        var logoSubtle = hasLogoReference ? " และนำรูปโลโก้ที่แนบมาไปไว้ในภาพ แต่ห้ามอยู่กลางภาพ กลมกลืนกับองค์ประกอบ" : "";
+
+        var request = item.Id switch
+        {
+            "logo" =>
+                $"ขอโลโก้แบรนด์ \"{options.Brand}\" เป็นสัญลักษณ์กราฟิกแบบเวกเตอร์เรียบหรู สไตล์{style.Name} (ตีความเป็นกราฟิกโลโก้เท่านั้น ไม่ใช่ภาพถ่ายของของจริง) พื้นหลังโปร่งใส ข้อความแบรนด์อ่านชัด ไม่มีฉากหลัง ไม่มีมาสคอต ไม่มีสโลแกน ห้ามวาดเหรียญ ทองคำแท่ง ธนบัตร อัญมณี หรือสิ่งของจริงใด ๆ ให้เป็นตราสัญลักษณ์นามธรรมเพียวๆ",
+            "banner" =>
+                $"ขอรูปภาพแบนเนอร์หลัก สไตล์{style.Name}{subject}{backdrop}{logo} จัดองค์ประกอบเด่นกลางภาพ",
+            "background" =>
+                $"ขอรูปภาพพื้นหลังเว็บ สไตล์{style.Name}{backdrop} ไม่มีข้อความ ไม่มีตัวเลข ไม่มีโลโก้ ไม่มีตัวละครเด่น ใช้เป็นฉากหลังหลังเนื้อหาได้ดี",
+            var s when s.StartsWith("btn-") =>
+                $"ขอปุ่มกดทรงโค้งมนพรีเมียมแบบกราฟิกเวกเตอร์ สไตล์{style.Name} (ตีความเป็นกราฟิกปุ่มเท่านั้น ไม่ใช่ภาพถ่ายของของจริง) พื้นหลังโปร่งใส มีข้อความภาษาไทยว่า \"{ButtonText(s["btn-".Length..])}\" อยู่กลางปุ่ม อ่านชัด ไม่มีคำอื่น ไม่มีไอคอน ห้ามวาดเหรียญ ทองคำ ธนบัตร หรือสิ่งของจริงใด ๆ",
+            var s when s.StartsWith("promo-") =>
+                $"ขอรูปภาพการ์ดโปรโมชั่น สไตล์{style.Name}{subject}{logoSubtle} มีข้อความโปรโมชั่นภาษาไทยว่า \"{promo}\" เด่นชัดอ่านง่ายในภาพ ออกแบบให้ดูเป็นแบนเนอร์โปรโมชั่นน่าสนใจ",
+            var s when s.StartsWith("seo-") =>
+                $"ขอรูปภาพประกอบบทความ สไตล์{style.Name}{subject}{logoSubtle} มีสโลแกนสั้นภาษาไทยว่า \"{promo}\" เด่นชัดอ่านง่ายในภาพ สื่อความหมายชัดเจน ไม่มีบล็อกข้อความอื่นที่อ่านได้",
+            var s when s.StartsWith("game-") =>
+                $"ขอรูปภาพการ์ดเกมแนวตั้ง สไตล์{style.Name} ไม่มีข้อความ ตัวเลข หรือโลโก้ที่อ่านได้",
+            _ =>
+                $"ขอรูปภาพประกอบเว็บ สไตล์{style.Name}{backdrop} ไม่มีข้อความหรือโลโก้ที่อ่านได้",
+        };
+
+        var styleDetail = item.Id.StartsWith("btn-", StringComparison.Ordinal)
+            ? ""
+            : $"รายละเอียดสไตล์: {style.Visual}\n";
+
+        var transparent = item.Id == "logo" || item.Id.StartsWith("btn-", StringComparison.Ordinal);
+        var transparentNote = transparent
+            ? "พื้นหลังต้องโปร่งใสจริง (alpha channel) ทั้งภาพ ไม่มีพื้นหลังสีทึบ ไม่มีพื้นหลังขาว ไม่มีกรอบหรือฉากหลัง วางวัตถุลอยบนพื้นโปร่งใสเท่านั้น\n"
+            : "";
+
+        return
+            $"คุณคือผู้เชี่ยวชาญด้านกราฟฟิกดีไซน์ของรูปภาพที่ใช้บนเว็บไซต์ด้าน{theme}\n" +
+            $"{request}\n" +
+            $"สไตล์ภาพ: {render.Name} ({render.Visual})\n" +
+            styleDetail +
+            transparentNote +
+            $"โทนสีเว็บ: สีหลัก {palette.Primary} สีรอง {palette.Secondary} สีเน้น {palette.Accent}\n" +
+            "เพิ่มสีอื่นได้ตามความเหมาะสม แต่ต้องกลมกลืนเข้ากับโทนสีหลักเหล่านี้\n" +
+            $"ขนาดภาพ: {item.Width}x{item.Height}";
+    }
+
+    public static string BuildButtonReferencePrompt(ImagePlanItem item)
+    {
+        var text = ButtonText(item.Id["btn-".Length..]);
+        return
+            "คุณคือผู้เชี่ยวชาญด้านกราฟฟิกดีไซน์ของปุ่มกดบนเว็บไซต์\n" +
+            $"โดยสร้างรูปให้เหมือนกับรูปที่แนบไป แต่เปลี่ยนคำข้างในเป็น \"{text}\"\n" +
+            "คงสไตล์ รูปทรง สี ขนาด และองค์ประกอบทั้งหมดให้เหมือนรูปที่แนบไปทุกประการ เปลี่ยนเฉพาะข้อความเท่านั้น\n" +
+            "เป็นกราฟิกเวกเตอร์ ไม่ใช่ภาพถ่ายของของจริง ห้ามวาดเหรียญ ทองคำ ธนบัตร หรือสิ่งของจริงใด ๆ\n" +
+            "ข้อความภาษาไทยอยู่กลางปุ่ม อ่านชัด ไม่มีคำอื่น ไม่มีไอคอน\n" +
+            "พื้นหลังต้องโปร่งใสจริง (alpha channel) ทั้งภาพ ไม่มีพื้นหลังสีทึบ ไม่มีพื้นหลังขาว ไม่มีกรอบหรือฉากหลัง\n" +
+            $"ขนาดภาพ: {item.Width}x{item.Height}";
+    }
+
+    public static string ButtonText(string key) => key switch
+    {
+        "login" => "เข้าสู่ระบบ",
+        "register" => "สมัครสมาชิก",
+        "contact" => "ติดต่อเรา",
+        _ => key,
+    };
+
+    public static string Alt(ImagePlanItem item, GenerationOptions options, string? caption = null)
+    {
+        if (!item.HasAlt) return item.Alt;
+
+        if (!string.IsNullOrWhiteSpace(caption)
+            && (item.Id.StartsWith("promo-", StringComparison.Ordinal)
+                || item.Id.StartsWith("seo-", StringComparison.Ordinal)))
+            return $"{options.Brand} {caption}";
+
+        return item.Id switch
+        {
+            "banner" => $"{options.Brand} banner",
+            "logo" => $"{options.Brand} logo",
+            var s when s.StartsWith("btn-") => $"{options.Brand} ปุ่ม{ButtonText(s["btn-".Length..])}",
+            var s when s.StartsWith("game-") => $"{options.Brand} เกม {int.Parse(s["game-".Length..]) + 1}",
+            var s when s.StartsWith("promo-") => $"{options.Brand} โปรโมชั่น {int.Parse(s["promo-".Length..]) + 1}",
+            var s when s.StartsWith("seo-") => $"{options.Brand} รูปบทความ SEO {s["seo-".Length..]}",
+            _ => $"{options.Brand} {item.Label}",
+        };
+    }
+}

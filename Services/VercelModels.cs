@@ -5,10 +5,7 @@ internal sealed record VercelCliResult(int ExitCode, string Output)
     public bool Success => ExitCode == 0;
 }
 
-internal sealed record VercelScopeOption(string Name, string Slug, bool IsCurrent, string? TeamId = null)
-{
-    public string Initial => string.IsNullOrEmpty(Name) ? "?" : char.ToUpperInvariant(Name[0]).ToString();
-}
+internal sealed record VercelScopeOption(string Name, string Slug, bool IsCurrent, string? TeamId = null);
 
 internal sealed record VercelProjectOption(string Name, string Id, string? Url)
 {

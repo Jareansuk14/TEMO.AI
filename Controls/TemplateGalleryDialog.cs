@@ -158,7 +158,6 @@ internal sealed class TemplateGalleryDialog : Window
     private Border MakeCard(string templatePath)
     {
         const int CardW = 220;
-        const int ThumbH = 175;
 
         var name = new DirectoryInfo(templatePath.TrimEnd('\\', '/')).Name;
         var previewPath = Path.Combine(templatePath, PreviewRelPath);
@@ -171,15 +170,7 @@ internal sealed class TemplateGalleryDialog : Window
             Source = Ui.LoadBitmap(previewPath, CardW),
         };
 
-        var thumbHost = new Border
-        {
-            Height = ThumbH,
-            Background = Ui.Brush(0x070707),
-            CornerRadius = new CornerRadius(4, 4, 0, 0),
-            ClipToBounds = true,
-            Cursor = Cursors.Hand,
-            Child = thumb,
-        };
+        var thumbHost = Ui.MakeGalleryThumbHost(thumb);
         thumbHost.MouseDown += (_, _) =>
             new PreviewWindow(previewPath, name) { Owner = this }.ShowDialog();
 
@@ -254,19 +245,6 @@ internal sealed class TemplateGalleryDialog : Window
         info.Children.Add(nameText);
         info.Children.Add(btnRow);
 
-        var body = new StackPanel();
-        body.Children.Add(thumbGrid);
-        body.Children.Add(info);
-
-        return new Border
-        {
-            Width = CardW,
-            Background = Ui.Brush(0x141414),
-            BorderBrush = Ui.Brush(0x282828),
-            BorderThickness = new Thickness(1),
-            CornerRadius = new CornerRadius(5),
-            Margin = new Thickness(0, 0, 12, 12),
-            Child = body,
-        };
+        return Ui.MakeGalleryCard(thumbGrid, info, CardW);
     }
 }

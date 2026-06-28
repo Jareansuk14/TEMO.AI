@@ -69,14 +69,7 @@ internal sealed partial class VercelDeployDialog
         Grid.SetColumn(_logToggleBtn, 1);
         grid.Children.Add(_logToggleBtn);
 
-        return new Border
-        {
-            Background = Ui.Brush(0x0D0D0D),
-            BorderBrush = Ui.Brush(0x1E1E1E),
-            BorderThickness = new Thickness(0, 0, 0, 1),
-            Padding = new Thickness(24, 18, 20, 18),
-            Child = grid,
-        };
+        return Ui.ChromeHeader(grid, new Thickness(24, 18, 20, 18));
     }
 
     private StackPanel BuildBody()
@@ -181,34 +174,20 @@ internal sealed partial class VercelDeployDialog
         grid.Children.Add(closeBtn);
         grid.Children.Add(_deployBtn);
 
-        return new Border
-        {
-            Background = Ui.Brush(0x0D0D0D),
-            BorderBrush = Ui.Brush(0x1E1E1E),
-            BorderThickness = new Thickness(0, 1, 0, 0),
-            Padding = new Thickness(24, 16, 24, 16),
-            Child = grid,
-        };
+        return Ui.ChromeFooter(grid, new Thickness(24, 16, 24, 16));
     }
 
     private Border BuildLogPanel()
     {
         var dock = new DockPanel();
 
-        var logHeader = new Border
+        var logHeader = Ui.ChromeHeader(new TextBlock
         {
-            Background = Ui.Brush(0x0D0D0D),
-            BorderBrush = Ui.Brush(0x1E1E1E),
-            BorderThickness = new Thickness(0, 0, 0, 1),
-            Padding = new Thickness(12, 8, 12, 8),
-            Child = new TextBlock
-            {
-                Text = "LOG",
-                FontSize = 11,
-                FontWeight = FontWeights.Bold,
-                Foreground = Ui.Brush(0x888888),
-            },
-        };
+            Text = "LOG",
+            FontSize = 11,
+            FontWeight = FontWeights.Bold,
+            Foreground = Ui.Brush(0x888888),
+        }, new Thickness(12, 8, 12, 8));
         DockPanel.SetDock(logHeader, Dock.Top);
         dock.Children.Add(logHeader);
 

@@ -19,23 +19,9 @@ internal static class Program
         app.Run();
     }
 
-    private static void CleanupLegacyExtractCache()
-    {
-        try
-        {
-            var legacy = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "TEMO.AI", "System");
-
-            if (!Directory.Exists(legacy)) return;
-
-            foreach (var file in Directory.EnumerateFiles(legacy, "*", SearchOption.AllDirectories))
-                File.SetAttributes(file, FileAttributes.Normal);
-
-            Directory.Delete(legacy, recursive: true);
-        }
-        catch { }
-    }
+    private static void CleanupLegacyExtractCache() => Io.DeleteDirectory(Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "TEMO.AI", "System"));
 
     private static void EnsureNodeAvailable()
     {

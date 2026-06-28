@@ -7,7 +7,10 @@ internal static class ProjectMigrations
         if (!ProjectPaths.IsProject(projectPath)) return;
 
         try { MigrateSeoHeadingMatcher(projectPath); }
-        catch { /* never block project load on a migration failure */ }
+        catch { }
+
+        try { LegacySectionRepair.Repair(projectPath); }
+        catch { }
     }
 
     private static void MigrateSeoHeadingMatcher(string projectPath)

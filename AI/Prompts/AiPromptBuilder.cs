@@ -1,14 +1,7 @@
-namespace TEMO.AI;
+namespace TEMO.AI.Ai;
 
-public partial class MainWindow
+internal static class AiPromptBuilder
 {
-    internal enum AiPromptType { Casino, Lottery, Slot }
-
-    private AiPromptType SelectedAiPromptType =>
-        PromptTypeLottery?.IsChecked == true ? AiPromptType.Lottery
-        : PromptTypeSlot?.IsChecked == true ? AiPromptType.Slot
-        : AiPromptType.Casino;
-
     private const string PromptFormatRules =
         "กฎเหล็กที่ต้องทำตามอย่างเคร่งครัด:\r\n" +
         "1. ตอบกลับมาเฉพาะบรรทัด id=...\"...\" เท่านั้น ห้ามมีคำอธิบาย หัวข้อ หรือข้อความอื่นใดทั้งสิ้น\r\n" +
@@ -51,41 +44,19 @@ public partial class MainWindow
         "- สอดแทรกความรู้สึกแบบ \"ประสบการณ์ตรง\" (First-hand Experience) เพื่อสร้างความน่าเชื่อถือตามหลัก E-E-A-T เน้นข้อมูลเชิงลึก ไม่ใช่ทฤษฎีกว้างๆ\r\n" +
         "- เกมที่อาจกล่าวถึงได้: สล็อต ถ้านอกเหนือจากนี้ ห้ามใส่มา";
 
-    internal static string DefaultPromptFor(AiPromptType type) => type switch
+    public static string GetPrompt(AiPromptType type) => type switch
     {
         AiPromptType.Lottery => PromptLottery,
         AiPromptType.Slot => PromptSlot,
         _ => PromptCasino,
     };
 
-    internal static string GetPrompt(AiPromptType type) =>
-        SettingsStore.LoadPrompt(type.ToString()) is { Length: > 0 } saved
-            ? saved
-            : DefaultPromptFor(type);
-
-    private static readonly Dictionary<string, string[]> SectionMap = new()
+    public static (string body, int count) Build(
+        AiPromptType type, string brand,
+        IReadOnlyList<FieldDef> fields,
+        IReadOnlyDictionary<string, string> values,
+        IReadOnlySet<string> selected)
     {
-        ["BRAND"] = ["brand"],
-        ["HERO"] = ["main-seo", "sub-main-seo"],
-        ["SEO"] = ["seo-"],
-        ["CTA"] = ["cta-seo", "sub-cta-seo"],
-        ["PROMOTION-SECTION"] = ["promo-comp-"],
-        ["PROMOTIONS-PAGE"]   = ["promotion-seo", "sub-promo-seo"],
-        ["CONTACT"] = ["contact-seo", "sub-cont-seo"],
-        ["FAQ"] = ["faq-"],
-    };
-
-    private static bool IsSectionSelected(string section, string fieldId) =>
-        SectionMap.TryGetValue(section, out var prefixes)
-        && prefixes.Any(p => p.EndsWith('-') ? fieldId.StartsWith(p) : fieldId == p);
-
-    internal (string body, int count) BuildPromptBody(HashSet<string> selected) =>
-        BuildPromptBody(selected, SelectedAiPromptType);
-
-    internal (string body, int count) BuildPromptBody(HashSet<string> selected, AiPromptType type)
-    {
-        var brandName = _boxes.TryGetValue("brand", out var brandBox) ? brandBox.Text.Trim() : "";
-
         var sb = new StringBuilder(GetPrompt(type).TrimEnd());
         sb.Append("\r\n\r\n");
         sb.Append(PromptFormatRules);
@@ -94,17 +65,17 @@ public partial class MainWindow
         if (selected.Contains("FAQ"))
             sb.Append(PromptFaqRules);
 
-        if (!string.IsNullOrEmpty(brandName))
-            sb.AppendLine($"ชื่อแบรนด์ของเรา: {brandName} (ด้านล่างนี้คือเนื้อหาที่ใช้อยู่ตอนนี้ ช่วยแก้ไขให้ตรงกับข้อกำหนดด้านบน)\r\n");
+        if (!string.IsNullOrEmpty(brand))
+            sb.AppendLine($"ชื่อแบรนด์ของเรา: {brand} (ด้านล่างนี้คือเนื้อหาที่ใช้อยู่ตอนนี้ ช่วยแก้ไขให้ตรงกับข้อกำหนดด้านบน)\r\n");
 
         int count = 0;
-        foreach (var f in _fields)
+        foreach (var f in fields)
         {
-            if (f.Id == "brand") continue;
-            if (!_boxes.TryGetValue(f.Id, out var box)) continue;
-            var value = box.Text.Trim();
+            if (f.IsBrand) continue;
+            if (!values.TryGetValue(f.Id, out var raw)) continue;
+            var value = raw.Trim();
             if (string.IsNullOrEmpty(value)) continue;
-            if (!selected.Any(sec => IsSectionSelected(sec, f.Id))) continue;
+            if (!selected.Contains(f.Section)) continue;
             sb.AppendLine(LineCodec.FormatContentLine(f.Id, value));
             count++;
         }

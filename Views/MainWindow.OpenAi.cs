@@ -2,18 +2,11 @@ namespace TEMO.AI;
 
 public partial class MainWindow
 {
-    private bool _aiBusy;
     private DispatcherTimer? _dotTimer;
     private int _dotCount;
 
-    private static string ResolveGptModel(bool full, bool mini) =>
-        mini ? "gpt-5-mini" : full ? "gpt-5" : "gpt-5.5";
-
-    private string ContentGptModel =>
-        ResolveGptModel(ModelGpt5.IsChecked == true, ModelGpt5Mini.IsChecked == true);
-
     private string CssGptModel =>
-        ResolveGptModel(CssModelGpt5.IsChecked == true, CssModelGpt5Mini.IsChecked == true);
+        AiModels.ResolveGpt(CssModelGpt5.IsChecked == true, CssModelGpt5Mini.IsChecked == true);
 
     private bool TryGetApiKey(out string apiKey)
     {
@@ -26,18 +19,17 @@ public partial class MainWindow
 
     private async Task<string?> RequestOpenAiAsync(string model, object messageContent)
     {
-        if (_aiBusy) { ShowMsg("AI กำลังทำงานอยู่"); return null; }
+        if (_vm.Ai.Busy) { ShowMsg("AI กำลังทำงานอยู่"); return null; }
         if (!TryGetApiKey(out var apiKey)) return null;
 
-        _aiBusy = true;
+        _vm.Ai.Busy = true;
         ShowAiOverlayLoading();
         try
         {
             var (ok, text, _, error) = await OpenAiClient.ChatAsync(apiKey, model, messageContent);
             if (!ok)
             {
-                ShowAiOverlayError(error ?? "Unknown error");
-                ShowMsg("เกิดข้อผิดพลาดในการเรียก AI");
+                ShowAiError(error, "Unknown error");
                 return null;
             }
             return text;
@@ -50,7 +42,7 @@ public partial class MainWindow
         }
         finally
         {
-            _aiBusy = false;
+            _vm.Ai.Busy = false;
         }
     }
 
@@ -103,6 +95,21 @@ public partial class MainWindow
         _dotTimer.Start();
     }
 
+    private void ShowAiError(string? error, string fallback)
+    {
+        if (AiOverlayViewModel.IsBillingLimit(error))
+        {
+            HideAiOverlay();
+            CreditDialog.Show(this);
+            ShowMsg(AiModels.BillingLimitMessage);
+        }
+        else
+        {
+            ShowAiOverlayError(error ?? fallback);
+            ShowMsg("เกิดข้อผิดพลาดในการเรียก AI");
+        }
+    }
+
     private void ShowAiOverlayError(string msg)
     {
         _dotTimer?.Stop();
@@ -122,7 +129,7 @@ public partial class MainWindow
 
     internal void LoadApiKey()
     {
-        var key = SettingsStore.LoadApiKey();
+        var key = _vm.Ai.LoadApiKey();
         if (!string.IsNullOrEmpty(key))
             AiKeyBox.Text = key;
     }
@@ -134,7 +141,7 @@ public partial class MainWindow
     private void ApiKeySave_Click(object sender, RoutedEventArgs e)
     {
         var key = AiKeyBox.Text.Trim();
-        if (!string.IsNullOrEmpty(key)) SettingsStore.SaveApiKey(key);
+        if (!string.IsNullOrEmpty(key)) _vm.Ai.SaveApiKey(key);
         ApiKeyPanel.Visibility = Visibility.Collapsed;
         ShowMsg("🔑  บันทึก API Key แล้ว");
     }

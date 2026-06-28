@@ -4,7 +4,10 @@ namespace TEMO.AI;
 
 internal static class CssColor
 {
-    private const string Pattern = @"#[0-9a-fA-F]{3,8}\b|rgba?\(\s*[^)]*\)";
+    private static readonly Regex ColorPattern = new(
+        @"#[0-9a-fA-F]{3,8}\b|rgba?\(\s*[^)]*\)",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
+    private static readonly Regex RgbaPattern = new(@"^rgba?\(([^)]*)\)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     private static readonly Color Fallback = Color.FromRgb(0x16, 0x16, 0x16);
 
     public static bool TryExtract(string? value, out string colorText)
@@ -12,7 +15,7 @@ internal static class CssColor
         colorText = "";
         if (string.IsNullOrWhiteSpace(value)) return false;
 
-        var match = Regex.Match(value, Pattern, RegexOptions.IgnoreCase);
+        var match = ColorPattern.Match(value);
         if (!match.Success) return false;
 
         colorText = match.Value.Trim();
@@ -20,7 +23,7 @@ internal static class CssColor
     }
 
     public static string ReplaceFirst(string value, string replacement) =>
-        Regex.Replace(value, Pattern, replacement, RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
+        ColorPattern.Replace(value, replacement);
 
     public static bool IsRgb(string? colorText) =>
         colorText?.TrimStart().StartsWith("rgb", StringComparison.OrdinalIgnoreCase) == true;
@@ -70,7 +73,7 @@ internal static class CssColor
     private static bool TryParseRgb(string text, out Color color)
     {
         color = Fallback;
-        var rgba = Regex.Match(text, @"^rgba?\(([^)]*)\)$", RegexOptions.IgnoreCase);
+        var rgba = RgbaPattern.Match(text);
         if (!rgba.Success) return false;
 
         var parts = rgba.Groups[1].Value.Split(',', StringSplitOptions.TrimEntries);

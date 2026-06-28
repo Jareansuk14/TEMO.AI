@@ -1,0 +1,6537 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "Controls/VercelDeploy/VercelProjectGrid.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 277,
+      "nonEmptyLines": 248,
+      "functions": [
+        {
+          "name": "Create",
+          "startLine": 12,
+          "endLine": 63,
+          "params": [
+            "onManageDomains"
+          ]
+        },
+        {
+          "name": "HeaderStyle",
+          "startLine": 65,
+          "endLine": 77,
+          "params": []
+        },
+        {
+          "name": "LeftCellStyle",
+          "startLine": 79,
+          "endLine": 84,
+          "params": []
+        },
+        {
+          "name": "CellStyle",
+          "startLine": 86,
+          "endLine": 102,
+          "params": []
+        },
+        {
+          "name": "RowStyle",
+          "startLine": 104,
+          "endLine": 132,
+          "params": [
+            "menu"
+          ]
+        },
+        {
+          "name": "BuildRowContextMenu",
+          "startLine": 134,
+          "endLine": 164,
+          "params": [
+            "onManageDomains"
+          ]
+        },
+        {
+          "name": "RoundedContextMenuTemplate",
+          "startLine": 166,
+          "endLine": 176,
+          "params": []
+        },
+        {
+          "name": "RoundedMenuItemStyle",
+          "startLine": 178,
+          "endLine": 204,
+          "params": []
+        },
+        {
+          "name": "DomainLinkTemplate",
+          "startLine": 206,
+          "endLine": 246,
+          "params": []
+        },
+        {
+          "name": "CellTemplate",
+          "startLine": 248,
+          "endLine": 276,
+          "params": [
+            "property",
+            "color",
+            "fontSize",
+            "fontWeight",
+            "horizontalAlignment",
+            "textAlignment",
+            "padding"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "VercelProjectGrid",
+          "startLine": 7,
+          "endLine": 277,
+          "methods": [
+            "Create",
+            "HeaderStyle",
+            "LeftCellStyle",
+            "CellStyle",
+            "RowStyle",
+            "BuildRowContextMenu",
+            "RoundedContextMenuTemplate",
+            "RoundedMenuItemStyle",
+            "DomainLinkTemplate",
+            "CellTemplate"
+          ],
+          "properties": [
+            "HoverBg",
+            "SelectedBg"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Create",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Create",
+          "callee": "BuildRowContextMenu",
+          "lineNumber": 14
+        },
+        {
+          "caller": "Create",
+          "callee": "new DataGrid",
+          "lineNumber": 15
+        },
+        {
+          "caller": "Create",
+          "callee": "Ui.Brush",
+          "lineNumber": 21
+        },
+        {
+          "caller": "Create",
+          "callee": "Ui.Brush",
+          "lineNumber": 23
+        },
+        {
+          "caller": "Create",
+          "callee": "new Thickness",
+          "lineNumber": 24
+        },
+        {
+          "caller": "Create",
+          "callee": "HeaderStyle",
+          "lineNumber": 40
+        },
+        {
+          "caller": "Create",
+          "callee": "CellStyle",
+          "lineNumber": 41
+        },
+        {
+          "caller": "Create",
+          "callee": "RowStyle",
+          "lineNumber": 42
+        },
+        {
+          "caller": "Create",
+          "callee": "dg.Columns.Add",
+          "lineNumber": 45
+        },
+        {
+          "caller": "Create",
+          "callee": "new DataGridTemplateColumn",
+          "lineNumber": 45
+        },
+        {
+          "caller": "Create",
+          "callee": "new DataGridLength",
+          "lineNumber": 48
+        },
+        {
+          "caller": "Create",
+          "callee": "LeftCellStyle",
+          "lineNumber": 50
+        },
+        {
+          "caller": "Create",
+          "callee": "CellTemplate",
+          "lineNumber": 51
+        },
+        {
+          "caller": "Create",
+          "callee": "nameof",
+          "lineNumber": 51
+        },
+        {
+          "caller": "Create",
+          "callee": "new Thickness",
+          "lineNumber": 52
+        },
+        {
+          "caller": "Create",
+          "callee": "dg.Columns.Add",
+          "lineNumber": 54
+        },
+        {
+          "caller": "Create",
+          "callee": "new DataGridTemplateColumn",
+          "lineNumber": 54
+        },
+        {
+          "caller": "Create",
+          "callee": "new DataGridLength",
+          "lineNumber": 57
+        },
+        {
+          "caller": "Create",
+          "callee": "DomainLinkTemplate",
+          "lineNumber": 59
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Style",
+          "lineNumber": 67
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 68
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Setter",
+          "lineNumber": 68
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 69
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Setter",
+          "lineNumber": 69
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "Ui.Brush",
+          "lineNumber": 69
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 70
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Setter",
+          "lineNumber": 70
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 71
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Setter",
+          "lineNumber": 71
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 72
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Setter",
+          "lineNumber": 72
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Thickness",
+          "lineNumber": 72
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 73
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Setter",
+          "lineNumber": 73
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "Ui.Brush",
+          "lineNumber": 73
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 74
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Setter",
+          "lineNumber": 74
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Thickness",
+          "lineNumber": 74
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 75
+        },
+        {
+          "caller": "HeaderStyle",
+          "callee": "new Setter",
+          "lineNumber": 75
+        },
+        {
+          "caller": "LeftCellStyle",
+          "callee": "CellStyle",
+          "lineNumber": 81
+        },
+        {
+          "caller": "LeftCellStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 82
+        },
+        {
+          "caller": "LeftCellStyle",
+          "callee": "new Setter",
+          "lineNumber": 82
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Style",
+          "lineNumber": 88
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 89
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Setter",
+          "lineNumber": 89
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 90
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Setter",
+          "lineNumber": 90
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Thickness",
+          "lineNumber": 90
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 91
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Setter",
+          "lineNumber": 91
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 92
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Setter",
+          "lineNumber": 92
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Thickness",
+          "lineNumber": 92
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 93
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Setter",
+          "lineNumber": 93
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 94
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Setter",
+          "lineNumber": 94
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Trigger",
+          "lineNumber": 96
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "selected.Setters.Add",
+          "lineNumber": 97
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Setter",
+          "lineNumber": 97
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "Ui.Brush",
+          "lineNumber": 97
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "selected.Setters.Add",
+          "lineNumber": 98
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Setter",
+          "lineNumber": 98
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "selected.Setters.Add",
+          "lineNumber": 99
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "new Setter",
+          "lineNumber": 99
+        },
+        {
+          "caller": "CellStyle",
+          "callee": "s.Triggers.Add",
+          "lineNumber": 100
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Style",
+          "lineNumber": 106
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 107
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Setter",
+          "lineNumber": 107
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 108
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Setter",
+          "lineNumber": 108
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "Ui.Brush",
+          "lineNumber": 108
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 109
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Setter",
+          "lineNumber": 109
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Thickness",
+          "lineNumber": 109
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 110
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Setter",
+          "lineNumber": 110
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "s.Setters.Add",
+          "lineNumber": 114
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Setter",
+          "lineNumber": 114
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new DataTrigger",
+          "lineNumber": 115
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Binding",
+          "lineNumber": 117
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "nameof",
+          "lineNumber": 117
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "isNew.Setters.Add",
+          "lineNumber": 120
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Setter",
+          "lineNumber": 120
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "s.Triggers.Add",
+          "lineNumber": 121
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Trigger",
+          "lineNumber": 124
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "hover.Setters.Add",
+          "lineNumber": 125
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Setter",
+          "lineNumber": 125
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "Ui.Brush",
+          "lineNumber": 125
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Trigger",
+          "lineNumber": 126
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "selected.Setters.Add",
+          "lineNumber": 127
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Setter",
+          "lineNumber": 127
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "Ui.Brush",
+          "lineNumber": 127
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "selected.Setters.Add",
+          "lineNumber": 128
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "new Setter",
+          "lineNumber": 128
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "s.Triggers.Add",
+          "lineNumber": 129
+        },
+        {
+          "caller": "RowStyle",
+          "callee": "s.Triggers.Add",
+          "lineNumber": 130
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "new ContextMenu",
+          "lineNumber": 136
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "new Thickness",
+          "lineNumber": 140
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "new Thickness",
+          "lineNumber": 141
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "Ui.Brush",
+          "lineNumber": 142
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "RoundedContextMenuTemplate",
+          "lineNumber": 143
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "new MenuItem",
+          "lineNumber": 146
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "RoundedMenuItemStyle",
+          "lineNumber": 149
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "Ui.Brush",
+          "lineNumber": 150
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "new Thickness",
+          "lineNumber": 152
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "Ui.Brush",
+          "lineNumber": 153
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "Ui.Brush",
+          "lineNumber": 154
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "new Thickness",
+          "lineNumber": 155
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "onManageDomains",
+          "lineNumber": 160
+        },
+        {
+          "caller": "BuildRowContextMenu",
+          "callee": "menu.Items.Add",
+          "lineNumber": 162
+        },
+        {
+          "caller": "RoundedContextMenuTemplate",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 168
+        },
+        {
+          "caller": "RoundedContextMenuTemplate",
+          "callee": "border.SetValue",
+          "lineNumber": 169
+        },
+        {
+          "caller": "RoundedContextMenuTemplate",
+          "callee": "border.SetValue",
+          "lineNumber": 170
+        },
+        {
+          "caller": "RoundedContextMenuTemplate",
+          "callee": "new Thickness",
+          "lineNumber": 170
+        },
+        {
+          "caller": "RoundedContextMenuTemplate",
+          "callee": "border.SetValue",
+          "lineNumber": 171
+        },
+        {
+          "caller": "RoundedContextMenuTemplate",
+          "callee": "new TemplateBindingExtension",
+          "lineNumber": 171
+        },
+        {
+          "caller": "RoundedContextMenuTemplate",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 173
+        },
+        {
+          "caller": "RoundedContextMenuTemplate",
+          "callee": "border.AppendChild",
+          "lineNumber": 174
+        },
+        {
+          "caller": "RoundedContextMenuTemplate",
+          "callee": "new ControlTemplate",
+          "lineNumber": 175
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 180
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "border.SetValue",
+          "lineNumber": 181
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new CornerRadius",
+          "lineNumber": 181
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "border.SetValue",
+          "lineNumber": 182
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new TemplateBindingExtension",
+          "lineNumber": 182
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "border.SetValue",
+          "lineNumber": 183
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new TemplateBindingExtension",
+          "lineNumber": 183
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "border.SetValue",
+          "lineNumber": 184
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new TemplateBindingExtension",
+          "lineNumber": 184
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 186
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "content.SetValue",
+          "lineNumber": 187
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "content.SetValue",
+          "lineNumber": 188
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "content.SetValue",
+          "lineNumber": 189
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "content.SetValue",
+          "lineNumber": 190
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new TemplateBindingExtension",
+          "lineNumber": 190
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "border.AppendChild",
+          "lineNumber": 191
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new ControlTemplate",
+          "lineNumber": 193
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new Trigger",
+          "lineNumber": 194
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "hover.Setters.Add",
+          "lineNumber": 195
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new Setter",
+          "lineNumber": 195
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "Ui.Brush",
+          "lineNumber": 195
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "hover.Setters.Add",
+          "lineNumber": 196
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new Setter",
+          "lineNumber": 196
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "Ui.Brush",
+          "lineNumber": 196
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "template.Triggers.Add",
+          "lineNumber": 197
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new Style",
+          "lineNumber": 199
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "style.Setters.Add",
+          "lineNumber": 200
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new Setter",
+          "lineNumber": 200
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "style.Setters.Add",
+          "lineNumber": 201
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new Setter",
+          "lineNumber": 201
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "style.Setters.Add",
+          "lineNumber": 202
+        },
+        {
+          "caller": "RoundedMenuItemStyle",
+          "callee": "new Setter",
+          "lineNumber": 202
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 208
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "text.SetBinding",
+          "lineNumber": 209
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new Binding",
+          "lineNumber": 209
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "nameof",
+          "lineNumber": 209
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 210
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "Ui.Brush",
+          "lineNumber": 210
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 211
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 212
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 213
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 214
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 216
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "link.SetValue",
+          "lineNumber": 217
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "link.SetValue",
+          "lineNumber": 218
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "link.SetValue",
+          "lineNumber": 219
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "link.SetValue",
+          "lineNumber": 220
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new Thickness",
+          "lineNumber": 220
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "link.AppendChild",
+          "lineNumber": 221
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "link.AddHandler",
+          "lineNumber": 222
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new MouseButtonEventHandler",
+          "lineNumber": 222
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "Process.Start",
+          "lineNumber": 226
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new ProcessStartInfo",
+          "lineNumber": 226
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 230
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "root.AppendChild",
+          "lineNumber": 231
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new DataTemplate",
+          "lineNumber": 233
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new DataTrigger",
+          "lineNumber": 235
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new Binding",
+          "lineNumber": 237
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "nameof",
+          "lineNumber": 237
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "trigger.Setters.Add",
+          "lineNumber": 240
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new Setter",
+          "lineNumber": 240
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "Ui.Brush",
+          "lineNumber": 240
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "trigger.Setters.Add",
+          "lineNumber": 241
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new Setter",
+          "lineNumber": 241
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "trigger.Setters.Add",
+          "lineNumber": 242
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "new Setter",
+          "lineNumber": 242
+        },
+        {
+          "caller": "DomainLinkTemplate",
+          "callee": "dt.Triggers.Add",
+          "lineNumber": 243
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 257
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "text.SetBinding",
+          "lineNumber": 258
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "new Binding",
+          "lineNumber": 258
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 259
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "Ui.Brush",
+          "lineNumber": 259
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 260
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 261
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 262
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 263
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 264
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "text.SetValue",
+          "lineNumber": 265
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "new DataTemplate",
+          "lineNumber": 268
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 270
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "border.SetValue",
+          "lineNumber": 271
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "border.SetValue",
+          "lineNumber": 272
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "border.SetValue",
+          "lineNumber": 273
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "border.AppendChild",
+          "lineNumber": 274
+        },
+        {
+          "caller": "CellTemplate",
+          "callee": "new DataTemplate",
+          "lineNumber": 275
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 10,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "GlobalUsings.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 25,
+      "nonEmptyLines": 25,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Helpers/Ui.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 333,
+      "nonEmptyLines": 290,
+      "functions": [
+        {
+          "name": "Brush",
+          "startLine": 13,
+          "endLine": 18,
+          "params": [
+            "rgb"
+          ]
+        },
+        {
+          "name": "Brush",
+          "startLine": 20,
+          "endLine": 20,
+          "params": [
+            "color"
+          ]
+        },
+        {
+          "name": "MakeInput",
+          "startLine": 22,
+          "endLine": 27,
+          "params": [
+            "host",
+            "fontSize",
+            "minHeight"
+          ]
+        },
+        {
+          "name": "WireCardHover",
+          "startLine": 29,
+          "endLine": 35,
+          "params": [
+            "card",
+            "normalRgb",
+            "hoverRgb"
+          ]
+        },
+        {
+          "name": "StyleDialog",
+          "startLine": 37,
+          "endLine": 43,
+          "params": [
+            "window"
+          ]
+        },
+        {
+          "name": "DialogButton",
+          "startLine": 45,
+          "endLine": 47,
+          "params": [
+            "content",
+            "accent"
+          ]
+        },
+        {
+          "name": "DialogDangerButton",
+          "startLine": 49,
+          "endLine": 50,
+          "params": [
+            "content"
+          ]
+        },
+        {
+          "name": "MakeDialogButton",
+          "startLine": 52,
+          "endLine": 92,
+          "params": [
+            "content",
+            "bg",
+            "border",
+            "hoverBg",
+            "fg",
+            "bold"
+          ]
+        },
+        {
+          "name": "RunOnUi",
+          "startLine": 94,
+          "endLine": 98,
+          "params": [
+            "owner",
+            "action"
+          ]
+        },
+        {
+          "name": "MakeMinusIcon",
+          "startLine": 100,
+          "endLine": 128,
+          "params": [
+            "size",
+            "color"
+          ]
+        },
+        {
+          "name": "LoadThumbnail",
+          "startLine": 132,
+          "endLine": 146,
+          "params": [
+            "path",
+            "decodeWidth"
+          ]
+        },
+        {
+          "name": "LoadBitmap",
+          "startLine": 148,
+          "endLine": 164,
+          "params": [
+            "path",
+            "decodeWidth"
+          ]
+        },
+        {
+          "name": "BitmapFromBytes",
+          "startLine": 166,
+          "endLine": 180,
+          "params": [
+            "data",
+            "decodeWidth"
+          ]
+        },
+        {
+          "name": "BitmapFromSvgBytes",
+          "startLine": 182,
+          "endLine": 192,
+          "params": [
+            "data",
+            "decodeWidth"
+          ]
+        },
+        {
+          "name": "BitmapFromSvgFile",
+          "startLine": 194,
+          "endLine": 204,
+          "params": [
+            "path",
+            "decodeWidth"
+          ]
+        },
+        {
+          "name": "LoadImagePreview",
+          "startLine": 206,
+          "endLine": 210,
+          "params": [
+            "path",
+            "decodeWidth"
+          ]
+        },
+        {
+          "name": "RenderSvgPicture",
+          "startLine": 212,
+          "endLine": 229,
+          "params": [
+            "picture",
+            "decodeWidth"
+          ]
+        },
+        {
+          "name": "MakeThumbHost",
+          "startLine": 231,
+          "endLine": 259,
+          "params": [
+            "source",
+            "extLabel",
+            "height"
+          ]
+        },
+        {
+          "name": "MakeImageCard",
+          "startLine": 261,
+          "endLine": 272,
+          "params": [
+            "content",
+            "tooltip"
+          ]
+        },
+        {
+          "name": "MakeFixedImageCard",
+          "startLine": 274,
+          "endLine": 289,
+          "params": [
+            "preview",
+            "label",
+            "tooltip",
+            "width"
+          ]
+        },
+        {
+          "name": "SectionHeader",
+          "startLine": 291,
+          "endLine": 298,
+          "params": [
+            "text"
+          ]
+        },
+        {
+          "name": "FieldLabel",
+          "startLine": 300,
+          "endLine": 306,
+          "params": [
+            "text"
+          ]
+        },
+        {
+          "name": "Divider",
+          "startLine": 308,
+          "endLine": 313,
+          "params": []
+        },
+        {
+          "name": "MakeDarkInput",
+          "startLine": 315,
+          "endLine": 332,
+          "params": [
+            "value",
+            "multiline"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "Ui",
+          "startLine": 9,
+          "endLine": 333,
+          "methods": [
+            "Brush",
+            "Brush",
+            "MakeInput",
+            "WireCardHover",
+            "StyleDialog",
+            "DialogButton",
+            "DialogDangerButton",
+            "MakeDialogButton",
+            "RunOnUi",
+            "MakeMinusIcon",
+            "LoadThumbnail",
+            "LoadBitmap",
+            "BitmapFromBytes",
+            "BitmapFromSvgBytes",
+            "BitmapFromSvgFile",
+            "LoadImagePreview",
+            "RenderSvgPicture",
+            "MakeThumbHost",
+            "MakeImageCard",
+            "MakeFixedImageCard",
+            "SectionHeader",
+            "FieldLabel",
+            "Divider",
+            "MakeDarkInput"
+          ],
+          "properties": [
+            "BrushCache",
+            "ThumbCache"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Brush",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "Brush",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "MakeInput",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "WireCardHover",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "StyleDialog",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "DialogButton",
+          "line": 45,
+          "isDefault": false
+        },
+        {
+          "name": "DialogDangerButton",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "RunOnUi",
+          "line": 94,
+          "isDefault": false
+        },
+        {
+          "name": "MakeMinusIcon",
+          "line": 100,
+          "isDefault": false
+        },
+        {
+          "name": "LoadThumbnail",
+          "line": 132,
+          "isDefault": false
+        },
+        {
+          "name": "LoadBitmap",
+          "line": 148,
+          "isDefault": false
+        },
+        {
+          "name": "BitmapFromBytes",
+          "line": 166,
+          "isDefault": false
+        },
+        {
+          "name": "BitmapFromSvgBytes",
+          "line": 182,
+          "isDefault": false
+        },
+        {
+          "name": "BitmapFromSvgFile",
+          "line": 194,
+          "isDefault": false
+        },
+        {
+          "name": "LoadImagePreview",
+          "line": 206,
+          "isDefault": false
+        },
+        {
+          "name": "MakeThumbHost",
+          "line": 231,
+          "isDefault": false
+        },
+        {
+          "name": "MakeImageCard",
+          "line": 261,
+          "isDefault": false
+        },
+        {
+          "name": "MakeFixedImageCard",
+          "line": 274,
+          "isDefault": false
+        },
+        {
+          "name": "SectionHeader",
+          "line": 291,
+          "isDefault": false
+        },
+        {
+          "name": "FieldLabel",
+          "line": 300,
+          "isDefault": false
+        },
+        {
+          "name": "Divider",
+          "line": 308,
+          "isDefault": false
+        },
+        {
+          "name": "MakeDarkInput",
+          "line": 315,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Brush",
+          "callee": "BrushCache.GetOrAdd",
+          "lineNumber": 13
+        },
+        {
+          "caller": "Brush",
+          "callee": "new SolidColorBrush",
+          "lineNumber": 15
+        },
+        {
+          "caller": "Brush",
+          "callee": "Color.FromRgb",
+          "lineNumber": 15
+        },
+        {
+          "caller": "Brush",
+          "callee": "brush.Freeze",
+          "lineNumber": 16
+        },
+        {
+          "caller": "MakeInput",
+          "callee": "host.TryFindResource",
+          "lineNumber": 24
+        },
+        {
+          "caller": "WireCardHover",
+          "callee": "Brush",
+          "lineNumber": 31
+        },
+        {
+          "caller": "WireCardHover",
+          "callee": "Brush",
+          "lineNumber": 33
+        },
+        {
+          "caller": "StyleDialog",
+          "callee": "Brush",
+          "lineNumber": 39
+        },
+        {
+          "caller": "StyleDialog",
+          "callee": "Brush",
+          "lineNumber": 40
+        },
+        {
+          "caller": "StyleDialog",
+          "callee": "new FontFamily",
+          "lineNumber": 41
+        },
+        {
+          "caller": "DialogButton",
+          "callee": "MakeDialogButton",
+          "lineNumber": 46
+        },
+        {
+          "caller": "DialogDangerButton",
+          "callee": "MakeDialogButton",
+          "lineNumber": 50
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 54
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "bd.SetValue",
+          "lineNumber": 55
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new CornerRadius",
+          "lineNumber": 55
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "bd.SetValue",
+          "lineNumber": 56
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new TemplateBindingExtension",
+          "lineNumber": 56
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "bd.SetValue",
+          "lineNumber": 57
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new TemplateBindingExtension",
+          "lineNumber": 57
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "bd.SetValue",
+          "lineNumber": 58
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new TemplateBindingExtension",
+          "lineNumber": 58
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new FrameworkElementFactory",
+          "lineNumber": 60
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "cp.SetValue",
+          "lineNumber": 61
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "cp.SetValue",
+          "lineNumber": 62
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "cp.SetBinding",
+          "lineNumber": 63
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new Binding",
+          "lineNumber": 64
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new RelativeSource",
+          "lineNumber": 64
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "bd.AppendChild",
+          "lineNumber": 65
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new Trigger",
+          "lineNumber": 67
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "hover.Setters.Add",
+          "lineNumber": 68
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new Setter",
+          "lineNumber": 68
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "Brush",
+          "lineNumber": 68
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new Trigger",
+          "lineNumber": 70
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "disabled.Setters.Add",
+          "lineNumber": 71
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new Setter",
+          "lineNumber": 71
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new ControlTemplate",
+          "lineNumber": 73
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "ct.Triggers.Add",
+          "lineNumber": 74
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "ct.Triggers.Add",
+          "lineNumber": 75
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new Button",
+          "lineNumber": 77
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new Thickness",
+          "lineNumber": 81
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "Brush",
+          "lineNumber": 84
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "Brush",
+          "lineNumber": 85
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "new Thickness",
+          "lineNumber": 86
+        },
+        {
+          "caller": "MakeDialogButton",
+          "callee": "Brush",
+          "lineNumber": 87
+        },
+        {
+          "caller": "RunOnUi",
+          "callee": "owner.Dispatcher.CheckAccess",
+          "lineNumber": 96
+        },
+        {
+          "caller": "RunOnUi",
+          "callee": "action",
+          "lineNumber": 96
+        },
+        {
+          "caller": "RunOnUi",
+          "callee": "owner.Dispatcher.BeginInvoke",
+          "lineNumber": 97
+        },
+        {
+          "caller": "MakeMinusIcon",
+          "callee": "new Canvas",
+          "lineNumber": 102
+        },
+        {
+          "caller": "MakeMinusIcon",
+          "callee": "Canvas.SetLeft",
+          "lineNumber": 112
+        },
+        {
+          "caller": "MakeMinusIcon",
+          "callee": "Canvas.SetTop",
+          "lineNumber": 113
+        },
+        {
+          "caller": "MakeMinusIcon",
+          "callee": "Geometry.Parse",
+          "lineNumber": 117
+        },
+        {
+          "caller": "MakeMinusIcon",
+          "callee": "canvas.Children.Add",
+          "lineNumber": 124
+        },
+        {
+          "caller": "MakeMinusIcon",
+          "callee": "canvas.Children.Add",
+          "lineNumber": 125
+        },
+        {
+          "caller": "MakeMinusIcon",
+          "callee": "new Viewbox",
+          "lineNumber": 127
+        },
+        {
+          "caller": "LoadThumbnail",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 134
+        },
+        {
+          "caller": "LoadThumbnail",
+          "callee": "File.Exists",
+          "lineNumber": 134
+        },
+        {
+          "caller": "LoadThumbnail",
+          "callee": "File.GetLastWriteTimeUtc",
+          "lineNumber": 137
+        },
+        {
+          "caller": "LoadThumbnail",
+          "callee": "ThumbCache.TryGetValue",
+          "lineNumber": 140
+        },
+        {
+          "caller": "LoadThumbnail",
+          "callee": "LoadBitmap",
+          "lineNumber": 143
+        },
+        {
+          "caller": "LoadBitmap",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 150
+        },
+        {
+          "caller": "LoadBitmap",
+          "callee": "File.Exists",
+          "lineNumber": 150
+        },
+        {
+          "caller": "LoadBitmap",
+          "callee": "new BitmapImage",
+          "lineNumber": 153
+        },
+        {
+          "caller": "LoadBitmap",
+          "callee": "bmp.BeginInit",
+          "lineNumber": 154
+        },
+        {
+          "caller": "LoadBitmap",
+          "callee": "new Uri",
+          "lineNumber": 155
+        },
+        {
+          "caller": "LoadBitmap",
+          "callee": "bmp.EndInit",
+          "lineNumber": 159
+        },
+        {
+          "caller": "LoadBitmap",
+          "callee": "bmp.Freeze",
+          "lineNumber": 160
+        },
+        {
+          "caller": "BitmapFromBytes",
+          "callee": "new BitmapImage",
+          "lineNumber": 170
+        },
+        {
+          "caller": "BitmapFromBytes",
+          "callee": "bmp.BeginInit",
+          "lineNumber": 171
+        },
+        {
+          "caller": "BitmapFromBytes",
+          "callee": "new MemoryStream",
+          "lineNumber": 172
+        },
+        {
+          "caller": "BitmapFromBytes",
+          "callee": "bmp.EndInit",
+          "lineNumber": 175
+        },
+        {
+          "caller": "BitmapFromBytes",
+          "callee": "bmp.Freeze",
+          "lineNumber": 176
+        },
+        {
+          "caller": "BitmapFromSvgBytes",
+          "callee": "new MemoryStream",
+          "lineNumber": 186
+        },
+        {
+          "caller": "BitmapFromSvgBytes",
+          "callee": "new SKSvg",
+          "lineNumber": 187
+        },
+        {
+          "caller": "BitmapFromSvgBytes",
+          "callee": "svg.Load",
+          "lineNumber": 188
+        },
+        {
+          "caller": "BitmapFromSvgBytes",
+          "callee": "RenderSvgPicture",
+          "lineNumber": 189
+        },
+        {
+          "caller": "BitmapFromSvgFile",
+          "callee": "File.Exists",
+          "lineNumber": 196
+        },
+        {
+          "caller": "BitmapFromSvgFile",
+          "callee": "new SKSvg",
+          "lineNumber": 199
+        },
+        {
+          "caller": "BitmapFromSvgFile",
+          "callee": "svg.Load",
+          "lineNumber": 200
+        },
+        {
+          "caller": "BitmapFromSvgFile",
+          "callee": "RenderSvgPicture",
+          "lineNumber": 201
+        },
+        {
+          "caller": "LoadImagePreview",
+          "callee": "Path.GetExtension(path).ToLowerInvariant",
+          "lineNumber": 208
+        },
+        {
+          "caller": "LoadImagePreview",
+          "callee": "Path.GetExtension",
+          "lineNumber": 208
+        },
+        {
+          "caller": "LoadImagePreview",
+          "callee": "BitmapFromSvgFile",
+          "lineNumber": 209
+        },
+        {
+          "caller": "LoadImagePreview",
+          "callee": "LoadBitmap",
+          "lineNumber": 209
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "Math.Max",
+          "lineNumber": 217
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "new SKImageInfo",
+          "lineNumber": 219
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "Math.Max",
+          "lineNumber": 219
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "Math.Max",
+          "lineNumber": 219
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "SKSurface.Create",
+          "lineNumber": 220
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "surface.Canvas.Clear",
+          "lineNumber": 221
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "surface.Canvas.Scale",
+          "lineNumber": 222
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "surface.Canvas.DrawPicture",
+          "lineNumber": 223
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "surface.Canvas.Flush",
+          "lineNumber": 224
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "surface.Snapshot",
+          "lineNumber": 226
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "snapshot.Encode",
+          "lineNumber": 227
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "BitmapFromBytes",
+          "lineNumber": 228
+        },
+        {
+          "caller": "RenderSvgPicture",
+          "callee": "encoded.ToArray",
+          "lineNumber": 228
+        },
+        {
+          "caller": "MakeThumbHost",
+          "callee": "new TextBlock",
+          "lineNumber": 241
+        },
+        {
+          "caller": "MakeThumbHost",
+          "callee": "extLabel.TrimStart('.').ToUpperInvariant",
+          "lineNumber": 243
+        },
+        {
+          "caller": "MakeThumbHost",
+          "callee": "extLabel.TrimStart",
+          "lineNumber": 243
+        },
+        {
+          "caller": "MakeThumbHost",
+          "callee": "Brush",
+          "lineNumber": 246
+        },
+        {
+          "caller": "MakeThumbHost",
+          "callee": "new Border",
+          "lineNumber": 251
+        },
+        {
+          "caller": "MakeThumbHost",
+          "callee": "Brush",
+          "lineNumber": 254
+        },
+        {
+          "caller": "MakeImageCard",
+          "callee": "Brush",
+          "lineNumber": 263
+        },
+        {
+          "caller": "MakeImageCard",
+          "callee": "Brush",
+          "lineNumber": 264
+        },
+        {
+          "caller": "MakeImageCard",
+          "callee": "new Thickness",
+          "lineNumber": 265
+        },
+        {
+          "caller": "MakeImageCard",
+          "callee": "new CornerRadius",
+          "lineNumber": 266
+        },
+        {
+          "caller": "MakeImageCard",
+          "callee": "new Thickness",
+          "lineNumber": 267
+        },
+        {
+          "caller": "MakeImageCard",
+          "callee": "new Thickness",
+          "lineNumber": 268
+        },
+        {
+          "caller": "MakeFixedImageCard",
+          "callee": "new TextBlock",
+          "lineNumber": 276
+        },
+        {
+          "caller": "MakeFixedImageCard",
+          "callee": "Brush",
+          "lineNumber": 280
+        },
+        {
+          "caller": "MakeFixedImageCard",
+          "callee": "new Thickness",
+          "lineNumber": 282
+        },
+        {
+          "caller": "MakeFixedImageCard",
+          "callee": "MakeImageCard",
+          "lineNumber": 286
+        },
+        {
+          "caller": "MakeFixedImageCard",
+          "callee": "new StackPanel",
+          "lineNumber": 286
+        },
+        {
+          "caller": "SectionHeader",
+          "callee": "Brush",
+          "lineNumber": 296
+        },
+        {
+          "caller": "SectionHeader",
+          "callee": "new Thickness",
+          "lineNumber": 297
+        },
+        {
+          "caller": "FieldLabel",
+          "callee": "Brush",
+          "lineNumber": 304
+        },
+        {
+          "caller": "FieldLabel",
+          "callee": "new Thickness",
+          "lineNumber": 305
+        },
+        {
+          "caller": "Divider",
+          "callee": "Brush",
+          "lineNumber": 311
+        },
+        {
+          "caller": "Divider",
+          "callee": "new Thickness",
+          "lineNumber": 312
+        },
+        {
+          "caller": "MakeDarkInput",
+          "callee": "Brush",
+          "lineNumber": 318
+        },
+        {
+          "caller": "MakeDarkInput",
+          "callee": "Brush",
+          "lineNumber": 319
+        },
+        {
+          "caller": "MakeDarkInput",
+          "callee": "Brush",
+          "lineNumber": 320
+        },
+        {
+          "caller": "MakeDarkInput",
+          "callee": "new Thickness",
+          "lineNumber": 321
+        },
+        {
+          "caller": "MakeDarkInput",
+          "callee": "new Thickness",
+          "lineNumber": 322
+        },
+        {
+          "caller": "MakeDarkInput",
+          "callee": "Brush",
+          "lineNumber": 325
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 22,
+        "functionCount": 24,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Models/AiPromptType.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 3,
+      "nonEmptyLines": 2,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Models/ComponentManifest.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 26,
+      "classes": [
+        {
+          "name": "ComponentManifest",
+          "startLine": 3,
+          "endLine": 19,
+          "methods": [],
+          "properties": [
+            "Kind",
+            "Variant",
+            "ComponentName",
+            "DisplayName",
+            "AstroFile",
+            "CssFile",
+            "Slot",
+            "Required",
+            "Weight",
+            "HasExternalLink",
+            "DataFile",
+            "DataConst",
+            "Repeatable",
+            "Fields"
+          ]
+        },
+        {
+          "name": "ManifestField",
+          "startLine": 21,
+          "endLine": 28,
+          "methods": [],
+          "properties": [
+            "Id",
+            "Key",
+            "Label",
+            "Type",
+            "Group"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Kind",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "Variant",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "ComponentName",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "DisplayName",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "AstroFile",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "CssFile",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "Slot",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "Required",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "Weight",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "HasExternalLink",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "DataFile",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "DataConst",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "Repeatable",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "Fields",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "Id",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "Key",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "Label",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "Type",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "Group",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 19,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "Models/FieldDef.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 15,
+      "nonEmptyLines": 14,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Models/GenerationOptions.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 11,
+      "nonEmptyLines": 10,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Models/GenQueueItem.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 101,
+      "nonEmptyLines": 78,
+      "functions": [
+        {
+          "name": "GenQueueItem",
+          "startLine": 16,
+          "endLine": 19,
+          "params": [
+            "options"
+          ]
+        },
+        {
+          "name": "FormatDuration",
+          "startLine": 91,
+          "endLine": 96,
+          "params": [
+            "d"
+          ]
+        },
+        {
+          "name": "OnChanged",
+          "startLine": 98,
+          "endLine": 99,
+          "params": [
+            "name"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "GenQueueItem",
+          "startLine": 5,
+          "endLine": 100,
+          "methods": [
+            "GenQueueItem",
+            "FormatDuration",
+            "OnChanged"
+          ],
+          "properties": [
+            "_status",
+            "_message",
+            "_projectPath",
+            "_stageIndex",
+            "_duration",
+            "_costThb",
+            "Options",
+            "Brand",
+            "ContentTypeText",
+            "GameText",
+            "Summary",
+            "Meta",
+            "Status",
+            "Message",
+            "ProjectPath",
+            "StageIndex",
+            "Duration",
+            "CostThb",
+            "Detail",
+            "HasDetail",
+            "DurationText",
+            "CostText"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GenQueueItem",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "Options",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "Brand",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "ContentTypeText",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "GameText",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "Summary",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "Meta",
+          "line": 36,
+          "isDefault": false
+        },
+        {
+          "name": "Status",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "Message",
+          "line": 44,
+          "isDefault": false
+        },
+        {
+          "name": "ProjectPath",
+          "line": 50,
+          "isDefault": false
+        },
+        {
+          "name": "StageIndex",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "Duration",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "CostThb",
+          "line": 68,
+          "isDefault": false
+        },
+        {
+          "name": "Detail",
+          "line": 74,
+          "isDefault": false
+        },
+        {
+          "name": "HasDetail",
+          "line": 85,
+          "isDefault": false
+        },
+        {
+          "name": "DurationText",
+          "line": 87,
+          "isDefault": false
+        },
+        {
+          "name": "CostText",
+          "line": 89,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "OnChanged",
+          "callee": "PropertyChanged?.Invoke",
+          "lineNumber": 99
+        },
+        {
+          "caller": "OnChanged",
+          "callee": "new PropertyChangedEventArgs",
+          "lineNumber": 99
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 17,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Models/ImageEntry.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 13,
+      "nonEmptyLines": 11,
+      "classes": [
+        {
+          "name": "ImageEntry",
+          "startLine": 3,
+          "endLine": 13,
+          "methods": [],
+          "properties": [
+            "Id",
+            "Label",
+            "Group",
+            "HasAlt",
+            "SrcValue",
+            "AltValue",
+            "OriginalSrc"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Id",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "Label",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "Group",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "HasAlt",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "SrcValue",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "AltValue",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "OriginalSrc",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Models/ImagePlanItem.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 12,
+      "nonEmptyLines": 11,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Models/ImageStyle.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 3,
+      "nonEmptyLines": 2,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Models/LayoutComponent.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 22,
+      "nonEmptyLines": 20,
+      "functions": [
+        {
+          "name": "ToString",
+          "startLine": 21,
+          "endLine": 21,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "LayoutComponent",
+          "startLine": 3,
+          "endLine": 22,
+          "methods": [
+            "ToString"
+          ],
+          "properties": [
+            "Name",
+            "DisplayName",
+            "Kind",
+            "Variant",
+            "ImportPath",
+            "CssImportPath",
+            "StoreDirectory",
+            "AstroFile",
+            "CssFile",
+            "HasExternalLink",
+            "Slot",
+            "Required",
+            "Weight",
+            "CanRemove",
+            "CanChangeVariant"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Name",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "DisplayName",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "Kind",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "Variant",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "ImportPath",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "CssImportPath",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "StoreDirectory",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "AstroFile",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "CssFile",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "HasExternalLink",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "Slot",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "Required",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "Weight",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "CanRemove",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "CanChangeVariant",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "ToString",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 16,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Models/SectionDefinition.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 20,
+      "nonEmptyLines": 19,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Models/ThemePalette.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 11,
+      "nonEmptyLines": 10,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Program.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 39,
+      "functions": [
+        {
+          "name": "Main",
+          "startLine": 7,
+          "endLine": 20,
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "CleanupLegacyExtractCache",
+          "startLine": 22,
+          "endLine": 24,
+          "params": []
+        },
+        {
+          "name": "EnsureNodeAvailable",
+          "startLine": 26,
+          "endLine": 47,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "Program",
+          "startLine": 5,
+          "endLine": 48,
+          "methods": [
+            "Main",
+            "CleanupLegacyExtractCache",
+            "EnsureNodeAvailable"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "Main",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Main",
+          "callee": "ToolDetectionService.CheckAndExitIfSuspiciousToolsFound",
+          "lineNumber": 10
+        },
+        {
+          "caller": "Main",
+          "callee": "VelopackApp.Build().Run",
+          "lineNumber": 12
+        },
+        {
+          "caller": "Main",
+          "callee": "VelopackApp.Build",
+          "lineNumber": 12
+        },
+        {
+          "caller": "Main",
+          "callee": "CleanupLegacyExtractCache",
+          "lineNumber": 14
+        },
+        {
+          "caller": "Main",
+          "callee": "EnsureNodeAvailable",
+          "lineNumber": 15
+        },
+        {
+          "caller": "Main",
+          "callee": "new App",
+          "lineNumber": 17
+        },
+        {
+          "caller": "Main",
+          "callee": "app.InitializeComponent",
+          "lineNumber": 18
+        },
+        {
+          "caller": "Main",
+          "callee": "app.Run",
+          "lineNumber": 19
+        },
+        {
+          "caller": "CleanupLegacyExtractCache",
+          "callee": "Io.DeleteDirectory",
+          "lineNumber": 22
+        },
+        {
+          "caller": "CleanupLegacyExtractCache",
+          "callee": "Path.Combine",
+          "lineNumber": 22
+        },
+        {
+          "caller": "CleanupLegacyExtractCache",
+          "callee": "Environment.GetFolderPath",
+          "lineNumber": 23
+        },
+        {
+          "caller": "EnsureNodeAvailable",
+          "callee": "NodeRuntime.IsAvailable",
+          "lineNumber": 28
+        },
+        {
+          "caller": "EnsureNodeAvailable",
+          "callee": "NodeRuntime.FindInstaller",
+          "lineNumber": 30
+        },
+        {
+          "caller": "EnsureNodeAvailable",
+          "callee": "NodeInstallUi.RunInstall",
+          "lineNumber": 32
+        },
+        {
+          "caller": "EnsureNodeAvailable",
+          "callee": "System.Windows.MessageBox.Show",
+          "lineNumber": 34
+        },
+        {
+          "caller": "EnsureNodeAvailable",
+          "callee": "NodeRuntime.OpenDownloadPage",
+          "lineNumber": 41
+        },
+        {
+          "caller": "EnsureNodeAvailable",
+          "callee": "System.Windows.MessageBox.Show",
+          "lineNumber": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Services/AiCssGenerator.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 82,
+      "nonEmptyLines": 74,
+      "functions": [
+        {
+          "name": "ApplyAsync",
+          "startLine": 12,
+          "endLine": 73,
+          "params": [
+            "projectPath",
+            "options",
+            "palette",
+            "apiKey",
+            "log",
+            "ct",
+            "genLog",
+            "usage"
+          ]
+        },
+        {
+          "name": "MimeOf",
+          "startLine": 75,
+          "endLine": 81,
+          "params": [
+            "path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "AiCssGenerator",
+          "startLine": 3,
+          "endLine": 82,
+          "methods": [
+            "ApplyAsync",
+            "MimeOf"
+          ],
+          "properties": [
+            "Prompt"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ApplyAsync",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ApplyAsync",
+          "callee": "ImagesStore.ReadValues",
+          "lineNumber": 22
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "ImagesStore.ReadConfig",
+          "lineNumber": 22
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "ProjectPaths.Public",
+          "lineNumber": 23
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "File.Exists",
+          "lineNumber": 24
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "log",
+          "lineNumber": 26
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "genLog?.Warn",
+          "lineNumber": 27
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "log",
+          "lineNumber": 31
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "genLog?.Section",
+          "lineNumber": 32
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "genLog?.Line",
+          "lineNumber": 33
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "CssStore.Read",
+          "lineNumber": 35
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "File.ReadAllBytesAsync",
+          "lineNumber": 36
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "MimeOf",
+          "lineNumber": 37
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "genLog?.Prompt",
+          "lineNumber": 44
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "Convert.ToBase64String",
+          "lineNumber": 49
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "OpenAiClient.ChatAsync",
+          "lineNumber": 52
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "genLog?.Error",
+          "lineNumber": 55
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "genLog?.Block",
+          "lineNumber": 58
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "LineCodec.ParseCss(response)\n            .ToDictionary",
+          "lineNumber": 60
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "LineCodec.ParseCss",
+          "lineNumber": 60
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "CssStore.Save",
+          "lineNumber": 64
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "genLog?.Line",
+          "lineNumber": 65
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "log",
+          "lineNumber": 69
+        },
+        {
+          "caller": "ApplyAsync",
+          "callee": "genLog?.Warn",
+          "lineNumber": 70
+        },
+        {
+          "caller": "MimeOf",
+          "callee": "Path.GetExtension(path).ToLowerInvariant",
+          "lineNumber": 75
+        },
+        {
+          "caller": "MimeOf",
+          "callee": "Path.GetExtension",
+          "lineNumber": 75
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Services/AiImageGenerator.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 291,
+      "nonEmptyLines": 261,
+      "functions": [
+        {
+          "name": "GenerateAsync",
+          "startLine": 9,
+          "endLine": 135,
+          "params": [
+            "projectPath",
+            "plan",
+            "options",
+            "palette",
+            "apiKey",
+            "log",
+            "ct",
+            "genLog",
+            "usage"
+          ]
+        },
+        {
+          "name": "SaveResults",
+          "startLine": 137,
+          "endLine": 147,
+          "params": [
+            "ctx",
+            "results"
+          ]
+        },
+        {
+          "name": "GenSingleAsync",
+          "startLine": 149,
+          "endLine": 209,
+          "params": [
+            "ctx",
+            "item"
+          ]
+        },
+        {
+          "name": "AssignPromos",
+          "startLine": 211,
+          "endLine": 219,
+          "params": [
+            "items",
+            "rng"
+          ]
+        },
+        {
+          "name": "AssignSlogans",
+          "startLine": 221,
+          "endLine": 229,
+          "params": [
+            "items",
+            "rng"
+          ]
+        },
+        {
+          "name": "CaptionFor",
+          "startLine": 231,
+          "endLine": 240,
+          "params": [
+            "id",
+            "promos",
+            "slogans",
+            "rng",
+            "reroll"
+          ]
+        },
+        {
+          "name": "NeedsLogo",
+          "startLine": 242,
+          "endLine": 243,
+          "params": [
+            "id"
+          ]
+        },
+        {
+          "name": "CompositionRange",
+          "startLine": 245,
+          "endLine": 251,
+          "params": [
+            "id"
+          ]
+        },
+        {
+          "name": "ToPng",
+          "startLine": 253,
+          "endLine": 260,
+          "params": [
+            "bytes"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "AiImageGenerator",
+          "startLine": 3,
+          "endLine": 291,
+          "methods": [
+            "GenerateAsync",
+            "SaveResults",
+            "GenSingleAsync",
+            "AssignPromos",
+            "AssignSlogans",
+            "CaptionFor",
+            "NeedsLogo",
+            "CompositionRange",
+            "ToPng"
+          ],
+          "properties": [
+            "TransparentModel",
+            "MaxModerationRetries",
+            "MaxConcurrency"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GenerateAsync",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GenerateAsync",
+          "callee": "new GenContext",
+          "lineNumber": 20
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "plan\n            .OrderBy(p => p.Id == \"logo\" ? 0 : 1)\n            .ThenBy(p => p.Id, StringComparer.Ordinal)\n            .ToList",
+          "lineNumber": 22
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "plan\n            .OrderBy(p => p.Id == \"logo\" ? 0 : 1)\n            .ThenBy",
+          "lineNumber": 22
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "plan\n            .OrderBy",
+          "lineNumber": 22
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "AssignPromos",
+          "lineNumber": 27
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "AssignSlogans",
+          "lineNumber": 28
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "CompositionCatalog.PickMainCast",
+          "lineNumber": 29
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Section",
+          "lineNumber": 31
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 32
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 33
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Block",
+          "lineNumber": 34
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "string.Join",
+          "lineNumber": 34
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Block",
+          "lineNumber": 35
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "string.Join",
+          "lineNumber": 35
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.Promos.Select",
+          "lineNumber": 35
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Block",
+          "lineNumber": 36
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "string.Join",
+          "lineNumber": 36
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.Slogans.Select",
+          "lineNumber": 36
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ordered.FirstOrDefault",
+          "lineNumber": 38
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ordered.FirstOrDefault",
+          "lineNumber": 39
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "p.Id.StartsWith",
+          "lineNumber": 39
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ordered.Where(p => p != logoItem && p != firstButton).ToList",
+          "lineNumber": 40
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ordered.Where",
+          "lineNumber": 40
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Section",
+          "lineNumber": 44
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "GenSingleAsync",
+          "lineNumber": 45
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Error",
+          "lineNumber": 48
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ToPng",
+          "lineNumber": 51
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "GeneratedImageWriter.Save",
+          "lineNumber": 52
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ImagePromptCatalog.Alt",
+          "lineNumber": 52
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 53
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Section",
+          "lineNumber": 58
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "GenSingleAsync",
+          "lineNumber": 59
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Error",
+          "lineNumber": 62
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ToPng",
+          "lineNumber": 65
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.Buttons.Add",
+          "lineNumber": 66
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ImagePromptCatalog.Alt",
+          "lineNumber": 66
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 67
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Section",
+          "lineNumber": 70
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "new List<int>",
+          "lineNumber": 74
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "new SemaphoreSlim",
+          "lineNumber": 76
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "remaining.Select(async (item, idx) =>\n        {\n            await sem.WaitAsync(ct);\n            try\n            {\n                if (ctx.BillingHit) { lock (failedLock) failedIdx.Add(idx); return; }\n                var current = Interlocked.Increment(ref done);\n                log($\"กำลังสร้างรูป {current}/{total}: {item.Label}\");\n                var r = await GenSingleAsync(ctx, item);\n                if (r.Ok) results[idx] = (item, r.Bytes!, r.Caption ?? \"\");\n                else lock (failedLock) failedIdx.Add(idx);\n            }\n            finally { sem.Release(); }\n        }).ToList",
+          "lineNumber": 78
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "remaining.Select",
+          "lineNumber": 78
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "sem.WaitAsync",
+          "lineNumber": 80
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "failedIdx.Add",
+          "lineNumber": 83
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "Interlocked.Increment",
+          "lineNumber": 84
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "log",
+          "lineNumber": 85
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "GenSingleAsync",
+          "lineNumber": 86
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "failedIdx.Add",
+          "lineNumber": 88
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "sem.Release",
+          "lineNumber": 90
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "Task.WhenAll",
+          "lineNumber": 92
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Error",
+          "lineNumber": 96
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "SaveResults",
+          "lineNumber": 100
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Section",
+          "lineNumber": 102
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "new List<string>",
+          "lineNumber": 103
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "log",
+          "lineNumber": 108
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 109
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "GenSingleAsync",
+          "lineNumber": 110
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "SaveResults",
+          "lineNumber": 114
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 115
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "log",
+          "lineNumber": 119
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Error",
+          "lineNumber": 120
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "stillFailed.Add",
+          "lineNumber": 121
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "GeneratedImageWriter.SaveButtons",
+          "lineNumber": 125
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 126
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 130
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "ctx.GenLog?.Warn",
+          "lineNumber": 133
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "string.Join",
+          "lineNumber": 133
+        },
+        {
+          "caller": "GenerateAsync",
+          "callee": "string.Join",
+          "lineNumber": 134
+        },
+        {
+          "caller": "SaveResults",
+          "callee": "item.Id.StartsWith",
+          "lineNumber": 142
+        },
+        {
+          "caller": "SaveResults",
+          "callee": "ctx.Buttons.Add",
+          "lineNumber": 143
+        },
+        {
+          "caller": "SaveResults",
+          "callee": "ImagePromptCatalog.Alt",
+          "lineNumber": 143
+        },
+        {
+          "caller": "SaveResults",
+          "callee": "GeneratedImageWriter.Save",
+          "lineNumber": 145
+        },
+        {
+          "caller": "SaveResults",
+          "callee": "ImagePromptCatalog.Alt",
+          "lineNumber": 145
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "item.Id.StartsWith",
+          "lineNumber": 151
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "NeedsLogo",
+          "lineNumber": 153
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Section",
+          "lineNumber": 156
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 157
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.Ct.ThrowIfCancellationRequested",
+          "lineNumber": 161
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "CompositionRange",
+          "lineNumber": 166
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "CompositionCatalog.Compose",
+          "lineNumber": 167
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "CaptionFor",
+          "lineNumber": 168
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 170
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 171
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 171
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 172
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 172
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ImagePromptCatalog.BuildButtonReferencePrompt",
+          "lineNumber": 174
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ImagePromptCatalog.BuildPrompt",
+          "lineNumber": 175
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Prompt",
+          "lineNumber": 176
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "OpenAiClient.GenerateImageWithReferenceAsync",
+          "lineNumber": 180
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "OpenAiClient.GenerateImageWithReferenceAsync",
+          "lineNumber": 182
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "OpenAiClient.GenerateImageAsync",
+          "lineNumber": 183
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Line",
+          "lineNumber": 187
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Error",
+          "lineNumber": 191
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "OpenAiClient.IsBillingLimitReached",
+          "lineNumber": 192
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Error",
+          "lineNumber": 196
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "OpenAiClient.IsModerationBlocked",
+          "lineNumber": 199
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.Log",
+          "lineNumber": 201
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Warn",
+          "lineNumber": 202
+        },
+        {
+          "caller": "GenSingleAsync",
+          "callee": "ctx.GenLog?.Error",
+          "lineNumber": 207
+        },
+        {
+          "caller": "AssignPromos",
+          "callee": "items.Where(p => p.Id.StartsWith(\"promo-\", StringComparison.Ordinal)).Select(p => p.Id).ToList",
+          "lineNumber": 213
+        },
+        {
+          "caller": "AssignPromos",
+          "callee": "items.Where(p => p.Id.StartsWith(\"promo-\", StringComparison.Ordinal)).Select",
+          "lineNumber": 213
+        },
+        {
+          "caller": "AssignPromos",
+          "callee": "items.Where",
+          "lineNumber": 213
+        },
+        {
+          "caller": "AssignPromos",
+          "callee": "p.Id.StartsWith",
+          "lineNumber": 213
+        },
+        {
+          "caller": "AssignPromos",
+          "callee": "new Dictionary<string, string>",
+          "lineNumber": 214
+        },
+        {
+          "caller": "AssignPromos",
+          "callee": "PromotionCatalog.Pick",
+          "lineNumber": 216
+        },
+        {
+          "caller": "AssignSlogans",
+          "callee": "items.Where(p => p.Id.StartsWith(\"seo-\", StringComparison.Ordinal)).Select(p => p.Id).ToList",
+          "lineNumber": 223
+        },
+        {
+          "caller": "AssignSlogans",
+          "callee": "items.Where(p => p.Id.StartsWith(\"seo-\", StringComparison.Ordinal)).Select",
+          "lineNumber": 223
+        },
+        {
+          "caller": "AssignSlogans",
+          "callee": "items.Where",
+          "lineNumber": 223
+        },
+        {
+          "caller": "AssignSlogans",
+          "callee": "p.Id.StartsWith",
+          "lineNumber": 223
+        },
+        {
+          "caller": "AssignSlogans",
+          "callee": "new Dictionary<string, string>",
+          "lineNumber": 224
+        },
+        {
+          "caller": "AssignSlogans",
+          "callee": "SeoSloganCatalog.Pick",
+          "lineNumber": 226
+        },
+        {
+          "caller": "CaptionFor",
+          "callee": "id.StartsWith",
+          "lineNumber": 235
+        },
+        {
+          "caller": "CaptionFor",
+          "callee": "promos.TryGetValue",
+          "lineNumber": 236
+        },
+        {
+          "caller": "CaptionFor",
+          "callee": "PromotionCatalog.Pick(rng, 1).FirstOrDefault",
+          "lineNumber": 236
+        },
+        {
+          "caller": "CaptionFor",
+          "callee": "PromotionCatalog.Pick",
+          "lineNumber": 236
+        },
+        {
+          "caller": "CaptionFor",
+          "callee": "id.StartsWith",
+          "lineNumber": 237
+        },
+        {
+          "caller": "CaptionFor",
+          "callee": "slogans.TryGetValue",
+          "lineNumber": 238
+        },
+        {
+          "caller": "CaptionFor",
+          "callee": "SeoSloganCatalog.Pick(rng, 1).FirstOrDefault",
+          "lineNumber": 238
+        },
+        {
+          "caller": "CaptionFor",
+          "callee": "SeoSloganCatalog.Pick",
+          "lineNumber": 238
+        },
+        {
+          "caller": "NeedsLogo",
+          "callee": "id.StartsWith",
+          "lineNumber": 243
+        },
+        {
+          "caller": "NeedsLogo",
+          "callee": "id.StartsWith",
+          "lineNumber": 243
+        },
+        {
+          "caller": "CompositionRange",
+          "callee": "s.StartsWith",
+          "lineNumber": 248
+        },
+        {
+          "caller": "CompositionRange",
+          "callee": "s.StartsWith",
+          "lineNumber": 249
+        },
+        {
+          "caller": "ToPng",
+          "callee": "SkiaSharp.SKBitmap.Decode",
+          "lineNumber": 255
+        },
+        {
+          "caller": "ToPng",
+          "callee": "SkiaSharp.SKImage.FromBitmap",
+          "lineNumber": 257
+        },
+        {
+          "caller": "ToPng",
+          "callee": "image.Encode",
+          "lineNumber": 258
+        },
+        {
+          "caller": "ToPng",
+          "callee": "data.ToArray",
+          "lineNumber": 259
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 9,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Services/AiPromptBuilder.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 84,
+      "nonEmptyLines": 73,
+      "functions": [
+        {
+          "name": "GetPrompt",
+          "startLine": 47,
+          "endLine": 52,
+          "params": [
+            "type"
+          ]
+        },
+        {
+          "name": "Build",
+          "startLine": 54,
+          "endLine": 83,
+          "params": [
+            "type",
+            "brand",
+            "fields",
+            "values",
+            "selected"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "AiPromptBuilder",
+          "startLine": 3,
+          "endLine": 84,
+          "methods": [
+            "GetPrompt",
+            "Build"
+          ],
+          "properties": [
+            "PromptFormatRules",
+            "PromptCommonTail",
+            "PromptFaqRules",
+            "PromptCasino",
+            "PromptLottery",
+            "PromptSlot"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GetPrompt",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "Build",
+          "line": 54,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Build",
+          "callee": "new StringBuilder",
+          "lineNumber": 60
+        },
+        {
+          "caller": "Build",
+          "callee": "GetPrompt(type).TrimEnd",
+          "lineNumber": 60
+        },
+        {
+          "caller": "Build",
+          "callee": "GetPrompt",
+          "lineNumber": 60
+        },
+        {
+          "caller": "Build",
+          "callee": "sb.Append",
+          "lineNumber": 61
+        },
+        {
+          "caller": "Build",
+          "callee": "sb.Append",
+          "lineNumber": 62
+        },
+        {
+          "caller": "Build",
+          "callee": "sb.Append",
+          "lineNumber": 63
+        },
+        {
+          "caller": "Build",
+          "callee": "selected.Contains",
+          "lineNumber": 65
+        },
+        {
+          "caller": "Build",
+          "callee": "sb.Append",
+          "lineNumber": 66
+        },
+        {
+          "caller": "Build",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 68
+        },
+        {
+          "caller": "Build",
+          "callee": "sb.AppendLine",
+          "lineNumber": 69
+        },
+        {
+          "caller": "Build",
+          "callee": "values.TryGetValue",
+          "lineNumber": 75
+        },
+        {
+          "caller": "Build",
+          "callee": "raw.Trim",
+          "lineNumber": 76
+        },
+        {
+          "caller": "Build",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 77
+        },
+        {
+          "caller": "Build",
+          "callee": "selected.Contains",
+          "lineNumber": 78
+        },
+        {
+          "caller": "Build",
+          "callee": "sb.AppendLine",
+          "lineNumber": 79
+        },
+        {
+          "caller": "Build",
+          "callee": "LineCodec.FormatContentLine",
+          "lineNumber": 79
+        },
+        {
+          "caller": "Build",
+          "callee": "sb.ToString",
+          "lineNumber": 82
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Services/AppUpdateService.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 69,
+      "nonEmptyLines": 59,
+      "functions": [
+        {
+          "name": "EnsureReadyToStartAsync",
+          "startLine": 10,
+          "endLine": 61,
+          "params": []
+        },
+        {
+          "name": "WaitUntilClosedAsync",
+          "startLine": 63,
+          "endLine": 68,
+          "params": [
+            "window"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "AppUpdateService",
+          "startLine": 6,
+          "endLine": 69,
+          "methods": [
+            "EnsureReadyToStartAsync",
+            "WaitUntilClosedAsync"
+          ],
+          "properties": [
+            "GitHubRepoUrl"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "EnsureReadyToStartAsync",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "new AppUpdateDialog",
+          "lineNumber": 12
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "new UpdateManager",
+          "lineNumber": 13
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "new GithubSource",
+          "lineNumber": 13
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "dialog.SetBlocked",
+          "lineNumber": 20
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "dialog.Show",
+          "lineNumber": 21
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "WaitUntilClosedAsync",
+          "lineNumber": 22
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "dialog.SetChecking",
+          "lineNumber": 29
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "dialog.Show",
+          "lineNumber": 30
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "dialog.SetApplying",
+          "lineNumber": 34
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "manager.ApplyUpdatesAndRestart",
+          "lineNumber": 35
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "manager.CheckForUpdatesAsync",
+          "lineNumber": 39
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "manager.DownloadUpdatesAsync",
+          "lineNumber": 43
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "dialog.Dispatcher.InvokeAsync",
+          "lineNumber": 44
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "dialog.SetDownloading",
+          "lineNumber": 44
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "dialog.SetApplying",
+          "lineNumber": 46
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "manager.ApplyUpdatesAndRestart",
+          "lineNumber": 47
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "dialog.SetBlocked",
+          "lineNumber": 52
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "WaitUntilClosedAsync",
+          "lineNumber": 53
+        },
+        {
+          "caller": "EnsureReadyToStartAsync",
+          "callee": "dialog.Close",
+          "lineNumber": 59
+        },
+        {
+          "caller": "WaitUntilClosedAsync",
+          "callee": "new TaskCompletionSource",
+          "lineNumber": 65
+        },
+        {
+          "caller": "WaitUntilClosedAsync",
+          "callee": "tcs.TrySetResult",
+          "lineNumber": 66
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Services/AstroProjectSettings.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 27,
+      "nonEmptyLines": 21,
+      "functions": [
+        {
+          "name": "DisableDevToolbar",
+          "startLine": 7,
+          "endLine": 26,
+          "params": [
+            "projectPath"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "AstroProjectSettings",
+          "startLine": 3,
+          "endLine": 27,
+          "methods": [
+            "DisableDevToolbar"
+          ],
+          "properties": [
+            "SettingsRel"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "DisableDevToolbar",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "DisableDevToolbar",
+          "callee": "ProjectPaths.IsProject",
+          "lineNumber": 9
+        },
+        {
+          "caller": "DisableDevToolbar",
+          "callee": "Path.Combine",
+          "lineNumber": 13
+        },
+        {
+          "caller": "DisableDevToolbar",
+          "callee": "JsonFile.ReadObject",
+          "lineNumber": 14
+        },
+        {
+          "caller": "DisableDevToolbar",
+          "callee": "new JsonObject",
+          "lineNumber": 16
+        },
+        {
+          "caller": "DisableDevToolbar",
+          "callee": "devToolbar[\"enabled\"]?.GetValue<bool>",
+          "lineNumber": 17
+        },
+        {
+          "caller": "DisableDevToolbar",
+          "callee": "JsonFile.WriteObject",
+          "lineNumber": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Services/AuthApiService.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 46,
+      "nonEmptyLines": 40,
+      "functions": [
+        {
+          "name": "LoginAsync",
+          "startLine": 19,
+          "endLine": 43,
+          "params": [
+            "username",
+            "password"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "LoginResult",
+          "startLine": 5,
+          "endLine": 10,
+          "methods": [],
+          "properties": [
+            "Token",
+            "Role",
+            "Username"
+          ]
+        },
+        {
+          "name": "AuthApiService",
+          "startLine": 12,
+          "endLine": 46,
+          "methods": [
+            "LoginAsync"
+          ],
+          "properties": [
+            "Http",
+            "BaseUrl",
+            "Json"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Token",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "Role",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "Username",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "LoginResult",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "LoginAsync",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "AuthApiService",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "LoginAsync",
+          "callee": "HwidService.GetOrCreate",
+          "lineNumber": 23
+        },
+        {
+          "caller": "LoginAsync",
+          "callee": "Http.PostAsJsonAsync",
+          "lineNumber": 24
+        },
+        {
+          "caller": "LoginAsync",
+          "callee": "response.Content.ReadFromJsonAsync<ErrorResponse>",
+          "lineNumber": 27
+        },
+        {
+          "caller": "LoginAsync",
+          "callee": "response.Content.ReadFromJsonAsync<LoginResult>",
+          "lineNumber": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 1,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "Services/ComponentStore.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 173,
+      "nonEmptyLines": 143,
+      "functions": [
+        {
+          "name": "ResolveLocalRoot",
+          "startLine": 12,
+          "endLine": 13,
+          "params": []
+        },
+        {
+          "name": "Roots",
+          "startLine": 15,
+          "endLine": 21,
+          "params": []
+        },
+        {
+          "name": "List",
+          "startLine": 23,
+          "endLine": 57,
+          "params": []
+        },
+        {
+          "name": "EnsureSeeded",
+          "startLine": 59,
+          "endLine": 59,
+          "params": []
+        },
+        {
+          "name": "Find",
+          "startLine": 61,
+          "endLine": 62,
+          "params": [
+            "componentName"
+          ]
+        },
+        {
+          "name": "ProjectAstro",
+          "startLine": 64,
+          "endLine": 65,
+          "params": [
+            "projectPath",
+            "kind"
+          ]
+        },
+        {
+          "name": "ProjectCss",
+          "startLine": 67,
+          "endLine": 68,
+          "params": [
+            "projectPath",
+            "kind"
+          ]
+        },
+        {
+          "name": "SlotDest",
+          "startLine": 70,
+          "endLine": 73,
+          "params": [
+            "projectPath",
+            "d"
+          ]
+        },
+        {
+          "name": "CurrentForSlot",
+          "startLine": 75,
+          "endLine": 93,
+          "params": [
+            "projectPath",
+            "slot"
+          ]
+        },
+        {
+          "name": "CopyToProjectIfMissing",
+          "startLine": 95,
+          "endLine": 104,
+          "params": [
+            "projectPath",
+            "definition"
+          ]
+        },
+        {
+          "name": "CopyToProject",
+          "startLine": 106,
+          "endLine": 115,
+          "params": [
+            "projectPath",
+            "definition"
+          ]
+        },
+        {
+          "name": "IsProject",
+          "startLine": 117,
+          "endLine": 117,
+          "params": [
+            "projectPath"
+          ]
+        },
+        {
+          "name": "CopyIfMissing",
+          "startLine": 119,
+          "endLine": 122,
+          "params": [
+            "src",
+            "dest",
+            "now"
+          ]
+        },
+        {
+          "name": "CopyFile",
+          "startLine": 124,
+          "endLine": 131,
+          "params": [
+            "src",
+            "dest",
+            "now"
+          ]
+        },
+        {
+          "name": "ReadDefinition",
+          "startLine": 133,
+          "endLine": 166,
+          "params": [
+            "dir"
+          ]
+        },
+        {
+          "name": "IsNestedStorePath",
+          "startLine": 168,
+          "endLine": 172,
+          "params": [
+            "root",
+            "path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ComponentStore",
+          "startLine": 3,
+          "endLine": 173,
+          "methods": [
+            "ResolveLocalRoot",
+            "Roots",
+            "List",
+            "EnsureSeeded",
+            "Find",
+            "ProjectAstro",
+            "ProjectCss",
+            "SlotDest",
+            "CurrentForSlot",
+            "CopyToProjectIfMissing",
+            "CopyToProject",
+            "IsProject",
+            "CopyIfMissing",
+            "CopyFile",
+            "ReadDefinition",
+            "IsNestedStorePath"
+          ],
+          "properties": [
+            "Root",
+            "LocalRootLazy",
+            "LocalRoot"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "List",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "EnsureSeeded",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "Find",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "CurrentForSlot",
+          "line": 75,
+          "isDefault": false
+        },
+        {
+          "name": "CopyToProjectIfMissing",
+          "line": 95,
+          "isDefault": false
+        },
+        {
+          "name": "CopyToProject",
+          "line": 106,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ResolveLocalRoot",
+          "callee": "Workspace.FindAncestorDir",
+          "lineNumber": 13
+        },
+        {
+          "caller": "ResolveLocalRoot",
+          "callee": "Path.Combine",
+          "lineNumber": 13
+        },
+        {
+          "caller": "Roots",
+          "callee": "new List<string>",
+          "lineNumber": 17
+        },
+        {
+          "caller": "Roots",
+          "callee": "roots.Add",
+          "lineNumber": 18
+        },
+        {
+          "caller": "Roots",
+          "callee": "roots.Add",
+          "lineNumber": 19
+        },
+        {
+          "caller": "List",
+          "callee": "EnsureSeeded",
+          "lineNumber": 25
+        },
+        {
+          "caller": "List",
+          "callee": "Roots",
+          "lineNumber": 27
+        },
+        {
+          "caller": "List",
+          "callee": "new List<(SectionDefinition Def, int Priority, string Root)>",
+          "lineNumber": 28
+        },
+        {
+          "caller": "List",
+          "callee": "Directory.Exists",
+          "lineNumber": 33
+        },
+        {
+          "caller": "List",
+          "callee": "Directory.GetFiles(root, \"manifest.json\", SearchOption.AllDirectories)\n                .Select(Path.GetDirectoryName)\n                .Where(x => !string.IsNullOrWhiteSpace(x))\n                .Distinct(StringComparer.OrdinalIgnoreCase)\n                .Select(x => ReadDefinition(x!))\n                .Where(x => x is not null)\n                .Cast<SectionDefinition>",
+          "lineNumber": 35
+        },
+        {
+          "caller": "List",
+          "callee": "Directory.GetFiles(root, \"manifest.json\", SearchOption.AllDirectories)\n                .Select(Path.GetDirectoryName)\n                .Where(x => !string.IsNullOrWhiteSpace(x))\n                .Distinct(StringComparer.OrdinalIgnoreCase)\n                .Select(x => ReadDefinition(x!))\n                .Where",
+          "lineNumber": 35
+        },
+        {
+          "caller": "List",
+          "callee": "Directory.GetFiles(root, \"manifest.json\", SearchOption.AllDirectories)\n                .Select(Path.GetDirectoryName)\n                .Where(x => !string.IsNullOrWhiteSpace(x))\n                .Distinct(StringComparer.OrdinalIgnoreCase)\n                .Select",
+          "lineNumber": 35
+        },
+        {
+          "caller": "List",
+          "callee": "Directory.GetFiles(root, \"manifest.json\", SearchOption.AllDirectories)\n                .Select(Path.GetDirectoryName)\n                .Where(x => !string.IsNullOrWhiteSpace(x))\n                .Distinct",
+          "lineNumber": 35
+        },
+        {
+          "caller": "List",
+          "callee": "Directory.GetFiles(root, \"manifest.json\", SearchOption.AllDirectories)\n                .Select(Path.GetDirectoryName)\n                .Where",
+          "lineNumber": 35
+        },
+        {
+          "caller": "List",
+          "callee": "Directory.GetFiles(root, \"manifest.json\", SearchOption.AllDirectories)\n                .Select",
+          "lineNumber": 35
+        },
+        {
+          "caller": "List",
+          "callee": "Directory.GetFiles",
+          "lineNumber": 35
+        },
+        {
+          "caller": "List",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 37
+        },
+        {
+          "caller": "List",
+          "callee": "ReadDefinition",
+          "lineNumber": 39
+        },
+        {
+          "caller": "List",
+          "callee": "collected.Add",
+          "lineNumber": 43
+        },
+        {
+          "caller": "List",
+          "callee": "collected\n            .GroupBy(x => x.Def.ComponentName, StringComparer.Ordinal)\n            .Select(g => g\n                .OrderBy(x => x.Priority)\n                .ThenByDescending(x => IsNestedStorePath(x.Root, x.Def.StoreDirectory))\n                .First().Def)\n            .OrderBy(x => x.Kind, StringComparer.Ordinal)\n            .ThenBy(x => x.Variant, StringComparer.Ordinal)\n            .ThenBy(x => x.DisplayName, StringComparer.Ordinal)\n            .ToList",
+          "lineNumber": 47
+        },
+        {
+          "caller": "List",
+          "callee": "collected\n            .GroupBy(x => x.Def.ComponentName, StringComparer.Ordinal)\n            .Select(g => g\n                .OrderBy(x => x.Priority)\n                .ThenByDescending(x => IsNestedStorePath(x.Root, x.Def.StoreDirectory))\n                .First().Def)\n            .OrderBy(x => x.Kind, StringComparer.Ordinal)\n            .ThenBy(x => x.Variant, StringComparer.Ordinal)\n            .ThenBy",
+          "lineNumber": 47
+        },
+        {
+          "caller": "List",
+          "callee": "collected\n            .GroupBy(x => x.Def.ComponentName, StringComparer.Ordinal)\n            .Select(g => g\n                .OrderBy(x => x.Priority)\n                .ThenByDescending(x => IsNestedStorePath(x.Root, x.Def.StoreDirectory))\n                .First().Def)\n            .OrderBy(x => x.Kind, StringComparer.Ordinal)\n            .ThenBy",
+          "lineNumber": 47
+        },
+        {
+          "caller": "List",
+          "callee": "collected\n            .GroupBy(x => x.Def.ComponentName, StringComparer.Ordinal)\n            .Select(g => g\n                .OrderBy(x => x.Priority)\n                .ThenByDescending(x => IsNestedStorePath(x.Root, x.Def.StoreDirectory))\n                .First().Def)\n            .OrderBy",
+          "lineNumber": 47
+        },
+        {
+          "caller": "List",
+          "callee": "collected\n            .GroupBy(x => x.Def.ComponentName, StringComparer.Ordinal)\n            .Select",
+          "lineNumber": 47
+        },
+        {
+          "caller": "List",
+          "callee": "collected\n            .GroupBy",
+          "lineNumber": 47
+        },
+        {
+          "caller": "List",
+          "callee": "g\n                .OrderBy(x => x.Priority)\n                .ThenByDescending(x => IsNestedStorePath(x.Root, x.Def.StoreDirectory))\n                .First",
+          "lineNumber": 49
+        },
+        {
+          "caller": "List",
+          "callee": "g\n                .OrderBy(x => x.Priority)\n                .ThenByDescending",
+          "lineNumber": 49
+        },
+        {
+          "caller": "List",
+          "callee": "g\n                .OrderBy",
+          "lineNumber": 49
+        },
+        {
+          "caller": "List",
+          "callee": "IsNestedStorePath",
+          "lineNumber": 51
+        },
+        {
+          "caller": "EnsureSeeded",
+          "callee": "Directory.CreateDirectory",
+          "lineNumber": 59
+        },
+        {
+          "caller": "Find",
+          "callee": "List().FirstOrDefault",
+          "lineNumber": 62
+        },
+        {
+          "caller": "Find",
+          "callee": "List",
+          "lineNumber": 62
+        },
+        {
+          "caller": "Find",
+          "callee": "x.ComponentName.Equals",
+          "lineNumber": 62
+        },
+        {
+          "caller": "ProjectAstro",
+          "callee": "ProjectPaths.Src",
+          "lineNumber": 65
+        },
+        {
+          "caller": "ProjectAstro",
+          "callee": "Path.Combine",
+          "lineNumber": 65
+        },
+        {
+          "caller": "ProjectCss",
+          "callee": "ProjectPaths.Src",
+          "lineNumber": 68
+        },
+        {
+          "caller": "ProjectCss",
+          "callee": "Path.Combine",
+          "lineNumber": 68
+        },
+        {
+          "caller": "SlotDest",
+          "callee": "ShellSlot.AstroPath",
+          "lineNumber": 71
+        },
+        {
+          "caller": "SlotDest",
+          "callee": "ProjectAstro",
+          "lineNumber": 73
+        },
+        {
+          "caller": "SlotDest",
+          "callee": "ProjectCss",
+          "lineNumber": 73
+        },
+        {
+          "caller": "CurrentForSlot",
+          "callee": "ShellSlot.AstroPath",
+          "lineNumber": 77
+        },
+        {
+          "caller": "CurrentForSlot",
+          "callee": "File.Exists",
+          "lineNumber": 77
+        },
+        {
+          "caller": "CurrentForSlot",
+          "callee": "File.ReadAllText",
+          "lineNumber": 80
+        },
+        {
+          "caller": "CurrentForSlot",
+          "callee": "SectionCatalog.All.Where",
+          "lineNumber": 83
+        },
+        {
+          "caller": "CurrentForSlot",
+          "callee": "Path.Combine",
+          "lineNumber": 85
+        },
+        {
+          "caller": "CurrentForSlot",
+          "callee": "File.Exists",
+          "lineNumber": 88
+        },
+        {
+          "caller": "CurrentForSlot",
+          "callee": "File.ReadAllText",
+          "lineNumber": 88
+        },
+        {
+          "caller": "CopyToProjectIfMissing",
+          "callee": "IsProject",
+          "lineNumber": 97
+        },
+        {
+          "caller": "CopyToProjectIfMissing",
+          "callee": "SlotDest",
+          "lineNumber": 100
+        },
+        {
+          "caller": "CopyToProjectIfMissing",
+          "callee": "CopyIfMissing",
+          "lineNumber": 101
+        },
+        {
+          "caller": "CopyToProjectIfMissing",
+          "callee": "Path.Combine",
+          "lineNumber": 101
+        },
+        {
+          "caller": "CopyToProjectIfMissing",
+          "callee": "CopyIfMissing",
+          "lineNumber": 103
+        },
+        {
+          "caller": "CopyToProjectIfMissing",
+          "callee": "Path.Combine",
+          "lineNumber": 103
+        },
+        {
+          "caller": "CopyToProject",
+          "callee": "IsProject",
+          "lineNumber": 108
+        },
+        {
+          "caller": "CopyToProject",
+          "callee": "SlotDest",
+          "lineNumber": 111
+        },
+        {
+          "caller": "CopyToProject",
+          "callee": "CopyFile",
+          "lineNumber": 112
+        },
+        {
+          "caller": "CopyToProject",
+          "callee": "Path.Combine",
+          "lineNumber": 112
+        },
+        {
+          "caller": "CopyToProject",
+          "callee": "CopyFile",
+          "lineNumber": 114
+        },
+        {
+          "caller": "CopyToProject",
+          "callee": "Path.Combine",
+          "lineNumber": 114
+        },
+        {
+          "caller": "IsProject",
+          "callee": "ProjectPaths.IsProject",
+          "lineNumber": 117
+        },
+        {
+          "caller": "CopyIfMissing",
+          "callee": "File.Exists",
+          "lineNumber": 121
+        },
+        {
+          "caller": "CopyIfMissing",
+          "callee": "CopyFile",
+          "lineNumber": 121
+        },
+        {
+          "caller": "CopyFile",
+          "callee": "File.Exists",
+          "lineNumber": 126
+        },
+        {
+          "caller": "CopyFile",
+          "callee": "Directory.CreateDirectory",
+          "lineNumber": 128
+        },
+        {
+          "caller": "CopyFile",
+          "callee": "Path.GetDirectoryName",
+          "lineNumber": 128
+        },
+        {
+          "caller": "CopyFile",
+          "callee": "File.Copy",
+          "lineNumber": 129
+        },
+        {
+          "caller": "CopyFile",
+          "callee": "File.SetLastWriteTimeUtc",
+          "lineNumber": 130
+        },
+        {
+          "caller": "ReadDefinition",
+          "callee": "Path.Combine",
+          "lineNumber": 135
+        },
+        {
+          "caller": "ReadDefinition",
+          "callee": "File.Exists",
+          "lineNumber": 136
+        },
+        {
+          "caller": "ReadDefinition",
+          "callee": "JsonFile.Read<ComponentManifest>",
+          "lineNumber": 140
+        },
+        {
+          "caller": "ReadDefinition",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 141
+        },
+        {
+          "caller": "ReadDefinition",
+          "callee": "new SectionDefinition",
+          "lineNumber": 143
+        },
+        {
+          "caller": "ReadDefinition",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 151
+        },
+        {
+          "caller": "ReadDefinition",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 152
+        },
+        {
+          "caller": "ReadDefinition",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 154
+        },
+        {
+          "caller": "IsNestedStorePath",
+          "callee": "Path.GetRelativePath",
+          "lineNumber": 170
+        },
+        {
+          "caller": "IsNestedStorePath",
+          "callee": "rel.Split",
+          "lineNumber": 171
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 16,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Services/CompositionCatalog.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 187,
+      "nonEmptyLines": 171,
+      "functions": [
+        {
+          "name": "PickMainCast",
+          "startLine": 142,
+          "endLine": 160,
+          "params": [
+            "rng"
+          ]
+        },
+        {
+          "name": "Compose",
+          "startLine": 162,
+          "endLine": 186,
+          "params": [
+            "rng",
+            "mainCast",
+            "minTotal",
+            "maxTotal"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "CompositionCatalog",
+          "startLine": 3,
+          "endLine": 187,
+          "methods": [
+            "PickMainCast",
+            "Compose"
+          ],
+          "properties": [
+            "Groups",
+            "MinMainCast",
+            "MaxMainCast"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Groups",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "PickMainCast",
+          "line": 142,
+          "isDefault": false
+        },
+        {
+          "name": "Compose",
+          "line": 162,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "PickMainCast",
+          "callee": "Groups.Keys.ToList",
+          "lineNumber": 146
+        },
+        {
+          "caller": "PickMainCast",
+          "callee": "rng.Next",
+          "lineNumber": 147
+        },
+        {
+          "caller": "PickMainCast",
+          "callee": "Math.Min",
+          "lineNumber": 150
+        },
+        {
+          "caller": "PickMainCast",
+          "callee": "rng.Next",
+          "lineNumber": 150
+        },
+        {
+          "caller": "PickMainCast",
+          "callee": "group.ToList",
+          "lineNumber": 151
+        },
+        {
+          "caller": "PickMainCast",
+          "callee": "new List<string>",
+          "lineNumber": 152
+        },
+        {
+          "caller": "PickMainCast",
+          "callee": "rng.Next",
+          "lineNumber": 155
+        },
+        {
+          "caller": "PickMainCast",
+          "callee": "cast.Add",
+          "lineNumber": 156
+        },
+        {
+          "caller": "PickMainCast",
+          "callee": "pool.RemoveAt",
+          "lineNumber": 157
+        },
+        {
+          "caller": "Compose",
+          "callee": "Math.Max",
+          "lineNumber": 166
+        },
+        {
+          "caller": "Compose",
+          "callee": "Math.Max",
+          "lineNumber": 167
+        },
+        {
+          "caller": "Compose",
+          "callee": "rng.Next",
+          "lineNumber": 168
+        },
+        {
+          "caller": "Compose",
+          "callee": "rng.Next",
+          "lineNumber": 169
+        },
+        {
+          "caller": "Compose",
+          "callee": "Math.Min",
+          "lineNumber": 169
+        },
+        {
+          "caller": "Compose",
+          "callee": "mainCast.ToList",
+          "lineNumber": 171
+        },
+        {
+          "caller": "Compose",
+          "callee": "new List<string>",
+          "lineNumber": 172
+        },
+        {
+          "caller": "Compose",
+          "callee": "rng.Next",
+          "lineNumber": 175
+        },
+        {
+          "caller": "Compose",
+          "callee": "chosen.Add",
+          "lineNumber": 176
+        },
+        {
+          "caller": "Compose",
+          "callee": "pool.RemoveAt",
+          "lineNumber": 177
+        },
+        {
+          "caller": "Compose",
+          "callee": "rng.Next",
+          "lineNumber": 183
+        },
+        {
+          "caller": "Compose",
+          "callee": "string.Join",
+          "lineNumber": 185
+        },
+        {
+          "caller": "Compose",
+          "callee": "chosen.Select",
+          "lineNumber": 185
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Services/ContentStore.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 260,
+      "nonEmptyLines": 216,
+      "functions": [
+        {
+          "name": "Src",
+          "startLine": 13,
+          "endLine": 14,
+          "params": [
+            "root",
+            "rel"
+          ]
+        },
+        {
+          "name": "BuildFields",
+          "startLine": 16,
+          "endLine": 32,
+          "params": [
+            "root",
+            "layout"
+          ]
+        },
+        {
+          "name": "AddKindFields",
+          "startLine": 34,
+          "endLine": 37,
+          "params": [
+            "root",
+            "fields",
+            "kind"
+          ]
+        },
+        {
+          "name": "AddDefFields",
+          "startLine": 39,
+          "endLine": 56,
+          "params": [
+            "root",
+            "fields",
+            "def"
+          ]
+        },
+        {
+          "name": "MakeField",
+          "startLine": 58,
+          "endLine": 65,
+          "params": [
+            "mf",
+            "def",
+            "n"
+          ]
+        },
+        {
+          "name": "AddBrandField",
+          "startLine": 67,
+          "endLine": 72,
+          "params": [
+            "root",
+            "fields"
+          ]
+        },
+        {
+          "name": "Pull",
+          "startLine": 74,
+          "endLine": 99,
+          "params": [
+            "root",
+            "fields"
+          ]
+        },
+        {
+          "name": "Save",
+          "startLine": 101,
+          "endLine": 122,
+          "params": [
+            "root",
+            "fields",
+            "values"
+          ]
+        },
+        {
+          "name": "SaveFaq",
+          "startLine": 124,
+          "endLine": 134,
+          "params": [
+            "root",
+            "fields",
+            "values"
+          ]
+        },
+        {
+          "name": "CurrentBrandName",
+          "startLine": 136,
+          "endLine": 141,
+          "params": [
+            "root"
+          ]
+        },
+        {
+          "name": "SaveObject",
+          "startLine": 143,
+          "endLine": 151,
+          "params": [
+            "content",
+            "constName",
+            "group",
+            "values"
+          ]
+        },
+        {
+          "name": "RebuildArray",
+          "startLine": 153,
+          "endLine": 176,
+          "params": [
+            "content",
+            "constName",
+            "group",
+            "values"
+          ]
+        },
+        {
+          "name": "DefaultBlock",
+          "startLine": 178,
+          "endLine": 181,
+          "params": [
+            "fields"
+          ]
+        },
+        {
+          "name": "WriteProp",
+          "startLine": 183,
+          "endLine": 195,
+          "params": [
+            "block",
+            "key",
+            "value"
+          ]
+        },
+        {
+          "name": "ObjectProp",
+          "startLine": 197,
+          "endLine": 199,
+          "params": [
+            "content",
+            "constName",
+            "key"
+          ]
+        },
+        {
+          "name": "ArrayItemProp",
+          "startLine": 201,
+          "endLine": 207,
+          "params": [
+            "content",
+            "constName",
+            "index",
+            "key"
+          ]
+        },
+        {
+          "name": "ReadProp",
+          "startLine": 209,
+          "endLine": 213,
+          "params": [
+            "block",
+            "key"
+          ]
+        },
+        {
+          "name": "Escape",
+          "startLine": 215,
+          "endLine": 216,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "Unescape",
+          "startLine": 218,
+          "endLine": 232,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "SaveBrand",
+          "startLine": 234,
+          "endLine": 245,
+          "params": [
+            "root",
+            "brandName"
+          ]
+        },
+        {
+          "name": "ReplaceFirst",
+          "startLine": 247,
+          "endLine": 251,
+          "params": [
+            "content",
+            "find",
+            "repl"
+          ]
+        },
+        {
+          "name": "ReadCached",
+          "startLine": 253,
+          "endLine": 259,
+          "params": [
+            "cache",
+            "path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ContentStore",
+          "startLine": 3,
+          "endLine": 260,
+          "methods": [
+            "Src",
+            "BuildFields",
+            "AddKindFields",
+            "AddDefFields",
+            "MakeField",
+            "AddBrandField",
+            "Pull",
+            "Save",
+            "SaveFaq",
+            "CurrentBrandName",
+            "SaveObject",
+            "RebuildArray",
+            "DefaultBlock",
+            "WriteProp",
+            "ObjectProp",
+            "ArrayItemProp",
+            "ReadProp",
+            "Escape",
+            "Unescape",
+            "SaveBrand",
+            "ReplaceFirst",
+            "ReadCached"
+          ],
+          "properties": [
+            "SiteConfigRel",
+            "FaqDataRel",
+            "FaqConst",
+            "BrandNamePrefix",
+            "BrandNameAny",
+            "BrandNameValue"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SiteConfigRel",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "FaqDataRel",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "FaqConst",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "BuildFields",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "Pull",
+          "line": 74,
+          "isDefault": false
+        },
+        {
+          "name": "Save",
+          "line": 101,
+          "isDefault": false
+        },
+        {
+          "name": "SaveFaq",
+          "line": 124,
+          "isDefault": false
+        },
+        {
+          "name": "CurrentBrandName",
+          "line": 136,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Src",
+          "callee": "ProjectPaths.Src",
+          "lineNumber": 14
+        },
+        {
+          "caller": "Src",
+          "callee": "rel.Replace",
+          "lineNumber": 14
+        },
+        {
+          "caller": "BuildFields",
+          "callee": "new List<FieldDef>",
+          "lineNumber": 18
+        },
+        {
+          "caller": "BuildFields",
+          "callee": "AddBrandField",
+          "lineNumber": 19
+        },
+        {
+          "caller": "BuildFields",
+          "callee": "SectionCatalog.FindByComponentName",
+          "lineNumber": 23
+        },
+        {
+          "caller": "BuildFields",
+          "callee": "SectionCatalog.AnyOfKind",
+          "lineNumber": 23
+        },
+        {
+          "caller": "BuildFields",
+          "callee": "AddDefFields",
+          "lineNumber": 24
+        },
+        {
+          "caller": "BuildFields",
+          "callee": "AddKindFields",
+          "lineNumber": 27
+        },
+        {
+          "caller": "BuildFields",
+          "callee": "AddKindFields",
+          "lineNumber": 28
+        },
+        {
+          "caller": "BuildFields",
+          "callee": "AddKindFields",
+          "lineNumber": 29
+        },
+        {
+          "caller": "AddKindFields",
+          "callee": "SectionCatalog.AnyOfKind",
+          "lineNumber": 36
+        },
+        {
+          "caller": "AddKindFields",
+          "callee": "AddDefFields",
+          "lineNumber": 36
+        },
+        {
+          "caller": "AddDefFields",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 41
+        },
+        {
+          "caller": "AddDefFields",
+          "callee": "Io.ReadOrNull",
+          "lineNumber": 45
+        },
+        {
+          "caller": "AddDefFields",
+          "callee": "Src",
+          "lineNumber": 45
+        },
+        {
+          "caller": "AddDefFields",
+          "callee": "TsBlockParser.CountArray",
+          "lineNumber": 46
+        },
+        {
+          "caller": "AddDefFields",
+          "callee": "fields.Add",
+          "lineNumber": 49
+        },
+        {
+          "caller": "AddDefFields",
+          "callee": "MakeField",
+          "lineNumber": 49
+        },
+        {
+          "caller": "AddDefFields",
+          "callee": "fields.Add",
+          "lineNumber": 54
+        },
+        {
+          "caller": "AddDefFields",
+          "callee": "MakeField",
+          "lineNumber": 54
+        },
+        {
+          "caller": "MakeField",
+          "callee": "mf.Id.Replace",
+          "lineNumber": 61
+        },
+        {
+          "caller": "MakeField",
+          "callee": "n.ToString",
+          "lineNumber": 61
+        },
+        {
+          "caller": "MakeField",
+          "callee": "mf.Label.Replace",
+          "lineNumber": 62
+        },
+        {
+          "caller": "MakeField",
+          "callee": "n.ToString",
+          "lineNumber": 62
+        },
+        {
+          "caller": "MakeField",
+          "callee": "new FieldDef",
+          "lineNumber": 64
+        },
+        {
+          "caller": "AddBrandField",
+          "callee": "Io.ReadOrNull",
+          "lineNumber": 69
+        },
+        {
+          "caller": "AddBrandField",
+          "callee": "Src",
+          "lineNumber": 69
+        },
+        {
+          "caller": "AddBrandField",
+          "callee": "BrandNamePrefix.IsMatch",
+          "lineNumber": 70
+        },
+        {
+          "caller": "AddBrandField",
+          "callee": "fields.Add",
+          "lineNumber": 71
+        },
+        {
+          "caller": "Pull",
+          "callee": "new Dictionary<string, string>",
+          "lineNumber": 76
+        },
+        {
+          "caller": "Pull",
+          "callee": "new Dictionary<string, string>",
+          "lineNumber": 77
+        },
+        {
+          "caller": "Pull",
+          "callee": "ReadCached",
+          "lineNumber": 83
+        },
+        {
+          "caller": "Pull",
+          "callee": "Src",
+          "lineNumber": 83
+        },
+        {
+          "caller": "Pull",
+          "callee": "BrandNameAny.Match",
+          "lineNumber": 84
+        },
+        {
+          "caller": "Pull",
+          "callee": "bm.Groups[1].Value.Trim",
+          "lineNumber": 85
+        },
+        {
+          "caller": "Pull",
+          "callee": "ReadCached",
+          "lineNumber": 89
+        },
+        {
+          "caller": "Pull",
+          "callee": "Src",
+          "lineNumber": 89
+        },
+        {
+          "caller": "Pull",
+          "callee": "ArrayItemProp",
+          "lineNumber": 92
+        },
+        {
+          "caller": "Pull",
+          "callee": "ObjectProp",
+          "lineNumber": 93
+        },
+        {
+          "caller": "Pull",
+          "callee": "Unescape",
+          "lineNumber": 95
+        },
+        {
+          "caller": "Save",
+          "callee": "SaveBrand",
+          "lineNumber": 103
+        },
+        {
+          "caller": "Save",
+          "callee": "values.TryGetValue",
+          "lineNumber": 103
+        },
+        {
+          "caller": "Save",
+          "callee": "b.Trim",
+          "lineNumber": 103
+        },
+        {
+          "caller": "Save",
+          "callee": "fields.Where(f => !f.IsBrand && f.DataFile.Length > 0)\n                     .GroupBy",
+          "lineNumber": 105
+        },
+        {
+          "caller": "Save",
+          "callee": "fields.Where",
+          "lineNumber": 105
+        },
+        {
+          "caller": "Save",
+          "callee": "Src",
+          "lineNumber": 108
+        },
+        {
+          "caller": "Save",
+          "callee": "Io.ReadOrNull",
+          "lineNumber": 109
+        },
+        {
+          "caller": "Save",
+          "callee": "fileGroup.Where(f => !f.IsArray).GroupBy",
+          "lineNumber": 112
+        },
+        {
+          "caller": "Save",
+          "callee": "fileGroup.Where",
+          "lineNumber": 112
+        },
+        {
+          "caller": "Save",
+          "callee": "SaveObject",
+          "lineNumber": 113
+        },
+        {
+          "caller": "Save",
+          "callee": "fileGroup.Where(f => f.IsArray).GroupBy",
+          "lineNumber": 115
+        },
+        {
+          "caller": "Save",
+          "callee": "fileGroup.Where",
+          "lineNumber": 115
+        },
+        {
+          "caller": "Save",
+          "callee": "RebuildArray",
+          "lineNumber": 116
+        },
+        {
+          "caller": "Save",
+          "callee": "constGroup.ToList",
+          "lineNumber": 116
+        },
+        {
+          "caller": "Save",
+          "callee": "Io.Write",
+          "lineNumber": 118
+        },
+        {
+          "caller": "SaveFaq",
+          "callee": "Src",
+          "lineNumber": 126
+        },
+        {
+          "caller": "SaveFaq",
+          "callee": "Io.ReadOrNull",
+          "lineNumber": 127
+        },
+        {
+          "caller": "SaveFaq",
+          "callee": "fields.Where(f => f.DataConst == FaqConst && f.IsArray).ToList",
+          "lineNumber": 129
+        },
+        {
+          "caller": "SaveFaq",
+          "callee": "fields.Where",
+          "lineNumber": 129
+        },
+        {
+          "caller": "SaveFaq",
+          "callee": "RebuildArray",
+          "lineNumber": 130
+        },
+        {
+          "caller": "SaveFaq",
+          "callee": "Io.Write",
+          "lineNumber": 132
+        },
+        {
+          "caller": "CurrentBrandName",
+          "callee": "Io.ReadOrNull",
+          "lineNumber": 138
+        },
+        {
+          "caller": "CurrentBrandName",
+          "callee": "Src",
+          "lineNumber": 138
+        },
+        {
+          "caller": "CurrentBrandName",
+          "callee": "BrandNameValue.Match",
+          "lineNumber": 139
+        },
+        {
+          "caller": "SaveObject",
+          "callee": "TsBlockParser.FirstBlock",
+          "lineNumber": 145
+        },
+        {
+          "caller": "SaveObject",
+          "callee": "values.TryGetValue",
+          "lineNumber": 148
+        },
+        {
+          "caller": "SaveObject",
+          "callee": "WriteProp",
+          "lineNumber": 149
+        },
+        {
+          "caller": "SaveObject",
+          "callee": "ReplaceFirst",
+          "lineNumber": 150
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "TsBlockParser.ArrayMatch",
+          "lineNumber": 155
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "TsBlockParser.AllBlocks",
+          "lineNumber": 158
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "group.GroupBy(f => f.ArrayIndex).ToDictionary",
+          "lineNumber": 159
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "group.GroupBy",
+          "lineNumber": 159
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "g.ToList",
+          "lineNumber": 159
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "group.Max",
+          "lineNumber": 160
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "new List<string>",
+          "lineNumber": 162
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "byIndex.TryGetValue",
+          "lineNumber": 165
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "existing[i].Trim",
+          "lineNumber": 166
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "DefaultBlock",
+          "lineNumber": 166
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "values.TryGetValue",
+          "lineNumber": 169
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "WriteProp",
+          "lineNumber": 170
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "items.Add",
+          "lineNumber": 171
+        },
+        {
+          "caller": "RebuildArray",
+          "callee": "string.Join",
+          "lineNumber": 174
+        },
+        {
+          "caller": "DefaultBlock",
+          "callee": "string.Join",
+          "lineNumber": 181
+        },
+        {
+          "caller": "DefaultBlock",
+          "callee": "fields.Select",
+          "lineNumber": 181
+        },
+        {
+          "caller": "WriteProp",
+          "callee": "Escape",
+          "lineNumber": 185
+        },
+        {
+          "caller": "WriteProp",
+          "callee": "new Regex",
+          "lineNumber": 186
+        },
+        {
+          "caller": "WriteProp",
+          "callee": "Regex.Escape",
+          "lineNumber": 186
+        },
+        {
+          "caller": "WriteProp",
+          "callee": "rx.IsMatch",
+          "lineNumber": 187
+        },
+        {
+          "caller": "WriteProp",
+          "callee": "rx.Replace",
+          "lineNumber": 188
+        },
+        {
+          "caller": "WriteProp",
+          "callee": "block.TrimEnd",
+          "lineNumber": 191
+        },
+        {
+          "caller": "WriteProp",
+          "callee": "trimmed.EndsWith",
+          "lineNumber": 192
+        },
+        {
+          "caller": "WriteProp",
+          "callee": "trimmed[1..^1].Trim",
+          "lineNumber": 193
+        },
+        {
+          "caller": "ObjectProp",
+          "callee": "TsBlockParser.FirstBlock",
+          "lineNumber": 198
+        },
+        {
+          "caller": "ObjectProp",
+          "callee": "ReadProp",
+          "lineNumber": 199
+        },
+        {
+          "caller": "ArrayItemProp",
+          "callee": "TsBlockParser.ArrayMatch",
+          "lineNumber": 203
+        },
+        {
+          "caller": "ArrayItemProp",
+          "callee": "TsBlockParser.AllBlocks",
+          "lineNumber": 205
+        },
+        {
+          "caller": "ArrayItemProp",
+          "callee": "ReadProp",
+          "lineNumber": 206
+        },
+        {
+          "caller": "ReadProp",
+          "callee": "Regex.Match",
+          "lineNumber": 211
+        },
+        {
+          "caller": "ReadProp",
+          "callee": "Regex.Escape",
+          "lineNumber": 211
+        },
+        {
+          "caller": "Escape",
+          "callee": "value\n        .Replace(\"\\\\\", \"\\\\\\\\\").Replace(\"\\\"\", \"\\\\\\\"\").Replace(\"\\r\", \"\").Replace",
+          "lineNumber": 215
+        },
+        {
+          "caller": "Escape",
+          "callee": "value\n        .Replace(\"\\\\\", \"\\\\\\\\\").Replace(\"\\\"\", \"\\\\\\\"\").Replace",
+          "lineNumber": 215
+        },
+        {
+          "caller": "Escape",
+          "callee": "value\n        .Replace(\"\\\\\", \"\\\\\\\\\").Replace",
+          "lineNumber": 215
+        },
+        {
+          "caller": "Escape",
+          "callee": "value\n        .Replace",
+          "lineNumber": 215
+        },
+        {
+          "caller": "Unescape",
+          "callee": "value.IndexOf",
+          "lineNumber": 220
+        },
+        {
+          "caller": "Unescape",
+          "callee": "new StringBuilder",
+          "lineNumber": 221
+        },
+        {
+          "caller": "Unescape",
+          "callee": "sb.Append",
+          "lineNumber": 227
+        },
+        {
+          "caller": "Unescape",
+          "callee": "sb.Append",
+          "lineNumber": 229
+        },
+        {
+          "caller": "Unescape",
+          "callee": "sb.ToString",
+          "lineNumber": 231
+        },
+        {
+          "caller": "SaveBrand",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 236
+        },
+        {
+          "caller": "SaveBrand",
+          "callee": "Src",
+          "lineNumber": 237
+        },
+        {
+          "caller": "SaveBrand",
+          "callee": "Io.ReadOrNull",
+          "lineNumber": 238
+        },
+        {
+          "caller": "SaveBrand",
+          "callee": "Rx.Wrap",
+          "lineNumber": 240
+        },
+        {
+          "caller": "SaveBrand",
+          "callee": "Rx.Wrap",
+          "lineNumber": 241
+        },
+        {
+          "caller": "SaveBrand",
+          "callee": "Io.Write",
+          "lineNumber": 243
+        },
+        {
+          "caller": "ReplaceFirst",
+          "callee": "content.IndexOf",
+          "lineNumber": 249
+        },
+        {
+          "caller": "ReadCached",
+          "callee": "cache.TryGetValue",
+          "lineNumber": 255
+        },
+        {
+          "caller": "ReadCached",
+          "callee": "Io.ReadOrNull",
+          "lineNumber": 256
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 8,
+        "functionCount": 22,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Services/CssColor.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 161,
+      "nonEmptyLines": 133,
+      "functions": [
+        {
+          "name": "TryExtract",
+          "startLine": 13,
+          "endLine": 23,
+          "params": [
+            "value",
+            "colorText"
+          ]
+        },
+        {
+          "name": "ReplaceFirst",
+          "startLine": 25,
+          "endLine": 26,
+          "params": [
+            "value",
+            "replacement"
+          ]
+        },
+        {
+          "name": "IsRgb",
+          "startLine": 28,
+          "endLine": 29,
+          "params": [
+            "colorText"
+          ]
+        },
+        {
+          "name": "ToHex",
+          "startLine": 31,
+          "endLine": 31,
+          "params": [
+            "color"
+          ]
+        },
+        {
+          "name": "ToRgba",
+          "startLine": 33,
+          "endLine": 37,
+          "params": [
+            "color"
+          ]
+        },
+        {
+          "name": "TryParse",
+          "startLine": 39,
+          "endLine": 46,
+          "params": [
+            "value",
+            "color"
+          ]
+        },
+        {
+          "name": "TryParseHex",
+          "startLine": 48,
+          "endLine": 71,
+          "params": [
+            "text",
+            "color"
+          ]
+        },
+        {
+          "name": "TryParseRgb",
+          "startLine": 73,
+          "endLine": 88,
+          "params": [
+            "text",
+            "color"
+          ]
+        },
+        {
+          "name": "FromHsv",
+          "startLine": 90,
+          "endLine": 111,
+          "params": [
+            "hue",
+            "saturation",
+            "value",
+            "alpha"
+          ]
+        },
+        {
+          "name": "ToHsv",
+          "startLine": 113,
+          "endLine": 130,
+          "params": [
+            "color",
+            "hue",
+            "saturation",
+            "value"
+          ]
+        },
+        {
+          "name": "TryHex",
+          "startLine": 132,
+          "endLine": 133,
+          "params": [
+            "part",
+            "value"
+          ]
+        },
+        {
+          "name": "TryChannel",
+          "startLine": 135,
+          "endLine": 149,
+          "params": [
+            "part",
+            "value"
+          ]
+        },
+        {
+          "name": "ParseAlpha",
+          "startLine": 151,
+          "endLine": 160,
+          "params": [
+            "part"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "CssColor",
+          "startLine": 5,
+          "endLine": 161,
+          "methods": [
+            "TryExtract",
+            "ReplaceFirst",
+            "IsRgb",
+            "ToHex",
+            "ToRgba",
+            "TryParse",
+            "TryParseHex",
+            "TryParseRgb",
+            "FromHsv",
+            "ToHsv",
+            "TryHex",
+            "TryChannel",
+            "ParseAlpha"
+          ],
+          "properties": [
+            "ColorPattern",
+            "RgbaPattern",
+            "Fallback"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TryExtract",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "ReplaceFirst",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "IsRgb",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "ToHex",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "ToRgba",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "TryParse",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "FromHsv",
+          "line": 90,
+          "isDefault": false
+        },
+        {
+          "name": "ToHsv",
+          "line": 113,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "TryExtract",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 16
+        },
+        {
+          "caller": "TryExtract",
+          "callee": "ColorPattern.Match",
+          "lineNumber": 18
+        },
+        {
+          "caller": "TryExtract",
+          "callee": "match.Value.Trim",
+          "lineNumber": 21
+        },
+        {
+          "caller": "ReplaceFirst",
+          "callee": "ColorPattern.Replace",
+          "lineNumber": 26
+        },
+        {
+          "caller": "IsRgb",
+          "callee": "colorText?.TrimStart().StartsWith",
+          "lineNumber": 29
+        },
+        {
+          "caller": "IsRgb",
+          "callee": "colorText?.TrimStart",
+          "lineNumber": 29
+        },
+        {
+          "caller": "ToRgba",
+          "callee": "Math.Round(color.A / 255d, 3).ToString",
+          "lineNumber": 35
+        },
+        {
+          "caller": "ToRgba",
+          "callee": "Math.Round",
+          "lineNumber": 35
+        },
+        {
+          "caller": "TryParse",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 42
+        },
+        {
+          "caller": "TryParse",
+          "callee": "value.Trim",
+          "lineNumber": 44
+        },
+        {
+          "caller": "TryParse",
+          "callee": "text.StartsWith",
+          "lineNumber": 45
+        },
+        {
+          "caller": "TryParse",
+          "callee": "TryParseHex",
+          "lineNumber": 45
+        },
+        {
+          "caller": "TryParse",
+          "callee": "TryParseRgb",
+          "lineNumber": 45
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "string.Concat",
+          "lineNumber": 53
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "hex.Select",
+          "lineNumber": 53
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "TryHex",
+          "lineNumber": 56
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "TryHex",
+          "lineNumber": 56
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "TryHex",
+          "lineNumber": 56
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "Color.FromRgb",
+          "lineNumber": 58
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "TryHex",
+          "lineNumber": 63
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "TryHex",
+          "lineNumber": 63
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "TryHex",
+          "lineNumber": 64
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "TryHex",
+          "lineNumber": 64
+        },
+        {
+          "caller": "TryParseHex",
+          "callee": "Color.FromArgb",
+          "lineNumber": 66
+        },
+        {
+          "caller": "TryParseRgb",
+          "callee": "RgbaPattern.Match",
+          "lineNumber": 76
+        },
+        {
+          "caller": "TryParseRgb",
+          "callee": "rgba.Groups[1].Value.Split",
+          "lineNumber": 79
+        },
+        {
+          "caller": "TryParseRgb",
+          "callee": "TryChannel",
+          "lineNumber": 82
+        },
+        {
+          "caller": "TryParseRgb",
+          "callee": "TryChannel",
+          "lineNumber": 82
+        },
+        {
+          "caller": "TryParseRgb",
+          "callee": "TryChannel",
+          "lineNumber": 82
+        },
+        {
+          "caller": "TryParseRgb",
+          "callee": "ParseAlpha",
+          "lineNumber": 85
+        },
+        {
+          "caller": "TryParseRgb",
+          "callee": "Color.FromArgb",
+          "lineNumber": 86
+        },
+        {
+          "caller": "FromHsv",
+          "callee": "Math.Abs",
+          "lineNumber": 94
+        },
+        {
+          "caller": "FromHsv",
+          "callee": "Color.FromArgb",
+          "lineNumber": 107
+        },
+        {
+          "caller": "FromHsv",
+          "callee": "Math.Round",
+          "lineNumber": 108
+        },
+        {
+          "caller": "FromHsv",
+          "callee": "Math.Round",
+          "lineNumber": 109
+        },
+        {
+          "caller": "FromHsv",
+          "callee": "Math.Round",
+          "lineNumber": 110
+        },
+        {
+          "caller": "ToHsv",
+          "callee": "Math.Max",
+          "lineNumber": 118
+        },
+        {
+          "caller": "ToHsv",
+          "callee": "Math.Max",
+          "lineNumber": 118
+        },
+        {
+          "caller": "ToHsv",
+          "callee": "Math.Min",
+          "lineNumber": 119
+        },
+        {
+          "caller": "ToHsv",
+          "callee": "Math.Min",
+          "lineNumber": 119
+        },
+        {
+          "caller": "TryHex",
+          "callee": "byte.TryParse",
+          "lineNumber": 133
+        },
+        {
+          "caller": "TryChannel",
+          "callee": "part.Trim",
+          "lineNumber": 138
+        },
+        {
+          "caller": "TryChannel",
+          "callee": "part.EndsWith",
+          "lineNumber": 139
+        },
+        {
+          "caller": "TryChannel",
+          "callee": "double.TryParse",
+          "lineNumber": 140
+        },
+        {
+          "caller": "TryChannel",
+          "callee": "Math.Clamp",
+          "lineNumber": 142
+        },
+        {
+          "caller": "TryChannel",
+          "callee": "Math.Round",
+          "lineNumber": 142
+        },
+        {
+          "caller": "TryChannel",
+          "callee": "double.TryParse",
+          "lineNumber": 145
+        },
+        {
+          "caller": "TryChannel",
+          "callee": "Math.Clamp",
+          "lineNumber": 147
+        },
+        {
+          "caller": "TryChannel",
+          "callee": "Math.Round",
+          "lineNumber": 147
+        },
+        {
+          "caller": "ParseAlpha",
+          "callee": "part.Trim",
+          "lineNumber": 153
+        },
+        {
+          "caller": "ParseAlpha",
+          "callee": "part.EndsWith",
+          "lineNumber": 154
+        },
+        {
+          "caller": "ParseAlpha",
+          "callee": "double.TryParse",
+          "lineNumber": 155
+        },
+        {
+          "caller": "ParseAlpha",
+          "callee": "Math.Clamp",
+          "lineNumber": 156
+        },
+        {
+          "caller": "ParseAlpha",
+          "callee": "Math.Round",
+          "lineNumber": 156
+        },
+        {
+          "caller": "ParseAlpha",
+          "callee": "double.TryParse",
+          "lineNumber": 157
+        },
+        {
+          "caller": "ParseAlpha",
+          "callee": "Math.Clamp",
+          "lineNumber": 158
+        },
+        {
+          "caller": "ParseAlpha",
+          "callee": "Math.Round",
+          "lineNumber": 158
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 8,
+        "functionCount": 13,
+        "classCount": 1
+      }
+    }
+  ]
+}

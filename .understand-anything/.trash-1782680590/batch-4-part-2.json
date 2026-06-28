@@ -1,0 +1,560 @@
+{
+  "nodes": [
+    {
+      "id": "file:Services/LayoutStore.cs",
+      "type": "file",
+      "name": "LayoutStore.cs",
+      "filePath": "Services/LayoutStore.cs",
+      "summary": "Reads and rewrites the generated project's pages/index.astro, parsing banner/component/import lines and rebuilding the section imports and BaseLayout body.",
+      "tags": ["service", "layout", "parsing", "serialization"],
+      "complexity": "moderate",
+      "languageNotes": "Relies on compiled regexes to manipulate Astro/JSX import and component tags."
+    },
+    {
+      "id": "class:Services/LayoutStore.cs:LayoutStore",
+      "type": "class",
+      "name": "LayoutStore",
+      "filePath": "Services/LayoutStore.cs",
+      "lineRange": [3, 90],
+      "summary": "Static store that parses and rebuilds the Astro index page's imports, banner, and section component list.",
+      "tags": ["layout", "parsing", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/LayoutStore.cs:BuildIndex",
+      "type": "function",
+      "name": "BuildIndex",
+      "filePath": "Services/LayoutStore.cs",
+      "lineRange": [43, 63],
+      "summary": "Rebuilds the index.astro content by syncing imports and rewriting the BaseLayout body with the banner and ordered section components.",
+      "tags": ["layout", "code-generation", "serialization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/LayoutStore.cs:SyncImports",
+      "type": "function",
+      "name": "SyncImports",
+      "filePath": "Services/LayoutStore.cs",
+      "lineRange": [65, 89],
+      "summary": "Strips existing section/generated-css import lines and re-inserts a fresh, ordered import block after the last import.",
+      "tags": ["parsing", "code-generation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/LegacySectionRepair.cs",
+      "type": "file",
+      "name": "LegacySectionRepair.cs",
+      "filePath": "Services/LegacySectionRepair.cs",
+      "summary": "Detects and repairs legacy hardcoded section .astro files and stale index imports, replacing them with data-driven component definitions.",
+      "tags": ["service", "migration", "repair", "layout"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Services/LegacySectionRepair.cs:LegacySectionRepair",
+      "type": "class",
+      "name": "LegacySectionRepair",
+      "filePath": "Services/LegacySectionRepair.cs",
+      "lineRange": [3, 101],
+      "summary": "Static repair routine that re-copies data-driven components over legacy hardcoded sections and rebuilds stale index imports.",
+      "tags": ["migration", "repair", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/LegacySectionRepair.cs:Repair",
+      "type": "function",
+      "name": "Repair",
+      "filePath": "Services/LegacySectionRepair.cs",
+      "lineRange": [5, 59],
+      "summary": "Reloads catalogs, maps composed components by kind, and re-copies data-driven definitions over legacy hardcoded section files.",
+      "tags": ["migration", "repair", "orchestration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/LegacySectionRepair.cs:RepairStaleIndex",
+      "type": "function",
+      "name": "RepairStaleIndex",
+      "filePath": "Services/LegacySectionRepair.cs",
+      "lineRange": [61, 88],
+      "summary": "Rebuilds the index when it references unknown component names, re-ordering body sections and removing orphans.",
+      "tags": ["repair", "layout"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/LineCodec.cs",
+      "type": "file",
+      "name": "LineCodec.cs",
+      "filePath": "Services/LineCodec.cs",
+      "summary": "Encodes/decodes the line-based content and CSS exchange format used between the editor and AI, including markdown fence stripping and export id mapping.",
+      "tags": ["service", "serialization", "parsing", "codec"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Services/LineCodec.cs:LineCodec",
+      "type": "class",
+      "name": "LineCodec",
+      "filePath": "Services/LineCodec.cs",
+      "lineRange": [3, 78],
+      "summary": "Static codec that parses field content lines and CSS variables and converts between internal ids and export ids.",
+      "tags": ["serialization", "codec", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/LineCodec.cs:ParseContent",
+      "type": "function",
+      "name": "ParseContent",
+      "filePath": "Services/LineCodec.cs",
+      "lineRange": [11, 33],
+      "summary": "Parses line-prefixed field content into id/value pairs after stripping any surrounding markdown code fence.",
+      "tags": ["parsing", "codec"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/LoginRememberService.cs",
+      "type": "file",
+      "name": "LoginRememberService.cs",
+      "filePath": "Services/LoginRememberService.cs",
+      "summary": "Persists optional 'remember me' login credentials to AppData, protecting the password with Windows DPAPI (ProtectedData).",
+      "tags": ["service", "security", "credentials", "persistence"],
+      "complexity": "moderate",
+      "languageNotes": "Uses DPAPI ProtectedData with CurrentUser scope to encrypt the stored password."
+    },
+    {
+      "id": "class:Services/LoginRememberService.cs:LoginRememberService",
+      "type": "class",
+      "name": "LoginRememberService",
+      "filePath": "Services/LoginRememberService.cs",
+      "lineRange": [5, 71],
+      "summary": "Static service that loads and saves remembered username and DPAPI-protected password via a JSON file.",
+      "tags": ["security", "credentials", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/LoginRememberService.cs:Load",
+      "type": "function",
+      "name": "Load",
+      "filePath": "Services/LoginRememberService.cs",
+      "lineRange": [18, 41],
+      "summary": "Reads the remembered credentials file and decrypts the DPAPI-protected password, returning safe defaults on failure.",
+      "tags": ["security", "deserialization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/LoginRememberService.cs:Save",
+      "type": "function",
+      "name": "Save",
+      "filePath": "Services/LoginRememberService.cs",
+      "lineRange": [43, 70],
+      "summary": "Encrypts and persists remembered credentials, or deletes the file when remember is disabled.",
+      "tags": ["security", "serialization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/NetworkImageScraper.cs",
+      "type": "file",
+      "name": "NetworkImageScraper.cs",
+      "filePath": "Services/NetworkImageScraper.cs",
+      "summary": "Drives a headless browser (Playwright/CDP core) to navigate a URL, auto-scroll, and capture all loaded image network responses into in-memory buffers with progress reporting.",
+      "tags": ["service", "web-scraping", "async", "browser-automation"],
+      "complexity": "complex",
+      "languageNotes": "Async event-driven capture with thread-safe collections and configurable timeouts; includes injected JS for lazy-load scrolling."
+    },
+    {
+      "id": "class:Services/NetworkImageScraper.cs:NetworkImageScraper",
+      "type": "class",
+      "name": "NetworkImageScraper",
+      "filePath": "Services/NetworkImageScraper.cs",
+      "lineRange": [35, 375],
+      "summary": "Captures images from a page by listening to network responses while auto-scrolling and waiting for network idle, exposing results via CaptureAsync.",
+      "tags": ["web-scraping", "browser-automation", "async"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:Services/NetworkImageScraper.cs:NetworkImageScraperOptions",
+      "type": "class",
+      "name": "NetworkImageScraperOptions",
+      "filePath": "Services/NetworkImageScraper.cs",
+      "lineRange": [21, 33],
+      "summary": "Configuration record of timeouts, delays, scroll limits, and minimum image size used to tune scraping behavior.",
+      "tags": ["configuration", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Services/NetworkImageScraper.cs:ScrapedImage",
+      "type": "class",
+      "name": "ScrapedImage",
+      "filePath": "Services/NetworkImageScraper.cs",
+      "lineRange": [5, 10],
+      "summary": "Simple record holding a captured image's source URL, byte data, and file extension.",
+      "tags": ["data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/NetworkImageScraper.cs:CaptureAsync",
+      "type": "function",
+      "name": "CaptureAsync",
+      "filePath": "Services/NetworkImageScraper.cs",
+      "lineRange": [64, 109],
+      "summary": "Navigates to a URL, auto-scrolls to trigger lazy loading, waits for network idle, and returns the captured images.",
+      "tags": ["web-scraping", "async", "orchestration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/NetworkImageScraper.cs:OnResponseReceived",
+      "type": "function",
+      "name": "OnResponseReceived",
+      "filePath": "Services/NetworkImageScraper.cs",
+      "lineRange": [207, 238],
+      "summary": "Network response handler that filters image responses and schedules content capture tasks.",
+      "tags": ["event-handler", "web-scraping", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/NetworkImageScraper.cs:AutoScrollAsync",
+      "type": "function",
+      "name": "AutoScrollAsync",
+      "filePath": "Services/NetworkImageScraper.cs",
+      "lineRange": [158, 185],
+      "summary": "Repeatedly injects scroll-step JavaScript to force lazy-loaded images to fetch across multiple passes.",
+      "tags": ["web-scraping", "async", "automation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/NodeInstallUi.cs",
+      "type": "file",
+      "name": "NodeInstallUi.cs",
+      "filePath": "Services/NodeInstallUi.cs",
+      "summary": "Shows a modal indeterminate-progress window while installing the Node.js runtime in the background, returning whether installation succeeded.",
+      "tags": ["service", "ui", "installer", "wpf"],
+      "complexity": "moderate",
+      "languageNotes": "Uses a WPF DispatcherFrame to run a nested message loop while a background install task runs."
+    },
+    {
+      "id": "class:Services/NodeInstallUi.cs:NodeInstallUi",
+      "type": "class",
+      "name": "NodeInstallUi",
+      "filePath": "Services/NodeInstallUi.cs",
+      "lineRange": [3, 89],
+      "summary": "Static UI helper presenting a blocking install dialog while NodeRuntime performs the installation.",
+      "tags": ["ui", "installer", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/NodeInstallUi.cs:RunInstall",
+      "type": "function",
+      "name": "RunInstall",
+      "filePath": "Services/NodeInstallUi.cs",
+      "lineRange": [5, 22],
+      "summary": "Displays the install window, runs the Node installer on a background task with a nested dispatcher frame, and reports success.",
+      "tags": ["installer", "ui", "async"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/NodeRuntime.cs",
+      "type": "file",
+      "name": "NodeRuntime.cs",
+      "filePath": "Services/NodeRuntime.cs",
+      "summary": "Detects, locates, and installs the Node.js runtime, probing availability, refreshing PATH, and running the bundled installer script.",
+      "tags": ["service", "runtime", "installer", "process"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Services/NodeRuntime.cs:NodeRuntime",
+      "type": "class",
+      "name": "NodeRuntime",
+      "filePath": "Services/NodeRuntime.cs",
+      "lineRange": [5, 135],
+      "summary": "Static service that checks Node availability, finds installers, runs installation, and ensures node is on PATH.",
+      "tags": ["runtime", "installer", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/NodeRuntime.cs:Probe",
+      "type": "function",
+      "name": "Probe",
+      "filePath": "Services/NodeRuntime.cs",
+      "lineRange": [19, 41],
+      "summary": "Runs 'node --version' to determine whether the runtime is available, caching the result.",
+      "tags": ["runtime", "process", "detection"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/NodeRuntime.cs:RunInstaller",
+      "type": "function",
+      "name": "RunInstaller",
+      "filePath": "Services/NodeRuntime.cs",
+      "lineRange": [62, 90],
+      "summary": "Executes the Node installer script as a process and waits for completion before refreshing availability.",
+      "tags": ["installer", "process"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/OpenAiClient.cs",
+      "type": "file",
+      "name": "OpenAiClient.cs",
+      "filePath": "Services/OpenAiClient.cs",
+      "summary": "HTTP client wrapper for OpenAI chat and image generation/edit endpoints with transient retry, usage tracking, and moderation/billing error detection.",
+      "tags": ["service", "ai", "http-client", "api-handler"],
+      "complexity": "moderate",
+      "languageNotes": "Implements exponential-style retry over a fixed set of retryable HTTP status codes using a shared HttpClient."
+    },
+    {
+      "id": "class:Services/OpenAiClient.cs:OpenAiClient",
+      "type": "class",
+      "name": "OpenAiClient",
+      "filePath": "Services/OpenAiClient.cs",
+      "lineRange": [6, 188],
+      "summary": "Static client exposing ChatAsync and image generation methods against the OpenAI API with retry and usage accounting.",
+      "tags": ["ai", "http-client", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/OpenAiClient.cs:SendWithRetryAsync",
+      "type": "function",
+      "name": "SendWithRetryAsync",
+      "filePath": "Services/OpenAiClient.cs",
+      "lineRange": [25, 57],
+      "summary": "Sends an HTTP request with retries on retryable status codes and transient network/timeout exceptions.",
+      "tags": ["http-client", "resilience", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/OpenAiClient.cs:ChatAsync",
+      "type": "function",
+      "name": "ChatAsync",
+      "filePath": "Services/OpenAiClient.cs",
+      "lineRange": [59, 91],
+      "summary": "Posts a chat completion request, extracts the message content, and records token usage with the tracker.",
+      "tags": ["ai", "api-handler", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/OpenAiClient.cs:GenerateImageAsync",
+      "type": "function",
+      "name": "GenerateImageAsync",
+      "filePath": "Services/OpenAiClient.cs",
+      "lineRange": [93, 129],
+      "summary": "Requests an AI-generated image, decodes the base64 result to bytes, and records image usage.",
+      "tags": ["ai", "image-generation", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/OpenAiClient.cs:GenerateImageWithReferenceAsync",
+      "type": "function",
+      "name": "GenerateImageWithReferenceAsync",
+      "filePath": "Services/OpenAiClient.cs",
+      "lineRange": [131, 168],
+      "summary": "Calls the image edit endpoint with a multipart form including a reference PNG to generate a variant image.",
+      "tags": ["ai", "image-generation", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/PaletteStore.cs",
+      "type": "file",
+      "name": "PaletteStore.cs",
+      "filePath": "Services/PaletteStore.cs",
+      "summary": "Provides a set of preset theme color palettes built from HSV values and a random palette picker.",
+      "tags": ["service", "theming", "catalog", "randomization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Services/PaletteStore.cs:PaletteStore",
+      "type": "class",
+      "name": "PaletteStore",
+      "filePath": "Services/PaletteStore.cs",
+      "lineRange": [3, 32],
+      "summary": "Static store exposing preset ThemePalette presets and a random selector.",
+      "tags": ["theming", "catalog", "static-class"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/ProjectComponentSync.cs",
+      "type": "file",
+      "name": "ProjectComponentSync.cs",
+      "filePath": "Services/ProjectComponentSync.cs",
+      "summary": "Keeps a generated project's section components in sync with the active layout: copies missing components, removes orphaned section/css files, and rewrites the generated CSS import file.",
+      "tags": ["service", "sync", "layout", "cleanup"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Services/ProjectComponentSync.cs:ProjectComponentSync",
+      "type": "class",
+      "name": "ProjectComponentSync",
+      "filePath": "Services/ProjectComponentSync.cs",
+      "lineRange": [3, 94],
+      "summary": "Static synchronizer that ensures active components exist, removes inactive ones, and regenerates the sections CSS import manifest.",
+      "tags": ["sync", "layout", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ProjectComponentSync.cs:EnsureComponents",
+      "type": "function",
+      "name": "EnsureComponents",
+      "filePath": "Services/ProjectComponentSync.cs",
+      "lineRange": [13, 35],
+      "summary": "Resolves layout components to section definitions and copies any missing ones into the project, returning the active set.",
+      "tags": ["sync", "layout"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ProjectComponentSync.cs:WriteGeneratedCss",
+      "type": "function",
+      "name": "WriteGeneratedCss",
+      "filePath": "Services/ProjectComponentSync.cs",
+      "lineRange": [77, 93],
+      "summary": "Writes the auto-generated sections CSS import file listing @import lines for each active section's stylesheet.",
+      "tags": ["code-generation", "css"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/ProjectMigrations.cs",
+      "type": "file",
+      "name": "ProjectMigrations.cs",
+      "filePath": "Services/ProjectMigrations.cs",
+      "summary": "Runs idempotent migrations on an existing generated project, such as upgrading the SEO heading matcher in seo-content.ts and repairing legacy sections.",
+      "tags": ["service", "migration", "maintenance"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Services/ProjectMigrations.cs:ProjectMigrations",
+      "type": "class",
+      "name": "ProjectMigrations",
+      "filePath": "Services/ProjectMigrations.cs",
+      "lineRange": [3, 60],
+      "summary": "Static migration runner that safely applies project upgrades guarded by content checks.",
+      "tags": ["migration", "maintenance", "static-class"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/ProjectMigrations.cs:MigrateSeoHeadingMatcher",
+      "type": "function",
+      "name": "MigrateSeoHeadingMatcher",
+      "filePath": "Services/ProjectMigrations.cs",
+      "lineRange": [16, 41],
+      "summary": "Upgrades the project's seo-content.ts heading matcher by injecting a brand import and replacing the matchHeading function via regex.",
+      "tags": ["migration", "code-rewrite", "regex"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/ProjectPaths.cs",
+      "type": "file",
+      "name": "ProjectPaths.cs",
+      "filePath": "Services/ProjectPaths.cs",
+      "summary": "Central helper for resolving generated-project paths (src, public, index) and managing project markers like 'complete' and 'new'.",
+      "tags": ["service", "paths", "utility", "project"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Services/ProjectPaths.cs:ProjectPaths",
+      "type": "class",
+      "name": "ProjectPaths",
+      "filePath": "Services/ProjectPaths.cs",
+      "lineRange": [3, 63],
+      "summary": "Static helper for project directory resolution, project enumeration, and lifecycle marker files.",
+      "tags": ["paths", "project", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ProjectPaths.cs:List",
+      "type": "function",
+      "name": "List",
+      "filePath": "Services/ProjectPaths.cs",
+      "lineRange": [11, 18],
+      "summary": "Enumerates the known generated projects under the projects root directory.",
+      "tags": ["paths", "enumeration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/ProjectPaths.cs:ClearNew",
+      "type": "function",
+      "name": "ClearNew",
+      "filePath": "Services/ProjectPaths.cs",
+      "lineRange": [43, 51],
+      "summary": "Removes the 'new' marker for a project to flag it as no longer freshly created.",
+      "tags": ["project", "lifecycle"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {"source": "file:Services/LayoutStore.cs", "target": "class:Services/LayoutStore.cs:LayoutStore", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LayoutStore.cs", "target": "function:Services/LayoutStore.cs:BuildIndex", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LayoutStore.cs", "target": "function:Services/LayoutStore.cs:SyncImports", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LayoutStore.cs", "target": "function:Services/LayoutStore.cs:BuildIndex", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/LayoutStore.cs", "target": "file:Services/Io.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LayoutStore.cs", "target": "file:Services/ProjectPaths.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/LegacySectionRepair.cs", "target": "class:Services/LegacySectionRepair.cs:LegacySectionRepair", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LegacySectionRepair.cs", "target": "function:Services/LegacySectionRepair.cs:Repair", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LegacySectionRepair.cs", "target": "function:Services/LegacySectionRepair.cs:RepairStaleIndex", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LegacySectionRepair.cs", "target": "function:Services/LegacySectionRepair.cs:Repair", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/LegacySectionRepair.cs", "target": "file:Services/ProjectPaths.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LegacySectionRepair.cs", "target": "file:Services/SectionCatalog.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LegacySectionRepair.cs", "target": "file:Services/ComponentStore.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LegacySectionRepair.cs", "target": "file:Services/LayoutStore.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LegacySectionRepair.cs", "target": "file:Services/ProjectComponentSync.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/LineCodec.cs", "target": "class:Services/LineCodec.cs:LineCodec", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LineCodec.cs", "target": "function:Services/LineCodec.cs:ParseContent", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LineCodec.cs", "target": "function:Services/LineCodec.cs:ParseContent", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:Services/LoginRememberService.cs", "target": "class:Services/LoginRememberService.cs:LoginRememberService", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LoginRememberService.cs", "target": "function:Services/LoginRememberService.cs:Load", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LoginRememberService.cs", "target": "function:Services/LoginRememberService.cs:Save", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LoginRememberService.cs", "target": "function:Services/LoginRememberService.cs:Load", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/LoginRememberService.cs", "target": "function:Services/LoginRememberService.cs:Save", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/LoginRememberService.cs", "target": "file:Services/JsonFile.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LoginRememberService.cs", "target": "file:Services/Io.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/NetworkImageScraper.cs", "target": "class:Services/NetworkImageScraper.cs:NetworkImageScraper", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NetworkImageScraper.cs", "target": "class:Services/NetworkImageScraper.cs:NetworkImageScraperOptions", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NetworkImageScraper.cs", "target": "class:Services/NetworkImageScraper.cs:ScrapedImage", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NetworkImageScraper.cs", "target": "function:Services/NetworkImageScraper.cs:CaptureAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NetworkImageScraper.cs", "target": "function:Services/NetworkImageScraper.cs:OnResponseReceived", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NetworkImageScraper.cs", "target": "function:Services/NetworkImageScraper.cs:AutoScrollAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NetworkImageScraper.cs", "target": "class:Services/NetworkImageScraper.cs:NetworkImageScraper", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/NetworkImageScraper.cs", "target": "function:Services/NetworkImageScraper.cs:CaptureAsync", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:Services/NodeInstallUi.cs", "target": "class:Services/NodeInstallUi.cs:NodeInstallUi", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NodeInstallUi.cs", "target": "function:Services/NodeInstallUi.cs:RunInstall", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NodeInstallUi.cs", "target": "function:Services/NodeInstallUi.cs:RunInstall", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/NodeInstallUi.cs", "target": "file:Services/NodeRuntime.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/NodeInstallUi.cs", "target": "file:Helpers/Ui.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/NodeRuntime.cs", "target": "class:Services/NodeRuntime.cs:NodeRuntime", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NodeRuntime.cs", "target": "function:Services/NodeRuntime.cs:Probe", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NodeRuntime.cs", "target": "function:Services/NodeRuntime.cs:RunInstaller", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/NodeRuntime.cs", "target": "function:Services/NodeRuntime.cs:RunInstaller", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:Services/OpenAiClient.cs", "target": "class:Services/OpenAiClient.cs:OpenAiClient", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/OpenAiClient.cs", "target": "function:Services/OpenAiClient.cs:SendWithRetryAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/OpenAiClient.cs", "target": "function:Services/OpenAiClient.cs:ChatAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/OpenAiClient.cs", "target": "function:Services/OpenAiClient.cs:GenerateImageAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/OpenAiClient.cs", "target": "function:Services/OpenAiClient.cs:GenerateImageWithReferenceAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/OpenAiClient.cs", "target": "function:Services/OpenAiClient.cs:ChatAsync", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/OpenAiClient.cs", "target": "function:Services/OpenAiClient.cs:GenerateImageAsync", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/OpenAiClient.cs", "target": "function:Services/OpenAiClient.cs:GenerateImageWithReferenceAsync", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/OpenAiClient.cs", "target": "function:Services/OpenAiClient.cs:ChatAsync", "type": "calls", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/OpenAiClient.cs", "target": "file:Services/UsageTracker.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/PaletteStore.cs", "target": "class:Services/PaletteStore.cs:PaletteStore", "type": "contains", "direction": "forward", "weight": 1.0},
+
+    {"source": "file:Services/ProjectComponentSync.cs", "target": "class:Services/ProjectComponentSync.cs:ProjectComponentSync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ProjectComponentSync.cs", "target": "function:Services/ProjectComponentSync.cs:EnsureComponents", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ProjectComponentSync.cs", "target": "function:Services/ProjectComponentSync.cs:WriteGeneratedCss", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ProjectComponentSync.cs", "target": "function:Services/ProjectComponentSync.cs:EnsureComponents", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/ProjectComponentSync.cs", "target": "file:Services/ComponentStore.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ProjectComponentSync.cs", "target": "file:Services/SectionCatalog.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ProjectComponentSync.cs", "target": "file:Services/ProjectPaths.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ProjectComponentSync.cs", "target": "file:Services/Io.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/ProjectMigrations.cs", "target": "class:Services/ProjectMigrations.cs:ProjectMigrations", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ProjectMigrations.cs", "target": "function:Services/ProjectMigrations.cs:MigrateSeoHeadingMatcher", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ProjectMigrations.cs", "target": "file:Services/ProjectPaths.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ProjectMigrations.cs", "target": "file:Services/Io.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ProjectMigrations.cs", "target": "file:Services/LegacySectionRepair.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/ProjectPaths.cs", "target": "class:Services/ProjectPaths.cs:ProjectPaths", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ProjectPaths.cs", "target": "function:Services/ProjectPaths.cs:List", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ProjectPaths.cs", "target": "function:Services/ProjectPaths.cs:ClearNew", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ProjectPaths.cs", "target": "function:Services/ProjectPaths.cs:List", "type": "exports", "direction": "forward", "weight": 0.8}
+  ]
+}

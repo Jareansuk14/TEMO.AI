@@ -42,8 +42,6 @@ internal sealed class LoadingPanel : Grid
         _spinner.Visibility = Visibility.Collapsed;
     }
 
-    public void ShowLoading(string text) => ShowMessage(text, 0x5A5A5A);
-
     public void ShowEmpty(string text) => ShowMessage(text, 0x8A8A8A);
 
     public void ShowContent(UIElement content)

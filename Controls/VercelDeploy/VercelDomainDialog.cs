@@ -56,20 +56,7 @@ internal sealed class VercelDomainDialog : Window
         return outer;
     }
 
-    private Border BuildHeader() => new()
-    {
-        Background = Ui.Brush(0x0D0D0D),
-        BorderBrush = Ui.Brush(0x1E1E1E),
-        BorderThickness = new Thickness(0, 0, 0, 1),
-        Padding = new Thickness(24, 18, 24, 18),
-        Child = new TextBlock
-        {
-            Text = $"จัดการโดเมน — {_project.Name}",
-            FontSize = 18,
-            FontWeight = FontWeights.Bold,
-            Foreground = Ui.Brush(0xEDEDED),
-        },
-    };
+    private Border BuildHeader() => Ui.ChromeTitleHeader($"จัดการโดเมน — {_project.Name}");
 
     private StackPanel BuildBody()
     {
@@ -151,14 +138,7 @@ internal sealed class VercelDomainDialog : Window
         Grid.SetColumn(closeBtn, 1);
         grid.Children.Add(closeBtn);
 
-        var border = new Border
-        {
-            Background = Ui.Brush(0x0D0D0D),
-            BorderBrush = Ui.Brush(0x1E1E1E),
-            BorderThickness = new Thickness(0, 1, 0, 0),
-            Padding = new Thickness(24, 14, 24, 14),
-            Child = grid,
-        };
+        var border = Ui.ChromeFooter(grid, new Thickness(24, 14, 24, 14));
         DockPanel.SetDock(border, Dock.Bottom);
         return border;
     }
@@ -417,7 +397,6 @@ internal sealed class VercelDomainDialog : Window
 
 internal sealed class VercelDomainDnsDialog : Window
 {
-    private readonly string _projectName;
     private readonly List<VercelDomainDnsConfig> _configs;
     private readonly List<VercelDomainAddResult> _results;
     private TextBlock _statusText = null!;
@@ -427,7 +406,6 @@ internal sealed class VercelDomainDnsDialog : Window
         IEnumerable<VercelDomainDnsConfig> configs,
         IEnumerable<VercelDomainAddResult> results)
     {
-        _projectName = projectName;
         _configs = [.. configs];
         _results = [.. results];
 
@@ -458,20 +436,7 @@ internal sealed class VercelDomainDnsDialog : Window
         return root;
     }
 
-    private Border BuildHeader() => new()
-    {
-        Background = Ui.Brush(0x0D0D0D),
-        BorderBrush = Ui.Brush(0x1E1E1E),
-        BorderThickness = new Thickness(0, 0, 0, 1),
-        Padding = new Thickness(24, 18, 24, 18),
-        Child = new TextBlock
-        {
-            Text = $"DNS สำหรับ Cloudflare",
-            FontSize = 18,
-            FontWeight = FontWeights.Bold,
-            Foreground = Ui.Brush(0xEDEDED),
-        },
-    };
+    private Border BuildHeader() => Ui.ChromeTitleHeader("DNS สำหรับ Cloudflare");
 
     private StackPanel BuildBody()
     {
@@ -568,14 +533,7 @@ internal sealed class VercelDomainDnsDialog : Window
         Grid.SetColumn(closeBtn, 1);
         grid.Children.Add(closeBtn);
 
-        var border = new Border
-        {
-            Background = Ui.Brush(0x0D0D0D),
-            BorderBrush = Ui.Brush(0x1E1E1E),
-            BorderThickness = new Thickness(0, 1, 0, 0),
-            Padding = new Thickness(24, 14, 24, 14),
-            Child = grid,
-        };
+        var border = Ui.ChromeFooter(grid, new Thickness(24, 14, 24, 14));
         DockPanel.SetDock(border, Dock.Bottom);
         return border;
     }

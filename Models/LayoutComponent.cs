@@ -12,6 +12,9 @@ internal sealed class LayoutComponent
     public string AstroFile { get; set; } = "";
     public string CssFile { get; set; } = "";
     public bool HasExternalLink { get; set; }
+    public string Slot { get; set; } = "body";
+    public bool Required { get; set; }
+    public int Weight { get; set; } = 100;
     public bool CanRemove { get; set; } = true;
     public bool CanChangeVariant { get; set; } = true;
 

@@ -1,0 +1,15 @@
+{
+  "projectRoot": "c:/MainProject/Autoweb/TEMO.AI",
+  "batchFiles": [
+    {"path": "README.md", "language": "markdown", "sizeLines": 0, "fileCategory": "docs"},
+    {"path": "TEMO.AI.csproj", "language": "csproj", "sizeLines": 41, "fileCategory": "config"},
+    {"path": "build-velopack.bat", "language": "batch", "sizeLines": 96, "fileCategory": "script"},
+    {"path": "install-node.bat", "language": "batch", "sizeLines": 8, "fileCategory": "script"}
+  ],
+  "batchImportData": {
+    "README.md": [],
+    "TEMO.AI.csproj": [],
+    "build-velopack.bat": [],
+    "install-node.bat": []
+  }
+}

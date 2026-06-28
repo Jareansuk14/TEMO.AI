@@ -39,12 +39,14 @@ public partial class MainWindow
             return;
         }
 
-        LoadProject();
+        if (!ConfirmUnsavedChanges()) return;
+        if (_loadedProjectPath != _projectPath) LoadProject();
         UpdateSaveAllUi();
 
         _waitingForPreview = true;
         _navScheduled = false;
         _lastPhase = null;
+        _serverLog.Clear();
         LoadingOverlay.Visibility = Visibility.Visible;
         WebView.Visibility = Visibility.Collapsed;
 
@@ -72,7 +74,7 @@ public partial class MainWindow
         };
         _devProcess.OutputDataReceived += OnServerOut;
         _devProcess.ErrorDataReceived += OnServerOut;
-        _devProcess.Exited += (_, _) => Ui.RunOnUi(this, UpdateServerUi);
+        _devProcess.Exited += OnServerExited;
         _devProcess.Start();
         _devProcess.BeginOutputReadLine();
         _devProcess.BeginErrorReadLine();
@@ -81,7 +83,10 @@ public partial class MainWindow
 
     private void OnServerOut(object sender, DataReceivedEventArgs e)
     {
-        if (e.Data is null || _navScheduled) return;
+        if (e.Data is null) return;
+
+        AppendServerLog(e.Data);
+        if (_navScheduled) return;
 
         UpdatePhaseText(e.Data);
 
@@ -93,6 +98,59 @@ public partial class MainWindow
             await Task.Delay(800);
             WebView.CoreWebView2?.Navigate(ServerUrl);
         });
+    }
+
+    private void AppendServerLog(string line)
+    {
+        _serverLog.Add(line);
+        if (_serverLog.Count > 300) _serverLog.RemoveRange(0, _serverLog.Count - 300);
+    }
+
+    private void OnServerExited(object? sender, EventArgs e)
+    {
+        var exitCode = -1;
+        try { if (sender is Process p) exitCode = p.ExitCode; } catch { }
+        Ui.RunOnUi(this, () => HandleServerExit(exitCode));
+    }
+
+    private void HandleServerExit(int exitCode)
+    {
+        var failedStart = _waitingForPreview;
+        UpdateServerUi();
+        if (!failedStart) return;
+
+        _waitingForPreview = false;
+        _navScheduled = false;
+        WebView.Visibility = Visibility.Collapsed;
+        LoadingOverlay.Visibility = Visibility.Visible;
+        LoadingText.Text = "เริ่มเซิร์ฟเวอร์ไม่สำเร็จ — ดูรายละเอียดข้อผิดพลาด";
+
+        ShowServerError(exitCode);
+    }
+
+    private void ShowServerError(int exitCode)
+    {
+        var detail = ServerErrorDetail();
+        ShowMsg($"❌  เริ่มเซิร์ฟเวอร์ไม่สำเร็จ (exit code {exitCode})");
+
+        System.Windows.MessageBox.Show(
+            this,
+            detail,
+            $"เริ่มเซิร์ฟเวอร์ไม่สำเร็จ (exit code {exitCode})",
+            System.Windows.MessageBoxButton.OK,
+            System.Windows.MessageBoxImage.Error);
+    }
+
+    private string ServerErrorDetail()
+    {
+        var lines = _serverLog
+            .Select(l => l.TrimEnd())
+            .Where(l => !string.IsNullOrWhiteSpace(l))
+            .ToList();
+
+        if (lines.Count == 0) return "ไม่มีข้อความ output จากโปรเซส";
+        if (lines.Count > 25) lines = lines.Skip(lines.Count - 25).ToList();
+        return string.Join(Environment.NewLine, lines);
     }
 
     private void UpdatePhaseText(string line)

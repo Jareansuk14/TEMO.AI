@@ -15,7 +15,7 @@ public partial class MainWindow
 
         try
         {
-            new VercelDeployDialog(_projectPath) { Owner = this }.ShowDialog();
+            _vm.Deploy.OpenDeploy(this);
         }
         catch (Exception ex)
         {
