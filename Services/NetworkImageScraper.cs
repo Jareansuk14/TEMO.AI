@@ -32,7 +32,7 @@ internal sealed class NetworkImageScraperOptions
     public int MinImageBytes { get; init; } = 128;
 }
 
-internal sealed class NetworkImageScraper
+internal sealed class NetworkImageScraper : IDisposable
 {
     private static readonly Regex ImageExtPattern =
         new(@"\.(jpg|jpeg|png|webp|gif|avif|svg|bmp|ico)($|\?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -58,6 +58,8 @@ internal sealed class NetworkImageScraper
         _options = options ?? new NetworkImageScraperOptions();
         _core.WebResourceResponseReceived += OnResponseReceived;
     }
+
+    public void Dispose() => _core.WebResourceResponseReceived -= OnResponseReceived;
 
     public async Task<List<ScrapedImage>> CaptureAsync(
         string url, IProgress<ImageScrapeProgress>? progress, CancellationToken ct)

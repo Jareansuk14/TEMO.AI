@@ -4,10 +4,24 @@ public partial class MainWindow
 {
     private string _bannerLine = "  <Banner />";
 
+    private const bool DevLayoutMode = false;
+
+    public static Visibility DevEditVisibility =>
+        DevLayoutMode ? Visibility.Visible : Visibility.Collapsed;
+
+    private void ApplyDevLayoutMode()
+    {
+        ShellSectionWrap.Visibility = DevLayoutMode ? Visibility.Visible : Visibility.Collapsed;
+        AddSectionBtn.Visibility = DevLayoutMode ? Visibility.Visible : Visibility.Collapsed;
+    }
+
     private void LoadLayoutComponents()
     {
+        _selectedIndexForSwap = -1;
         _layoutComponents.Clear();
         LayoutList.Items.Clear();
+
+        LoadShellComponents();
 
         if (LayoutStore.ReadIndex(_projectPath) is not { } content)
         {
@@ -30,6 +44,61 @@ public partial class MainWindow
         UpdateAddSectionButton();
     }
 
+    private void LoadShellComponents()
+    {
+        ShellList.Items.Clear();
+        if (!HasOpenProject()) return;
+
+        foreach (var slot in ShellSlot.All)
+        {
+            var variants = SectionCatalog.All.Where(d => d.Slot == slot).ToList();
+            if (variants.Count == 0) continue;
+
+            var current = ComponentStore.CurrentForSlot(_projectPath, slot);
+            var comp = current is not null
+                ? SectionCatalog.ToLayoutComponent(current)
+                : new LayoutComponent
+                {
+                    Slot = slot,
+                    Kind = variants[0].Kind,
+                    DisplayName = SectionCatalog.DisplayName(variants[0].Kind),
+                    Variant = "ไม่ทราบแบบ",
+                };
+
+            ShellList.Items.Add(comp);
+        }
+    }
+
+    private void ChangeShellVariant_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        e.Handled = true;
+        if (sender is not Border { DataContext: LayoutComponent comp }) return;
+        if (!HasOpenProject())
+        {
+            ShowMsg("เปิดโปรเจคก่อนจึงจะเปลี่ยนแบบได้");
+            return;
+        }
+
+        SectionCatalog.Reload();
+        var options = SectionCatalog.All.Where(d => d.Slot == comp.Slot).ToList();
+        if (options.Count == 0)
+        {
+            ShowMsg("ยังไม่มี variant สำหรับส่วนนี้");
+            return;
+        }
+
+        var picker = new SectionPickerDialog(options, $"เปลี่ยนแบบ {comp.DisplayName}") { Owner = this };
+        if (picker.ShowDialog() != true || picker.SelectedSection is not { } selected) return;
+
+        ComponentStore.CopyToProject(_projectPath, selected);
+        LoadShellComponents();
+
+        if (_devProcess is { HasExited: false })
+            WebView.CoreWebView2?.Reload();
+
+        ShowMsg($"เปลี่ยนเป็น {selected.DisplayName} แล้ว");
+    }
+
     private void AddLayoutSection_Click(object sender, RoutedEventArgs e)
     {
         SectionCatalog.Reload();
@@ -39,7 +108,7 @@ public partial class MainWindow
             .ToHashSet(StringComparer.Ordinal);
 
         var options = SectionCatalog.All
-            .Where(x => !existingKinds.Contains(x.Kind))
+            .Where(x => x.Slot == "body" && !existingKinds.Contains(x.Kind))
             .ToList();
 
         if (options.Count == 0)
@@ -162,7 +231,7 @@ public partial class MainWindow
             .Where(x => !string.IsNullOrWhiteSpace(x))
             .ToHashSet(StringComparer.Ordinal);
 
-        var canAdd = SectionCatalog.All.Any(x => !activeKinds.Contains(x.Kind));
+        var canAdd = SectionCatalog.All.Any(x => x.Slot == "body" && !activeKinds.Contains(x.Kind));
         AddSectionBtn.IsEnabled = canAdd;
         AddSectionBtn.ToolTip = canAdd ? "เพิ่ม section" : "เพิ่มครบทุกชนิด section แล้ว";
     }
@@ -171,7 +240,7 @@ public partial class MainWindow
     {
         using var session = Io.Session();
         var unsavedBeforeLayoutSave = CaptureUnsavedKeysExceptLayout();
-        if (SectionMeta.ContentLabel(refreshKind) is { } refreshLabel)
+        if (SectionCatalog.ContentLabel(refreshKind) is { } refreshLabel)
             unsavedBeforeLayoutSave.ExceptWith(_fields
                 .Where(f => string.Equals(f.Section, refreshLabel, StringComparison.Ordinal))
                 .Select(f => f.Id));
@@ -184,8 +253,7 @@ public partial class MainWindow
             RebuildContentForLayout(refreshKind);
             if (HasOpenProject())
             {
-                ImagesStore.SyncGameImages(_projectPath, src => TryDelete(PublicPath(src)));
-                ImagesStore.SyncSeoImages(_projectPath, src => TryDelete(PublicPath(src)));
+                ImagesStore.SyncStandard(_projectPath, src => Io.DeleteFile(PublicPath(src)));
                 BuildImagesPanel();
                 PullImages();
             }

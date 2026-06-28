@@ -2,30 +2,54 @@ namespace TEMO.AI;
 
 internal static class ComponentStore
 {
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        WriteIndented = true,
-    };
-
     public static string Root => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Component");
+
+    private static readonly Lazy<string?> LocalRootLazy = new(ResolveLocalRoot);
+
+    private static string? LocalRoot => LocalRootLazy.Value;
+
+    private static string? ResolveLocalRoot() =>
+        Workspace.FindAncestorDir(Path.Combine("Templates", "Component"));
+
+    private static List<string> Roots()
+    {
+        var roots = new List<string>();
+        if (LocalRoot is { } local) roots.Add(local);
+        roots.Add(Root);
+        return roots;
+    }
 
     public static IReadOnlyList<SectionDefinition> List()
     {
         EnsureSeeded();
 
-        if (!Directory.Exists(Root)) return [];
+        var roots = Roots();
+        var collected = new List<(SectionDefinition Def, int Priority, string Root)>();
 
-        return Directory.GetFiles(Root, "manifest.json", SearchOption.AllDirectories)
-            .Select(Path.GetDirectoryName)
-            .Where(x => !string.IsNullOrWhiteSpace(x))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .Select(x => ReadDefinition(x!))
-            .Where(x => x is not null)
-            .Cast<SectionDefinition>()
-            .GroupBy(x => x.ComponentName, StringComparer.Ordinal)
-            .Select(g => g.OrderByDescending(x => IsNestedStorePath(x.StoreDirectory)).First())
+        for (var i = 0; i < roots.Count; i++)
+        {
+            var root = roots[i];
+            if (!Directory.Exists(root)) continue;
+
+            foreach (var def in Directory.GetFiles(root, "manifest.json", SearchOption.AllDirectories)
+                .Select(Path.GetDirectoryName)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Select(x => ReadDefinition(x!))
+                .Where(x => x is not null)
+                .Cast<SectionDefinition>())
+            {
+                collected.Add((def, i, root));
+            }
+        }
+
+        return collected
+            .GroupBy(x => x.Def.ComponentName, StringComparer.Ordinal)
+            .Select(g => g
+                .OrderBy(x => x.Priority)
+                .ThenByDescending(x => IsNestedStorePath(x.Root, x.Def.StoreDirectory))
+                .First().Def)
             .OrderBy(x => x.Kind, StringComparer.Ordinal)
             .ThenBy(x => x.Variant, StringComparer.Ordinal)
             .ThenBy(x => x.DisplayName, StringComparer.Ordinal)
@@ -43,15 +67,40 @@ internal static class ComponentStore
     private static string ProjectCss(string projectPath, string kind) =>
         ProjectPaths.Src(projectPath, Path.Combine("styles", "sections", $"{kind}.css"));
 
+    private static (string astro, string? css) SlotDest(string projectPath, SectionDefinition d) =>
+        ShellSlot.AstroPath(projectPath, d.Slot) is { } astro
+            ? (astro, null)
+            : (ProjectAstro(projectPath, d.Kind), ProjectCss(projectPath, d.Kind));
+
+    public static SectionDefinition? CurrentForSlot(string projectPath, string slot)
+    {
+        if (ShellSlot.AstroPath(projectPath, slot) is not { } dest || !File.Exists(dest)) return null;
+
+        string current;
+        try { current = File.ReadAllText(dest); }
+        catch { return null; }
+
+        foreach (var def in SectionCatalog.All.Where(d => d.Slot == slot))
+        {
+            var srcFile = Path.Combine(def.StoreDirectory, def.AstroFile);
+            try
+            {
+                if (File.Exists(srcFile) && File.ReadAllText(srcFile) == current) return def;
+            }
+            catch { }
+        }
+        return null;
+    }
+
     public static void CopyToProjectIfMissing(string projectPath, SectionDefinition definition)
     {
         if (!IsProject(projectPath)) return;
 
         var now = DateTime.UtcNow;
-        CopyIfMissing(Path.Combine(definition.StoreDirectory, definition.AstroFile),
-            ProjectAstro(projectPath, definition.Kind), now);
-        CopyIfMissing(Path.Combine(definition.StoreDirectory, definition.CssFile),
-            ProjectCss(projectPath, definition.Kind), now);
+        var (astro, css) = SlotDest(projectPath, definition);
+        CopyIfMissing(Path.Combine(definition.StoreDirectory, definition.AstroFile), astro, now);
+        if (css is not null)
+            CopyIfMissing(Path.Combine(definition.StoreDirectory, definition.CssFile), css, now);
     }
 
     public static void CopyToProject(string projectPath, SectionDefinition definition)
@@ -59,18 +108,10 @@ internal static class ComponentStore
         if (!IsProject(projectPath)) return;
 
         var now = DateTime.UtcNow;
-        CopyFile(Path.Combine(definition.StoreDirectory, definition.AstroFile),
-            ProjectAstro(projectPath, definition.Kind), now);
-        CopyFile(Path.Combine(definition.StoreDirectory, definition.CssFile),
-            ProjectCss(projectPath, definition.Kind), now);
-    }
-
-    public static void RemoveFromProject(string projectPath, string kind)
-    {
-        if (!IsProject(projectPath)) return;
-
-        DeleteIfExists(ProjectAstro(projectPath, kind));
-        DeleteIfExists(ProjectCss(projectPath, kind));
+        var (astro, css) = SlotDest(projectPath, definition);
+        CopyFile(Path.Combine(definition.StoreDirectory, definition.AstroFile), astro, now);
+        if (css is not null)
+            CopyFile(Path.Combine(definition.StoreDirectory, definition.CssFile), css, now);
     }
 
     private static bool IsProject(string projectPath) => ProjectPaths.IsProject(projectPath);
@@ -96,7 +137,7 @@ internal static class ComponentStore
 
         try
         {
-            var manifest = JsonSerializer.Deserialize<ComponentManifest>(File.ReadAllText(manifestPath), JsonOptions);
+            var manifest = JsonFile.Read<ComponentManifest>(manifestPath);
             if (manifest is null || string.IsNullOrWhiteSpace(manifest.ComponentName)) return null;
 
             return new SectionDefinition(
@@ -109,7 +150,14 @@ internal static class ComponentStore
                 dir,
                 string.IsNullOrWhiteSpace(manifest.AstroFile) ? $"{manifest.ComponentName}.astro" : manifest.AstroFile,
                 string.IsNullOrWhiteSpace(manifest.CssFile) ? $"{manifest.ComponentName}.css" : manifest.CssFile,
-                manifest.HasExternalLink);
+                manifest.HasExternalLink,
+                string.IsNullOrWhiteSpace(manifest.Slot) ? "body" : manifest.Slot,
+                manifest.Required,
+                manifest.Weight,
+                manifest.DataFile,
+                manifest.DataConst,
+                manifest.Repeatable,
+                manifest.Fields);
         }
         catch
         {
@@ -117,20 +165,9 @@ internal static class ComponentStore
         }
     }
 
-    private static bool IsNestedStorePath(string path)
+    private static bool IsNestedStorePath(string root, string path)
     {
-        var rel = Path.GetRelativePath(Root, path);
+        var rel = Path.GetRelativePath(root, path);
         return rel.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Length >= 2;
-    }
-
-    private static void DeleteIfExists(string path)
-    {
-        try
-        {
-            if (File.Exists(path)) File.Delete(path);
-        }
-        catch
-        {
-        }
     }
 }

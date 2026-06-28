@@ -1,0 +1,597 @@
+{
+  "nodes": [
+    {
+      "id": "file:Services/CssStore.cs",
+      "type": "file",
+      "name": "CssStore.cs",
+      "filePath": "Services/CssStore.cs",
+      "summary": "Reads and writes the generated Astro project's styles/theme.css, extracting and updating :root CSS custom properties.",
+      "tags": ["service", "css", "data-model", "serialization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Services/CssStore.cs:CssStore",
+      "type": "class",
+      "name": "CssStore",
+      "filePath": "Services/CssStore.cs",
+      "lineRange": [3, 33],
+      "summary": "Static helper that reads theme.css, parses its :root variable block, and persists updated CSS variable values.",
+      "tags": ["service", "css", "static-class"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/CssStore.cs:Save",
+      "type": "function",
+      "name": "Save",
+      "filePath": "Services/CssStore.cs",
+      "lineRange": [20, 32],
+      "summary": "Rewrites CSS custom property values in theme.css using regex replacement and writes back only when changed.",
+      "tags": ["serialization", "css", "regex"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/GeneratedImageWriter.cs",
+      "type": "file",
+      "name": "GeneratedImageWriter.cs",
+      "filePath": "Services/GeneratedImageWriter.cs",
+      "summary": "Persists AI-generated images to the project's public folder as WebP, handling cover-resize, transparent button compositing, and registering entries in the images store.",
+      "tags": ["service", "image-processing", "serialization", "skiasharp"],
+      "complexity": "moderate",
+      "languageNotes": "Uses SkiaSharp for decoding, resizing, alpha-bounds cropping, and WebP encoding."
+    },
+    {
+      "id": "class:Services/GeneratedImageWriter.cs:GeneratedImageWriter",
+      "type": "class",
+      "name": "GeneratedImageWriter",
+      "filePath": "Services/GeneratedImageWriter.cs",
+      "lineRange": [3, 163],
+      "summary": "Static image writer that saves generated images and button graphics as WebP with cover-fit and centered transparent compositing.",
+      "tags": ["service", "image-processing", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/GeneratedImageWriter.cs:Save",
+      "type": "function",
+      "name": "Save",
+      "filePath": "Services/GeneratedImageWriter.cs",
+      "lineRange": [5, 21],
+      "summary": "Writes a single generated image to the public folder, choosing cover-resize for hero assets, and records the entry in ImagesStore.",
+      "tags": ["service", "image-processing", "serialization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/GeneratedImageWriter.cs:SaveButtons",
+      "type": "function",
+      "name": "SaveButtons",
+      "filePath": "Services/GeneratedImageWriter.cs",
+      "lineRange": [23, 49],
+      "summary": "Trims button images to alpha bounds, normalizes them to a shared height, composites them centered on transparent canvases, and saves them.",
+      "tags": ["service", "image-processing", "batch"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/GeneratedImageWriter.cs:SaveCover",
+      "type": "function",
+      "name": "SaveCover",
+      "filePath": "Services/GeneratedImageWriter.cs",
+      "lineRange": [74, 98],
+      "summary": "Scales and center-crops a decoded bitmap to exactly cover the target dimensions, then encodes it to WebP.",
+      "tags": ["image-processing", "skiasharp", "utility"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/GeneratedImageWriter.cs:AlphaBounds",
+      "type": "function",
+      "name": "AlphaBounds",
+      "filePath": "Services/GeneratedImageWriter.cs",
+      "lineRange": [141, 162],
+      "summary": "Computes the tight bounding rectangle of non-transparent pixels above an alpha threshold for trimming graphics.",
+      "tags": ["image-processing", "utility", "pixels"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/GenerationLog.cs",
+      "type": "file",
+      "name": "GenerationLog.cs",
+      "filePath": "Services/GenerationLog.cs",
+      "summary": "Accumulates a human-readable, thread-safe markdown log of a generation run (sections, prompts, blocks, errors) and saves it to the project.",
+      "tags": ["service", "logging", "diagnostics"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Services/GenerationLog.cs:GenerationLog",
+      "type": "class",
+      "name": "GenerationLog",
+      "filePath": "Services/GenerationLog.cs",
+      "lineRange": [5, 93],
+      "summary": "Thread-safe builder that records generation progress with timestamps and persists a formatted log file on finish.",
+      "tags": ["service", "logging", "stateful"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/GenerationLog.cs:Block",
+      "type": "function",
+      "name": "Block",
+      "filePath": "Services/GenerationLog.cs",
+      "lineRange": [48, 57],
+      "summary": "Appends a labeled fenced content block to the log under a lock for thread safety.",
+      "tags": ["logging", "formatting"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/GenerationLog.cs:Finish",
+      "type": "function",
+      "name": "Finish",
+      "filePath": "Services/GenerationLog.cs",
+      "lineRange": [69, 81],
+      "summary": "Marks the run complete with success/failure status and elapsed duration, then writes the log to disk.",
+      "tags": ["logging", "lifecycle"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/HwidService.cs",
+      "type": "file",
+      "name": "HwidService.cs",
+      "filePath": "Services/HwidService.cs",
+      "summary": "Generates and caches a per-machine hardware identifier in a temp file for licensing/identity purposes.",
+      "tags": ["service", "identity", "security"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Services/HwidService.cs:HwidService",
+      "type": "class",
+      "name": "HwidService",
+      "filePath": "Services/HwidService.cs",
+      "lineRange": [3, 16],
+      "summary": "Static service exposing a single GetOrCreate method that returns a stable GUID-based hardware id persisted to the temp folder.",
+      "tags": ["service", "identity", "static-class"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/HwidService.cs:GetOrCreate",
+      "type": "function",
+      "name": "GetOrCreate",
+      "filePath": "Services/HwidService.cs",
+      "lineRange": [7, 15],
+      "summary": "Returns the cached hardware id from the temp file, or generates, persists, and returns a new uppercase GUID.",
+      "tags": ["identity", "factory"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/ImagePlanBuilder.cs",
+      "type": "file",
+      "name": "ImagePlanBuilder.cs",
+      "filePath": "Services/ImagePlanBuilder.cs",
+      "summary": "Builds the list of image plan items that actually need generation by discovering image definitions and checking which tokens are referenced in the project's Astro/TS source.",
+      "tags": ["service", "planning", "data-model"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Services/ImagePlanBuilder.cs:ImagePlanBuilder",
+      "type": "class",
+      "name": "ImagePlanBuilder",
+      "filePath": "Services/ImagePlanBuilder.cs",
+      "lineRange": [3, 109],
+      "summary": "Static builder that filters discovered image definitions to those actively used and maps them to ImagePlanItem records with roles and dimensions.",
+      "tags": ["service", "planning", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ImagePlanBuilder.cs:Build",
+      "type": "function",
+      "name": "Build",
+      "filePath": "Services/ImagePlanBuilder.cs",
+      "lineRange": [5, 18],
+      "summary": "Reads the images config, discovers image definitions, filters to used ones, and projects them into non-empty image plan items.",
+      "tags": ["planning", "factory"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/ImagePlanBuilder.cs:Uses",
+      "type": "function",
+      "name": "Uses",
+      "filePath": "Services/ImagePlanBuilder.cs",
+      "lineRange": [39, 51],
+      "summary": "Scans all .astro and .ts files in the project src for a given token to determine whether an image asset is referenced.",
+      "tags": ["validation", "file-scan"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/ImagePlanBuilder.cs:BlockFor",
+      "type": "function",
+      "name": "BlockFor",
+      "filePath": "Services/ImagePlanBuilder.cs",
+      "lineRange": [63, 75],
+      "summary": "Resolves the TS source block for a given image id by dispatching to nested, array, or record block extraction via TsBlockParser.",
+      "tags": ["parsing", "dispatch"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/ImagePromptCatalog.cs",
+      "type": "file",
+      "name": "ImagePromptCatalog.cs",
+      "filePath": "Services/ImagePromptCatalog.cs",
+      "summary": "Builds localized (Thai) OpenAI image generation prompts and alt-text for each image role, factoring in style, render, palette, and brand.",
+      "tags": ["service", "prompt-engineering", "ai", "catalog"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Services/ImagePromptCatalog.cs:ImagePromptCatalog",
+      "type": "class",
+      "name": "ImagePromptCatalog",
+      "filePath": "Services/ImagePromptCatalog.cs",
+      "lineRange": [3, 107],
+      "summary": "Static catalog that constructs role-specific image prompts, button reference prompts, and alt text for AI image generation.",
+      "tags": ["prompt-engineering", "ai", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ImagePromptCatalog.cs:BuildPrompt",
+      "type": "function",
+      "name": "BuildPrompt",
+      "filePath": "Services/ImagePromptCatalog.cs",
+      "lineRange": [12, 64],
+      "summary": "Constructs a detailed Thai-language image generation prompt tailored to the image role, style, render mode, palette, and logo reference.",
+      "tags": ["prompt-engineering", "ai", "localization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ImagePromptCatalog.cs:Alt",
+      "type": "function",
+      "name": "Alt",
+      "filePath": "Services/ImagePromptCatalog.cs",
+      "lineRange": [87, 106],
+      "summary": "Generates brand-prefixed alt text for an image based on its id/role and optional caption.",
+      "tags": ["accessibility", "text-generation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/ImageRenderCatalog.cs",
+      "type": "file",
+      "name": "ImageRenderCatalog.cs",
+      "filePath": "Services/ImageRenderCatalog.cs",
+      "summary": "Catalog of realistic and stylized image render presets with weighted random selection helpers.",
+      "tags": ["service", "catalog", "data-model"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Services/ImageRenderCatalog.cs:ImageRenderCatalog",
+      "type": "class",
+      "name": "ImageRenderCatalog",
+      "filePath": "Services/ImageRenderCatalog.cs",
+      "lineRange": [3, 120],
+      "summary": "Static catalog exposing realistic/stylized render style presets and random pickers across them.",
+      "tags": ["catalog", "static-class", "randomization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ImageRenderCatalog.cs:Random",
+      "type": "function",
+      "name": "Random",
+      "filePath": "Services/ImageRenderCatalog.cs",
+      "lineRange": [88, 113],
+      "summary": "Selects a render preset using weighted randomization across the combined realistic and stylized sets.",
+      "tags": ["randomization", "selection"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/ImageSizeCatalog.cs",
+      "type": "file",
+      "name": "ImageSizeCatalog.cs",
+      "filePath": "Services/ImageSizeCatalog.cs",
+      "summary": "Maps image role ids to their target width/height dimensions for generation and resizing.",
+      "tags": ["service", "catalog", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Services/ImageSizeCatalog.cs:ImageSizeCatalog",
+      "type": "class",
+      "name": "ImageSizeCatalog",
+      "filePath": "Services/ImageSizeCatalog.cs",
+      "lineRange": [3, 16],
+      "summary": "Static lookup returning the (width, height) tuple for a given image id.",
+      "tags": ["catalog", "static-class"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/ImageSizeCatalog.cs:Size",
+      "type": "function",
+      "name": "Size",
+      "filePath": "Services/ImageSizeCatalog.cs",
+      "lineRange": [5, 15],
+      "summary": "Returns the target dimensions for an image id via a switch over known roles.",
+      "tags": ["catalog", "lookup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/ImageStyleCatalog.cs",
+      "type": "file",
+      "name": "ImageStyleCatalog.cs",
+      "filePath": "Services/ImageStyleCatalog.cs",
+      "summary": "Large static catalog of image art styles (name + visual description) with random selection used to vary AI image aesthetics.",
+      "tags": ["service", "catalog", "data-model", "ai"],
+      "complexity": "complex",
+      "languageNotes": "Mostly a large data table of ImageStyle entries; logic is limited to a single Random picker."
+    },
+    {
+      "id": "class:Services/ImageStyleCatalog.cs:ImageStyleCatalog",
+      "type": "class",
+      "name": "ImageStyleCatalog",
+      "filePath": "Services/ImageStyleCatalog.cs",
+      "lineRange": [3, 497],
+      "summary": "Static catalog holding the full list of art-style presets and a helper to pick one at random.",
+      "tags": ["catalog", "static-class", "randomization"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:Services/ImagesStore.cs",
+      "type": "file",
+      "name": "ImagesStore.cs",
+      "filePath": "Services/ImagesStore.cs",
+      "summary": "Central store for the generated project's image manifest (lib/images.ts): reads/writes image entries, syncs game/SEO/promo image arrays, normalizes dimensions, and discovers definitions.",
+      "tags": ["service", "data-store", "serialization", "parsing"],
+      "complexity": "complex",
+      "languageNotes": "Heavy regex/string-block manipulation of TypeScript source via TsBlockParser instead of an AST."
+    },
+    {
+      "id": "class:Services/ImagesStore.cs:ImagesStore",
+      "type": "class",
+      "name": "ImagesStore",
+      "filePath": "Services/ImagesStore.cs",
+      "lineRange": [3, 475],
+      "summary": "Static image-manifest store that reads, normalizes, syncs, and rewrites image definitions in the project's images.ts config.",
+      "tags": ["data-store", "static-class", "parsing"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Services/ImagesStore.cs:DiscoverDefs",
+      "type": "function",
+      "name": "DiscoverDefs",
+      "filePath": "Services/ImagesStore.cs",
+      "lineRange": [262, 295],
+      "summary": "Discovers the full set of image definitions (banner, logo, buttons, games, promos, SEO) present in the images config content.",
+      "tags": ["parsing", "discovery", "data-model"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ImagesStore.cs:SyncGameImages",
+      "type": "function",
+      "name": "SyncGameImages",
+      "filePath": "Services/ImagesStore.cs",
+      "lineRange": [53, 86],
+      "summary": "Synchronizes the GAME_CARDS image array against the project's Game section, removing orphaned image files.",
+      "tags": ["sync", "parsing", "cleanup"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ImagesStore.cs:SyncSeoImages",
+      "type": "function",
+      "name": "SyncSeoImages",
+      "filePath": "Services/ImagesStore.cs",
+      "lineRange": [187, 222],
+      "summary": "Synchronizes the SEO article image record with the SEO content count, adding or removing entries as needed.",
+      "tags": ["sync", "parsing", "seo"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ImagesStore.cs:SaveEntry",
+      "type": "function",
+      "name": "SaveEntry",
+      "filePath": "Services/ImagesStore.cs",
+      "lineRange": [412, 428],
+      "summary": "Updates a single image entry's src, alt, and dimensions in the images config, replacing values in place.",
+      "tags": ["serialization", "data-store", "update"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/ImagesStore.cs:RewritePromos",
+      "type": "function",
+      "name": "RewritePromos",
+      "filePath": "Services/ImagesStore.cs",
+      "lineRange": [374, 393],
+      "summary": "Applies a transform over the PROMOS image array blocks and writes the rewritten array body back to the config.",
+      "tags": ["serialization", "transform", "parsing"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Services/Io.cs",
+      "type": "file",
+      "name": "Io.cs",
+      "filePath": "Services/Io.cs",
+      "summary": "Low-level file IO helper with UTF-8 read/write, resilient deletion with retries, recursive directory deletion, and an optional thread-static read/write caching session.",
+      "tags": ["utility", "file-io", "caching"],
+      "complexity": "moderate",
+      "languageNotes": "Uses a [ThreadStatic] dictionary to cache file contents within a disposable session scope."
+    },
+    {
+      "id": "class:Services/Io.cs:Io",
+      "type": "class",
+      "name": "Io",
+      "filePath": "Services/Io.cs",
+      "lineRange": [3, 72],
+      "summary": "Static file IO utility providing cached reads/writes, retrying deletes, and recursive directory removal.",
+      "tags": ["utility", "file-io", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/Io.cs:DeleteFileWithRetry",
+      "type": "function",
+      "name": "DeleteFileWithRetry",
+      "filePath": "Services/Io.cs",
+      "lineRange": [27, 37],
+      "summary": "Attempts to delete a file multiple times with short sleeps to handle transient IO/locking errors.",
+      "tags": ["file-io", "resilience"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/Io.cs:DeleteDirectory",
+      "type": "function",
+      "name": "DeleteDirectory",
+      "filePath": "Services/Io.cs",
+      "lineRange": [39, 53],
+      "summary": "Clears file attributes recursively and deletes a directory tree, optionally swallowing errors.",
+      "tags": ["file-io", "cleanup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/JsonFile.cs",
+      "type": "file",
+      "name": "JsonFile.cs",
+      "filePath": "Services/JsonFile.cs",
+      "summary": "Generic JSON file read/write helper using System.Text.Json with case-insensitive and indented options, plus JsonObject variants.",
+      "tags": ["utility", "serialization", "json"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Services/JsonFile.cs:JsonFile",
+      "type": "class",
+      "name": "JsonFile",
+      "filePath": "Services/JsonFile.cs",
+      "lineRange": [3, 55],
+      "summary": "Static helper for deserializing/serializing typed objects and JsonObjects to/from disk with shared serializer options.",
+      "tags": ["serialization", "json", "static-class"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/JsonFile.cs:Read",
+      "type": "function",
+      "name": "Read",
+      "filePath": "Services/JsonFile.cs",
+      "lineRange": [8, 17],
+      "summary": "Deserializes a JSON file into a typed object, returning default on missing file or parse failure.",
+      "tags": ["serialization", "json", "deserialization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Services/JsonFile.cs:Write",
+      "type": "function",
+      "name": "Write",
+      "filePath": "Services/JsonFile.cs",
+      "lineRange": [19, 27],
+      "summary": "Serializes a typed value to indented JSON and writes it to disk, ensuring the directory exists.",
+      "tags": ["serialization", "json"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Services/LayoutComposer.cs",
+      "type": "file",
+      "name": "LayoutComposer.cs",
+      "filePath": "Services/LayoutComposer.cs",
+      "summary": "Composes a randomized site layout by selecting shell and body section variants, copying components into the project, rebuilding the index, and repairing legacy sections.",
+      "tags": ["service", "layout", "composition", "randomization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Services/LayoutComposer.cs:LayoutComposer",
+      "type": "class",
+      "name": "LayoutComposer",
+      "filePath": "Services/LayoutComposer.cs",
+      "lineRange": [3, 64],
+      "summary": "Static composer that orchestrates section selection, component copying, index rebuild, and section sync for a generated project.",
+      "tags": ["layout", "composition", "static-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Services/LayoutComposer.cs:Compose",
+      "type": "function",
+      "name": "Compose",
+      "filePath": "Services/LayoutComposer.cs",
+      "lineRange": [7, 59],
+      "summary": "Picks shell and body section variants at random, copies them to the project, rebuilds the Astro index, and runs orphan removal plus legacy repair.",
+      "tags": ["layout", "composition", "orchestration"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {"source": "file:Services/CssStore.cs", "target": "class:Services/CssStore.cs:CssStore", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/CssStore.cs", "target": "function:Services/CssStore.cs:Save", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/CssStore.cs", "target": "function:Services/CssStore.cs:Save", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/CssStore.cs", "target": "file:Services/ProjectPaths.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/CssStore.cs", "target": "file:Services/Io.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/CssStore.cs", "target": "file:Services/LineCodec.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/GeneratedImageWriter.cs", "target": "class:Services/GeneratedImageWriter.cs:GeneratedImageWriter", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/GeneratedImageWriter.cs", "target": "function:Services/GeneratedImageWriter.cs:Save", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/GeneratedImageWriter.cs", "target": "function:Services/GeneratedImageWriter.cs:SaveButtons", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/GeneratedImageWriter.cs", "target": "function:Services/GeneratedImageWriter.cs:SaveCover", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/GeneratedImageWriter.cs", "target": "function:Services/GeneratedImageWriter.cs:AlphaBounds", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/GeneratedImageWriter.cs", "target": "function:Services/GeneratedImageWriter.cs:Save", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/GeneratedImageWriter.cs", "target": "function:Services/GeneratedImageWriter.cs:SaveButtons", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/GeneratedImageWriter.cs", "target": "file:Services/ProjectPaths.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/GeneratedImageWriter.cs", "target": "file:Services/ImagesStore.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/GenerationLog.cs", "target": "class:Services/GenerationLog.cs:GenerationLog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/GenerationLog.cs", "target": "function:Services/GenerationLog.cs:Block", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/GenerationLog.cs", "target": "function:Services/GenerationLog.cs:Finish", "type": "contains", "direction": "forward", "weight": 1.0},
+
+    {"source": "file:Services/HwidService.cs", "target": "class:Services/HwidService.cs:HwidService", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/HwidService.cs", "target": "function:Services/HwidService.cs:GetOrCreate", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/HwidService.cs", "target": "function:Services/HwidService.cs:GetOrCreate", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:Services/ImagePlanBuilder.cs", "target": "class:Services/ImagePlanBuilder.cs:ImagePlanBuilder", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagePlanBuilder.cs", "target": "function:Services/ImagePlanBuilder.cs:Build", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagePlanBuilder.cs", "target": "function:Services/ImagePlanBuilder.cs:Uses", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagePlanBuilder.cs", "target": "function:Services/ImagePlanBuilder.cs:BlockFor", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagePlanBuilder.cs", "target": "function:Services/ImagePlanBuilder.cs:Build", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/ImagePlanBuilder.cs", "target": "file:Services/ImagesStore.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ImagePlanBuilder.cs", "target": "file:Services/ImageSizeCatalog.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ImagePlanBuilder.cs", "target": "file:Services/ProjectPaths.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ImagePlanBuilder.cs", "target": "file:Services/Io.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ImagePlanBuilder.cs", "target": "file:Services/TsBlockParser.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/ImagePromptCatalog.cs", "target": "class:Services/ImagePromptCatalog.cs:ImagePromptCatalog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagePromptCatalog.cs", "target": "function:Services/ImagePromptCatalog.cs:BuildPrompt", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagePromptCatalog.cs", "target": "function:Services/ImagePromptCatalog.cs:Alt", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagePromptCatalog.cs", "target": "function:Services/ImagePromptCatalog.cs:BuildPrompt", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/ImagePromptCatalog.cs", "target": "function:Services/ImagePromptCatalog.cs:Alt", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/ImagePromptCatalog.cs", "target": "file:Services/ImageStyleCatalog.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ImagePromptCatalog.cs", "target": "file:Services/ImageRenderCatalog.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/ImageRenderCatalog.cs", "target": "class:Services/ImageRenderCatalog.cs:ImageRenderCatalog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImageRenderCatalog.cs", "target": "function:Services/ImageRenderCatalog.cs:Random", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImageRenderCatalog.cs", "target": "function:Services/ImageRenderCatalog.cs:Random", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:Services/ImageSizeCatalog.cs", "target": "class:Services/ImageSizeCatalog.cs:ImageSizeCatalog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImageSizeCatalog.cs", "target": "function:Services/ImageSizeCatalog.cs:Size", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImageSizeCatalog.cs", "target": "function:Services/ImageSizeCatalog.cs:Size", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:Services/ImageStyleCatalog.cs", "target": "class:Services/ImageStyleCatalog.cs:ImageStyleCatalog", "type": "contains", "direction": "forward", "weight": 1.0},
+
+    {"source": "file:Services/ImagesStore.cs", "target": "class:Services/ImagesStore.cs:ImagesStore", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagesStore.cs", "target": "function:Services/ImagesStore.cs:DiscoverDefs", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagesStore.cs", "target": "function:Services/ImagesStore.cs:SyncGameImages", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagesStore.cs", "target": "function:Services/ImagesStore.cs:SyncSeoImages", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagesStore.cs", "target": "function:Services/ImagesStore.cs:SaveEntry", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagesStore.cs", "target": "function:Services/ImagesStore.cs:RewritePromos", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/ImagesStore.cs", "target": "function:Services/ImagesStore.cs:DiscoverDefs", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/ImagesStore.cs", "target": "function:Services/ImagesStore.cs:SyncGameImages", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/ImagesStore.cs", "target": "function:Services/ImagesStore.cs:SyncSeoImages", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/ImagesStore.cs", "target": "function:Services/ImagesStore.cs:SaveEntry", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/ImagesStore.cs", "target": "function:Services/ImagesStore.cs:RewritePromos", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/ImagesStore.cs", "target": "file:Services/ProjectPaths.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ImagesStore.cs", "target": "file:Services/Io.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/ImagesStore.cs", "target": "file:Services/TsBlockParser.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Services/Io.cs", "target": "class:Services/Io.cs:Io", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/Io.cs", "target": "function:Services/Io.cs:DeleteFileWithRetry", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/Io.cs", "target": "function:Services/Io.cs:DeleteDirectory", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/Io.cs", "target": "function:Services/Io.cs:DeleteFileWithRetry", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/Io.cs", "target": "function:Services/Io.cs:DeleteDirectory", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:Services/JsonFile.cs", "target": "class:Services/JsonFile.cs:JsonFile", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/JsonFile.cs", "target": "function:Services/JsonFile.cs:Read", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/JsonFile.cs", "target": "function:Services/JsonFile.cs:Write", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/JsonFile.cs", "target": "function:Services/JsonFile.cs:Read", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/JsonFile.cs", "target": "function:Services/JsonFile.cs:Write", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:Services/LayoutComposer.cs", "target": "class:Services/LayoutComposer.cs:LayoutComposer", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LayoutComposer.cs", "target": "function:Services/LayoutComposer.cs:Compose", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Services/LayoutComposer.cs", "target": "function:Services/LayoutComposer.cs:Compose", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Services/LayoutComposer.cs", "target": "file:Services/ComponentStore.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LayoutComposer.cs", "target": "file:Services/SectionCatalog.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LayoutComposer.cs", "target": "file:Services/ShellSlot.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LayoutComposer.cs", "target": "file:Services/LayoutStore.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LayoutComposer.cs", "target": "file:Services/ProjectComponentSync.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Services/LayoutComposer.cs", "target": "file:Services/LegacySectionRepair.cs", "type": "depends_on", "direction": "forward", "weight": 0.6}
+  ]
+}

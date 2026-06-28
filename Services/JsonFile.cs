@@ -2,7 +2,7 @@ namespace TEMO.AI;
 
 internal static class JsonFile
 {
-    private static readonly JsonSerializerOptions CaseInsensitive = new() { PropertyNameCaseInsensitive = true };
+    public static readonly JsonSerializerOptions CaseInsensitive = new() { PropertyNameCaseInsensitive = true };
     private static readonly JsonSerializerOptions IndentedOptions = new() { WriteIndented = true };
 
     public static T? Read<T>(string path, JsonSerializerOptions? options = null)

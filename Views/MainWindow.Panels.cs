@@ -9,20 +9,16 @@ public partial class MainWindow
         return open;
     }
 
-    private void CollapseContentFlyouts()
-    {
-        AiPanel.Visibility = Visibility.Collapsed;
-    }
-
     private void CollapseCssFlyouts()
     {
         CssImportPanel.Visibility = Visibility.Collapsed;
         CssAiPanel.Visibility = Visibility.Collapsed;
+        ContentAiPanel.Visibility = Visibility.Collapsed;
+        ImgAiPanel.Visibility = Visibility.Collapsed;
     }
 
     private void CollapseAllFlyouts()
     {
-        CollapseContentFlyouts();
         CollapseCssFlyouts();
         ApiKeyPanel.Visibility = Visibility.Collapsed;
     }

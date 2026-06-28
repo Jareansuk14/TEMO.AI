@@ -2,66 +2,12 @@ namespace TEMO.AI;
 
 internal static partial class VercelCli
 {
-    public static async Task<bool> IsLoggedInAsync(string cwd)
-    {
-        var r = await RunAsync("teams ls --format=json --non-interactive", cwd);
-        return r.Success;
-    }
-
     public static void ClearProjectLink(string cwd)
     {
         var dir = Path.Combine(cwd, ".vercel");
         if (!Directory.Exists(dir)) return;
         try { Directory.Delete(dir, recursive: true); }
         catch { }
-    }
-
-    public static async Task<List<VercelScopeOption>> GetTeamsAsync(string cwd)
-    {
-        var r = await RunAsync("teams ls --format=json --non-interactive", cwd);
-        if (!r.Success) return [];
-
-        var json = ExtractJson(r.Output);
-        if (string.IsNullOrWhiteSpace(json)) return [];
-
-        try
-        {
-            var teams = JsonNode.Parse(json)?["teams"]?.AsArray();
-            if (teams is null) return [];
-
-            return teams
-                .Select(t => new VercelScopeOption(
-                    t?["name"]?.GetValue<string>() ?? "",
-                    t?["slug"]?.GetValue<string>() ?? "",
-                    t?["current"]?.GetValue<bool>() ?? false))
-                .Where(t => !string.IsNullOrWhiteSpace(t.Slug))
-                .ToList();
-        }
-        catch { return []; }
-    }
-
-    public static async Task<List<VercelProjectOption>> GetProjectsAsync(string cwd, string scope)
-    {
-        var r = await RunAsync($"projects ls --format=json --scope {scope} --non-interactive", cwd);
-        if (!r.Success) return [];
-
-        var json = ExtractJson(r.Output);
-        if (string.IsNullOrWhiteSpace(json)) return [];
-
-        try
-        {
-            var projects = JsonNode.Parse(json)?["projects"]?.AsArray();
-            if (projects is null) return [];
-
-            return projects
-                .Select(p => new VercelProjectOption(
-                    p?["name"]?.GetValue<string>() ?? "",
-                    p?["id"]?.GetValue<string>() ?? "",
-                    p?["latestProductionUrl"]?.GetValue<string>()))
-                .Where(p => !string.IsNullOrWhiteSpace(p.Name))
-                .ToList();
-        }
-        catch { return []; }
     }
 
     public static Task<VercelCliResult> CreateProjectAsync(string cwd, string scope, string name, Action<string>? onLog = null) =>
@@ -214,36 +160,4 @@ internal static partial class VercelCli
 
     [GeneratedRegex(@"https?://[^\s<>""']+", RegexOptions.IgnoreCase)]
     private static partial Regex UrlRegex();
-
-    private static string ExtractJson(string output)
-    {
-        var lines = output.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-        var jsonStartLine = lines.Select((l, i) => (l, i))
-            .FirstOrDefault(x => x.l.TrimStart().StartsWith('{'));
-
-        if (jsonStartLine.l is null) return "";
-
-        var joined = string.Join("\n", lines.Skip(jsonStartLine.i));
-        var depth = 0;
-        var inString = false;
-        var escape = false;
-
-        for (var i = 0; i < joined.Length; i++)
-        {
-            var c = joined[i];
-
-            if (escape) { escape = false; continue; }
-            if (c == '\\' && inString) { escape = true; continue; }
-            if (c == '"') { inString = !inString; continue; }
-            if (inString) continue;
-
-            if (c == '{') depth++;
-            else if (c == '}')
-            {
-                if (--depth == 0) return joined[..(i + 1)];
-            }
-        }
-
-        return "";
-    }
 }

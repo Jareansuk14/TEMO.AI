@@ -53,6 +53,8 @@ public partial class MainWindow
         if (!string.IsNullOrEmpty(_projectPath) && !Directory.Exists(_projectPath))
             ResetProject();
 
+        RefreshNewBadge();
+
         if (result != true || gallery.SelectedProject is not { } path) return;
 
         SwitchProject(path);
@@ -62,6 +64,7 @@ public partial class MainWindow
     private void ResetProject()
     {
         _projectPath = "";
+        _loadedProjectPath = null;
         FolderPathBox.Text = "ยังไม่ได้เลือกโปรเจค";
         FolderPathBox.ToolTip = null;
         SettingsStore.SaveLastProject("");
@@ -212,14 +215,18 @@ public partial class MainWindow
     private static async Task NavigateAndWaitAsync(CoreWebView2 core, string url)
     {
         var tcs = new TaskCompletionSource();
-        void Handler(object? s, CoreWebView2NavigationCompletedEventArgs e)
+        void Handler(object? s, CoreWebView2NavigationCompletedEventArgs e) => tcs.TrySetResult();
+
+        core.NavigationCompleted += Handler;
+        try
+        {
+            core.Navigate(url);
+            await Task.WhenAny(tcs.Task, Task.Delay(8000));
+        }
+        finally
         {
             core.NavigationCompleted -= Handler;
-            tcs.TrySetResult();
         }
-        core.NavigationCompleted += Handler;
-        core.Navigate(url);
-        await Task.WhenAny(tcs.Task, Task.Delay(8000));
     }
 
     private static string SuggestTemplateName(string baseName)
@@ -243,6 +250,7 @@ public partial class MainWindow
             await Task.Run(() => TemplateStore.Copy(template, dest));
             ComponentStore.EnsureSeeded();
             AstroProjectSettings.DisableDevToolbar(dest);
+            ProjectPaths.MarkComplete(dest);
         }
         catch (Exception ex)
         {

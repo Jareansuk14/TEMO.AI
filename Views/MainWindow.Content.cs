@@ -2,10 +2,58 @@ namespace TEMO.AI;
 
 public partial class MainWindow
 {
-    private void BuildFields()
+    private void BuildFields() => _vm.Content.BuildFields();
+
+    private void ContentAiToggle_Click(object sender, RoutedEventArgs e) =>
+        ToggleFlyout(ContentAiPanel);
+
+    private void ContentAiClose_Click(object sender, RoutedEventArgs e) =>
+        ContentAiPanel.Visibility = Visibility.Collapsed;
+
+    private async void ContentAiGen_Click(object sender, RoutedEventArgs e)
     {
-        _fields.Clear();
-        _fields.AddRange(ContentStore.BuildFields(_projectPath, _layoutComponents));
+        if (!HasOpenProject()) { ShowMsg("⚠️  เปิดโปรเจคก่อน"); return; }
+        if (!TryGetApiKey(out var apiKey)) return;
+
+        var brand = ContentStore.CurrentBrandName(_projectPath);
+        if (string.IsNullOrWhiteSpace(brand)) { ShowMsg("⚠️  ไม่พบชื่อแบรนด์"); return; }
+
+        var type = ContentTypes.FromRadios(ContentAiLottery.IsChecked == true, ContentAiSlot.IsChecked == true);
+        const string model = AiModels.TextDefault;
+
+        var values = CaptureAllBoxValues();
+        var selected = _fields.Select(f => f.Section)
+            .Where(s => !string.IsNullOrEmpty(s))
+            .ToHashSet(StringComparer.Ordinal);
+        var (prompt, count) = AiPromptBuilder.Build(type, brand, _fields, values, selected);
+        if (count == 0) { ShowMsg("ไม่มี field ให้สร้าง"); return; }
+
+        ContentAiGenBtn.IsEnabled = false;
+        try
+        {
+            var text = await RequestOpenAiAsync(model, prompt);
+            if (text is null) return;
+
+            var applied = 0;
+            foreach (var (id, value) in LineCodec.ParseContent(text))
+                if (_boxes.TryGetValue(id, out var box)) { box.Text = value; applied++; }
+
+            if (applied == 0)
+            {
+                ShowAiOverlayError(text);
+                ShowMsg("AI ตอบกลับไม่ตรงรูปแบบ");
+                return;
+            }
+
+            HideAiOverlay();
+            ContentAiPanel.Visibility = Visibility.Collapsed;
+            SaveAll_Click(null!, null!);
+            ShowMsg($"🤖  อัปเดตเนื้อหา {applied} field");
+        }
+        finally
+        {
+            ContentAiGenBtn.IsEnabled = true;
+        }
     }
 
     private void RebuildContentForLayout(string? refreshKind = null)
@@ -21,7 +69,7 @@ public partial class MainWindow
             BuildContentPanel();
             PullAllToBoxes();
 
-            var label = SectionMeta.ContentLabel(refreshKind);
+            var label = SectionCatalog.ContentLabel(refreshKind);
             if (label is null)
             {
                 RestoreBoxValues(snapshot);
@@ -44,29 +92,8 @@ public partial class MainWindow
         }
     }
 
-    private void SwapVariantPreservingText(SectionDefinition selected)
-    {
-        var label = SectionMeta.ContentLabel(selected.Kind);
-        if (label is null)
-        {
-            ComponentStore.CopyToProject(_projectPath, selected);
-            return;
-        }
-
-        var preservedFields = _fields
-            .Where(f => f.IsPattern && string.Equals(f.Section, label, StringComparison.Ordinal))
-            .ToList();
-
-        var preserved = new Dictionary<string, string>(StringComparer.Ordinal);
-        foreach (var f in preservedFields)
-            if (_boxes.TryGetValue(f.Id, out var box))
-                preserved[f.Id] = box.Text;
-
+    private void SwapVariantPreservingText(SectionDefinition selected) =>
         ComponentStore.CopyToProject(_projectPath, selected);
-
-        if (preserved.Count > 0)
-            ContentStore.Save(_projectPath, preservedFields, preserved);
-    }
 
     private void BuildContentPanel()
     {
@@ -138,6 +165,8 @@ public partial class MainWindow
             foreach (var n in faqNums)
                 ContentPanel.Children.Add(MakeFaqGroup(n, faqNums.Count));
         }
+
+        RewireBrandKeywordListener();
     }
 
     private Border MakeFaqGroup(int n, int totalCount)
@@ -277,8 +306,8 @@ public partial class MainWindow
 
     private void AddFaqFields(int n)
     {
-        _fields.Add(new($"faq-q-{n}", $"Q{n}", "FAQ", ContentStore.FaqRel, "", FieldKind.Faq));
-        _fields.Add(new($"faq-a-{n}", $"A{n}", "FAQ", ContentStore.FaqRel, "", FieldKind.Faq, Multi: true));
+        _fields.Add(new($"faq-q-{n}", $"Q{n}", "FAQ", ContentStore.FaqDataRel, ContentStore.FaqConst, "q", false, n - 1));
+        _fields.Add(new($"faq-a-{n}", $"A{n}", "FAQ", ContentStore.FaqDataRel, ContentStore.FaqConst, "a", true, n - 1));
     }
 
     private List<(int Num, string Q, string A)> CaptureFaqValues() =>

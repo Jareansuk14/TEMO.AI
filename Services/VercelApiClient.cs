@@ -62,21 +62,19 @@ internal static class VercelApiClient
             if (!resp.IsSuccessStatusCode) return null;
 
             var json = JsonNode.Parse(await resp.Content.ReadAsStringAsync());
-            var projects = new List<VercelProjectOption>();
-            foreach (var p in json?["projects"]?.AsArray() ?? [])
-            {
-                var name = p?["name"]?.GetValue<string>() ?? "";
-                var id = p?["id"]?.GetValue<string>() ?? "";
-                if (string.IsNullOrWhiteSpace(name)) continue;
+            var tasks = (json?["projects"]?.AsArray() ?? [])
+                .Select(p => (Node: p, Name: p?["name"]?.GetValue<string>() ?? "", Id: p?["id"]?.GetValue<string>() ?? ""))
+                .Where(x => !string.IsNullOrWhiteSpace(x.Name))
+                .Select(async x =>
+                {
+                    var fallbackUrl = GetProjectUrl(x.Node);
+                    var displayUrl = string.IsNullOrWhiteSpace(x.Id)
+                        ? fallbackUrl
+                        : await GetProjectDisplayUrlAsync(token, x.Id, fallbackUrl, scope.TeamId);
+                    return new VercelProjectOption(x.Name, x.Id, displayUrl);
+                });
 
-                var fallbackUrl = GetProjectUrl(p);
-                var displayUrl = string.IsNullOrWhiteSpace(id)
-                    ? fallbackUrl
-                    : await GetProjectDisplayUrlAsync(token, id, fallbackUrl, scope.TeamId);
-                projects.Add(new VercelProjectOption(name, id, displayUrl));
-            }
-
-            return projects;
+            return (await Task.WhenAll(tasks)).ToList();
         }
         catch { return null; }
     }
@@ -170,16 +168,14 @@ internal static class VercelApiClient
             if (!resp.IsSuccessStatusCode) return null;
 
             var json = JsonNode.Parse(await resp.Content.ReadAsStringAsync());
-            var domains = new List<VercelProjectDomainOption>();
-
-            foreach (var d in json?["domains"]?.AsArray() ?? [])
-            {
-                var name = d?["name"]?.GetValue<string>() ?? "";
-                if (string.IsNullOrWhiteSpace(name)) continue;
-
-                var valid = await IsDomainConfiguredAsync(token, name, teamId);
-                domains.Add(new VercelProjectDomainOption(name, valid, CanShowDns: !valid));
-            }
+            var domains = (await Task.WhenAll((json?["domains"]?.AsArray() ?? [])
+                .Select(d => d?["name"]?.GetValue<string>() ?? "")
+                .Where(name => !string.IsNullOrWhiteSpace(name))
+                .Select(async name =>
+                {
+                    var valid = await IsDomainConfiguredAsync(token, name, teamId);
+                    return new VercelProjectDomainOption(name, valid, CanShowDns: !valid);
+                }))).ToList();
 
             var vercelDomain = NormalizeHost(projectUrl);
             if (!string.IsNullOrWhiteSpace(vercelDomain)

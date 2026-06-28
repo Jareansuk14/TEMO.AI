@@ -1,3 +1,4 @@
+global using TEMO.AI.Ai;
 global using System.IO;
 global using System.Diagnostics;
 global using System.Net.Http;

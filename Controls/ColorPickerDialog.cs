@@ -286,11 +286,11 @@ internal sealed class ColorPickerDialog : Window
         actions.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10) });
         actions.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-        var cancel = MakeActionButton("Cancel", false);
+        var cancel = Ui.DialogButton("Cancel", accent: false);
         cancel.Click += (_, _) => { DialogResult = false; Close(); };
         actions.Children.Add(cancel);
 
-        var ok = MakeActionButton("OK", true);
+        var ok = Ui.DialogButton("OK", accent: true);
         ok.Click += (_, _) => { DialogResult = true; Close(); };
         Grid.SetColumn(ok, 2);
         actions.Children.Add(ok);
@@ -333,18 +333,6 @@ internal sealed class ColorPickerDialog : Window
         brush.GradientStops.Add(new GradientStop(Color.FromRgb(0xFF, 0x00, 0x00), 1.00));
         return brush;
     }
-
-    private static Button MakeActionButton(string text, bool accent) => new()
-    {
-        Content = text,
-        Height = 38,
-        Cursor = Cursors.Hand,
-        FontWeight = FontWeights.Bold,
-        Background = Ui.Brush(accent ? 0xE8E8E8u : 0x202020u),
-        Foreground = Ui.Brush(accent ? 0x0A0A0Au : 0xC8C8C8u),
-        BorderBrush = Ui.Brush(0x3A3A3A),
-        BorderThickness = new Thickness(1)
-    };
 
     private void ApplyFormat(OutputFormat format)
     {

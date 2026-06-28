@@ -8,40 +8,66 @@ internal static class TsBlockParser
         if (ai < 0) return null;
         var ob = text.IndexOf('{', ai);
         if (ob < 0) return null;
-        int depth = 0, i = ob;
-        while (i < text.Length)
-        {
-            if      (text[i] == '{') depth++;
-            else if (text[i] == '}') { if (--depth == 0) break; }
-            i++;
-        }
-        return i < text.Length ? text[ob..(i + 1)] : null;
+        var close = MatchBrace(text, ob);
+        return close < 0 ? null : text[ob..(close + 1)];
     }
 
     public static List<string> AllBlocks(string text)
     {
         var result = new List<string>();
-        int i = 0;
-        while (i < text.Length)
+        char quote = '\0';
+        var escape = false;
+
+        for (var i = 0; i < text.Length; i++)
         {
-            var s = text.IndexOf('{', i);
-            if (s < 0) break;
-            int depth = 0, j = s;
-            while (j < text.Length)
+            var c = text[i];
+            if (escape) { escape = false; continue; }
+            if (quote != '\0')
             {
-                if      (text[j] == '{') depth++;
-                else if (text[j] == '}') { if (--depth == 0) break; }
-                j++;
+                if (c == '\\') escape = true;
+                else if (c == quote) quote = '\0';
+                continue;
             }
-            result.Add(text[s..(j + 1)]);
-            i = j + 1;
+            if (c is '"' or '\'' or '`') { quote = c; continue; }
+            if (c != '{') continue;
+
+            var close = MatchBrace(text, i);
+            if (close < 0) break;
+            result.Add(text[i..(close + 1)]);
+            i = close;
         }
         return result;
     }
 
+    private static int MatchBrace(string text, int open)
+    {
+        var depth = 0;
+        char quote = '\0';
+        var escape = false;
+
+        for (var i = open; i < text.Length; i++)
+        {
+            var c = text[i];
+            if (escape) { escape = false; continue; }
+            if (quote != '\0')
+            {
+                if (c == '\\') escape = true;
+                else if (c == quote) quote = '\0';
+                continue;
+            }
+            switch (c)
+            {
+                case '"' or '\'' or '`': quote = c; break;
+                case '{': depth++; break;
+                case '}' when --depth == 0: return i;
+            }
+        }
+        return -1;
+    }
+
     public static string QuotedVal(string block, string key)
     {
-        var m = Regex.Match(block, $@"\b{Regex.Escape(key)}:\s*""([^""]*)""");
+        var m = Regex.Match(block, $@"\b{Regex.Escape(key)}:\s*""((?:\\.|[^""\\])*)""");
         return m.Success ? m.Groups[1].Value : "";
     }
 

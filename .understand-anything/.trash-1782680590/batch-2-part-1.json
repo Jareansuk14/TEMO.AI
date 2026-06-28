@@ -1,0 +1,512 @@
+{
+  "nodes": [
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "file",
+      "name": ".understandignore",
+      "filePath": ".understand-anything/.understandignore",
+      "summary": "Ignore-list configuration for the Understand-Anything tooling, enumerating paths and patterns excluded from codebase analysis.",
+      "tags": ["configuration", "ignore-file", "tooling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:App.xaml",
+      "type": "file",
+      "name": "App.xaml",
+      "filePath": "App.xaml",
+      "summary": "WPF application definition markup declaring the Application resource root and merged theme dictionaries.",
+      "tags": ["markup", "wpf", "application", "entry-point"],
+      "complexity": "simple",
+      "languageNotes": "XAML Application root that wires startup and resource dictionaries."
+    },
+    {
+      "id": "file:App.xaml.cs",
+      "type": "file",
+      "name": "App.xaml.cs",
+      "filePath": "App.xaml.cs",
+      "summary": "Application code-behind that runs the update check on startup and then shows the login window.",
+      "tags": ["entry-point", "wpf", "application", "bootstrap"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:App.xaml.cs:App",
+      "type": "class",
+      "name": "App",
+      "filePath": "App.xaml.cs",
+      "lineRange": [3, 21],
+      "summary": "WPF Application subclass that overrides startup to gate launch on the auto-update service before opening the login window.",
+      "tags": ["application", "wpf", "bootstrap"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:App.xaml.cs:OnStartup",
+      "type": "function",
+      "name": "OnStartup",
+      "filePath": "App.xaml.cs",
+      "lineRange": [5, 20],
+      "summary": "Awaits the update service readiness check, shutting down if blocked, otherwise constructs and shows the LoginWindow.",
+      "tags": ["bootstrap", "lifecycle", "event-handler"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:AppInfo.cs",
+      "type": "file",
+      "name": "AppInfo.cs",
+      "filePath": "AppInfo.cs",
+      "summary": "Static application metadata exposing the app name, assembly version, and a combined title-with-version string.",
+      "tags": ["data-model", "metadata", "constants"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:AppInfo.cs:AppInfo",
+      "type": "class",
+      "name": "AppInfo",
+      "filePath": "AppInfo.cs",
+      "lineRange": [5, 27],
+      "summary": "Static holder for app identity values (name, version, title) derived from the executing assembly.",
+      "tags": ["metadata", "singleton", "constants"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:AppVersion.props",
+      "type": "file",
+      "name": "AppVersion.props",
+      "filePath": "AppVersion.props",
+      "summary": "MSBuild property sheet defining the shared application version number consumed by the build.",
+      "tags": ["configuration", "build-system", "msbuild"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:AssemblyInfo.cs",
+      "type": "file",
+      "name": "AssemblyInfo.cs",
+      "filePath": "AssemblyInfo.cs",
+      "summary": "Assembly-level attribute declarations such as theme info for WPF resource resolution.",
+      "tags": ["configuration", "assembly-metadata", "wpf"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Controls/AppUpdateDialog.cs",
+      "type": "file",
+      "name": "AppUpdateDialog.cs",
+      "filePath": "Controls/AppUpdateDialog.cs",
+      "summary": "Modal dialog that surfaces auto-update progress states (checking, downloading, applying, blocked) to the user.",
+      "tags": ["component", "dialog", "wpf", "ui"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Controls/AppUpdateDialog.cs:AppUpdateDialog",
+      "type": "class",
+      "name": "AppUpdateDialog",
+      "filePath": "Controls/AppUpdateDialog.cs",
+      "lineRange": [3, 119],
+      "summary": "Window presenting update status with title/message/detail text and a progress bar, exposing state-setter methods.",
+      "tags": ["dialog", "wpf", "update-ui"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/AppUpdateDialog.cs:AppUpdateDialog",
+      "type": "function",
+      "name": "AppUpdateDialog",
+      "filePath": "Controls/AppUpdateDialog.cs",
+      "lineRange": [11, 79],
+      "summary": "Constructor that builds the dialog's styled layout including text blocks, progress bar, and close button.",
+      "tags": ["constructor", "ui-builder", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Controls/ColorPickerDialog.cs",
+      "type": "file",
+      "name": "ColorPickerDialog.cs",
+      "filePath": "Controls/ColorPickerDialog.cs",
+      "summary": "Custom HSV color picker dialog with draggable saturation/value area, hue bar, alpha slider, and hex/RGBA format tabs.",
+      "tags": ["component", "dialog", "color-picker", "wpf"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:Controls/ColorPickerDialog.cs:ColorPickerDialog",
+      "type": "class",
+      "name": "ColorPickerDialog",
+      "filePath": "Controls/ColorPickerDialog.cs",
+      "lineRange": [5, 412],
+      "summary": "Interactive color selection window managing HSV state, thumb dragging, and conversion between hex and RGBA output formats.",
+      "tags": ["dialog", "color-picker", "wpf", "interactive"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Controls/ColorPickerDialog.cs:ColorPickerDialog",
+      "type": "function",
+      "name": "ColorPickerDialog",
+      "filePath": "Controls/ColorPickerDialog.cs",
+      "lineRange": [37, 118],
+      "summary": "Constructor assembling the full picker UI from the color area, hue bar, format tabs, and alpha row, seeded with the initial color.",
+      "tags": ["constructor", "ui-builder", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/ColorPickerDialog.cs:BuildColorArea",
+      "type": "function",
+      "name": "BuildColorArea",
+      "filePath": "Controls/ColorPickerDialog.cs",
+      "lineRange": [120, 164],
+      "summary": "Builds the saturation/value selection surface with overlay gradients and pointer drag handling.",
+      "tags": ["ui-builder", "color-picker", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/ColorPickerDialog.cs:BuildHueBar",
+      "type": "function",
+      "name": "BuildHueBar",
+      "filePath": "Controls/ColorPickerDialog.cs",
+      "lineRange": [166, 201],
+      "summary": "Builds the vertical hue selection bar with its rainbow gradient and draggable thumb.",
+      "tags": ["ui-builder", "color-picker", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/ColorPickerDialog.cs:BuildAlphaRow",
+      "type": "function",
+      "name": "BuildAlphaRow",
+      "filePath": "Controls/ColorPickerDialog.cs",
+      "lineRange": [231, 280],
+      "summary": "Builds the alpha (opacity) slider row shown when the RGBA format is active.",
+      "tags": ["ui-builder", "color-picker", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/ColorPickerDialog.cs:UpdateSelectedFromHsv",
+      "type": "function",
+      "name": "UpdateSelectedFromHsv",
+      "filePath": "Controls/ColorPickerDialog.cs",
+      "lineRange": [390, 404],
+      "summary": "Recomputes the selected color and preview from the current HSV and alpha state.",
+      "tags": ["color-conversion", "state-update", "validation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Controls/GenDialog.cs",
+      "type": "file",
+      "name": "GenDialog.cs",
+      "filePath": "Controls/GenDialog.cs",
+      "summary": "Dialog for configuring an AI generation request (content type, game count, brand) and enqueueing it.",
+      "tags": ["component", "dialog", "wpf", "ai-generation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Controls/GenDialog.cs:GenDialog",
+      "type": "class",
+      "name": "GenDialog",
+      "filePath": "Controls/GenDialog.cs",
+      "lineRange": [3, 134],
+      "summary": "Generation options dialog with radio-selected content type and game count that produces GenerationOptions for the queue.",
+      "tags": ["dialog", "wpf", "ai-generation", "form"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/GenDialog.cs:GenDialog",
+      "type": "function",
+      "name": "GenDialog",
+      "filePath": "Controls/GenDialog.cs",
+      "lineRange": [18, 94],
+      "summary": "Constructor building the option form with radio buttons, inputs, and action buttons.",
+      "tags": ["constructor", "ui-builder", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/GenDialog.cs:AddToQueue",
+      "type": "function",
+      "name": "AddToQueue",
+      "filePath": "Controls/GenDialog.cs",
+      "lineRange": [115, 128],
+      "summary": "Validates the selections, assembles the generation options, and signals acceptance to enqueue the job.",
+      "tags": ["event-handler", "validation", "ai-generation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Controls/GenQueueWindow.Converters.cs",
+      "type": "file",
+      "name": "GenQueueWindow.Converters.cs",
+      "filePath": "Controls/GenQueueWindow.Converters.cs",
+      "summary": "Value converters used by the generation queue window for data binding (e.g., status-to-brush color mapping).",
+      "tags": ["component", "converter", "wpf", "data-binding"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Controls/GenQueueWindow.cs",
+      "type": "file",
+      "name": "GenQueueWindow.cs",
+      "filePath": "Controls/GenQueueWindow.cs",
+      "summary": "Window that manages the AI generation job queue, rendering per-item stage progress, running jobs, and surfacing billing and error logs.",
+      "tags": ["component", "window", "wpf", "ai-generation", "queue"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:Controls/GenQueueWindow.cs:GenQueueWindow",
+      "type": "class",
+      "name": "GenQueueWindow",
+      "filePath": "Controls/GenQueueWindow.cs",
+      "lineRange": [1, 721],
+      "summary": "Generation queue UI orchestrating queued GenQueueItems, running site generation sequentially, and visualizing staged progress with billing/error handling.",
+      "tags": ["window", "wpf", "queue", "orchestration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Controls/GenQueueWindow.cs:GenQueueWindow",
+      "type": "function",
+      "name": "GenQueueWindow",
+      "filePath": "Controls/GenQueueWindow.cs",
+      "lineRange": [42, 81],
+      "summary": "Constructor wiring up the queue window layout, columns, and initial state.",
+      "tags": ["constructor", "ui-builder", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/GenQueueWindow.cs:QueueTemplate",
+      "type": "function",
+      "name": "QueueTemplate",
+      "filePath": "Controls/GenQueueWindow.cs",
+      "lineRange": [188, 312],
+      "summary": "Builds the data template for a queue item row, including status, summary, cost, and delete controls.",
+      "tags": ["ui-builder", "template", "wpf"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Controls/GenQueueWindow.cs:StartQueueAsync",
+      "type": "function",
+      "name": "StartQueueAsync",
+      "filePath": "Controls/GenQueueWindow.cs",
+      "lineRange": [377, 441],
+      "summary": "Runs queued generation jobs sequentially, updating status/duration/cost and handling billing limits and errors.",
+      "tags": ["async", "orchestration", "ai-generation"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Controls/GenQueueWindow.cs:ShowBillingDialog",
+      "type": "function",
+      "name": "ShowBillingDialog",
+      "filePath": "Controls/GenQueueWindow.cs",
+      "lineRange": [443, 511],
+      "summary": "Displays a billing-limit-reached dialog prompting the user when OpenAI billing is exhausted.",
+      "tags": ["ui-builder", "dialog", "billing"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Controls/GenQueueWindow.cs:ShowErrorLog",
+      "type": "function",
+      "name": "ShowErrorLog",
+      "filePath": "Controls/GenQueueWindow.cs",
+      "lineRange": [513, 557],
+      "summary": "Renders an error log popup for a failed queue item with its message details.",
+      "tags": ["ui-builder", "error-handling", "dialog"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/GenQueueWindow.cs:RenderFlow",
+      "type": "function",
+      "name": "RenderFlow",
+      "filePath": "Controls/GenQueueWindow.cs",
+      "lineRange": [578, 594],
+      "summary": "Renders the staged progress flow (nodes and connectors) for the selected queue item.",
+      "tags": ["ui-builder", "progress", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/GenQueueWindow.cs:MakeNode",
+      "type": "function",
+      "name": "MakeNode",
+      "filePath": "Controls/GenQueueWindow.cs",
+      "lineRange": [627, 673],
+      "summary": "Builds a single stage indicator node reflecting done/current/error state with glyph or spinner.",
+      "tags": ["ui-builder", "progress", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Controls/ImageEditDialog.cs",
+      "type": "file",
+      "name": "ImageEditDialog.cs",
+      "filePath": "Controls/ImageEditDialog.cs",
+      "summary": "Dialog for editing an image entry's source filename and alt text, with filename sanitization and public-path resolution.",
+      "tags": ["component", "dialog", "wpf", "image"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Controls/ImageEditDialog.cs:ImageEditDialog",
+      "type": "class",
+      "name": "ImageEditDialog",
+      "filePath": "Controls/ImageEditDialog.cs",
+      "lineRange": [3, 132],
+      "summary": "Image metadata editor exposing resulting src/alt values, sanitizing filenames and mapping to the project public path.",
+      "tags": ["dialog", "wpf", "image", "validation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/ImageEditDialog.cs:ImageEditDialog",
+      "type": "function",
+      "name": "ImageEditDialog",
+      "filePath": "Controls/ImageEditDialog.cs",
+      "lineRange": [14, 104],
+      "summary": "Constructor building the edit form pre-populated from the existing image's source, alt, and directory/extension.",
+      "tags": ["constructor", "ui-builder", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/ImageEditDialog.cs:Save_Click",
+      "type": "function",
+      "name": "Save_Click",
+      "filePath": "Controls/ImageEditDialog.cs",
+      "lineRange": [106, 112],
+      "summary": "Save handler that finalizes the sanitized src and alt result values and closes the dialog.",
+      "tags": ["event-handler", "save", "validation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Controls/ImageScrapeDialog.cs",
+      "type": "file",
+      "name": "ImageScrapeDialog.cs",
+      "filePath": "Controls/ImageScrapeDialog.cs",
+      "summary": "Dialog that scrapes images from a target web page via the network image scraper, presenting selectable preview cards for download into the project.",
+      "tags": ["component", "dialog", "wpf", "image", "scraping"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:Controls/ImageScrapeDialog.cs:ImageScrapeDialog",
+      "type": "class",
+      "name": "ImageScrapeDialog",
+      "filePath": "Controls/ImageScrapeDialog.cs",
+      "lineRange": [5, 465],
+      "summary": "Web image scraping UI that fetches images, renders preview cards with selection, and downloads chosen images with unique sanitized filenames.",
+      "tags": ["dialog", "wpf", "scraping", "image"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Controls/ImageScrapeDialog.cs:ImageScrapeDialog",
+      "type": "function",
+      "name": "ImageScrapeDialog",
+      "filePath": "Controls/ImageScrapeDialog.cs",
+      "lineRange": [34, 174],
+      "summary": "Constructor building the scrape dialog layout including URL input, toolbar, results grid, and loading/toast overlays.",
+      "tags": ["constructor", "ui-builder", "wpf"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Controls/ImageScrapeDialog.cs:EnsureWebAsync",
+      "type": "function",
+      "name": "EnsureWebAsync",
+      "filePath": "Controls/ImageScrapeDialog.cs",
+      "lineRange": [176, 190],
+      "summary": "Ensures the WebView/scraper backend is initialized before fetching images.",
+      "tags": ["async", "initialization", "scraping"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Controls/ImageScrapeDialog.cs:StartFetch",
+      "type": "function",
+      "name": "StartFetch",
+      "filePath": "Controls/ImageScrapeDialog.cs",
+      "lineRange": [192, 253],
+      "summary": "Begins scraping the entered URL, streaming captured images into preview cards while reporting progress.",
+      "tags": ["async", "scraping", "orchestration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Controls/ImageScrapeDialog.cs:AddCard",
+      "type": "function",
+      "name": "AddCard",
+      "filePath": "Controls/ImageScrapeDialog.cs",
+      "lineRange": [272, 310],
+      "summary": "Creates a selectable preview card for a scraped image including its thumbnail and size label.",
+      "tags": ["ui-builder", "image", "wpf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Controls/ImageScrapeDialog.cs:DownloadSelected",
+      "type": "function",
+      "name": "DownloadSelected",
+      "filePath": "Controls/ImageScrapeDialog.cs",
+      "lineRange": [347, 377],
+      "summary": "Downloads the user-selected images to the project folder using unique sanitized filenames.",
+      "tags": ["async", "download", "image"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {"source": "file:App.xaml.cs", "target": "class:App.xaml.cs:App", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:App.xaml.cs", "target": "function:App.xaml.cs:OnStartup", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:App.xaml.cs:App", "target": "function:App.xaml.cs:OnStartup", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:App.xaml.cs", "target": "class:App.xaml.cs:App", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:App.xaml", "target": "file:App.xaml.cs", "type": "related", "direction": "forward", "weight": 0.5},
+    {"source": "file:App.xaml.cs", "target": "file:Services/AppUpdateService.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:App.xaml.cs", "target": "file:Views/LoginWindow.xaml.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:AppInfo.cs", "target": "class:AppInfo.cs:AppInfo", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:AppInfo.cs", "target": "class:AppInfo.cs:AppInfo", "type": "exports", "direction": "forward", "weight": 0.8},
+
+    {"source": "file:Controls/AppUpdateDialog.cs", "target": "class:Controls/AppUpdateDialog.cs:AppUpdateDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/AppUpdateDialog.cs", "target": "function:Controls/AppUpdateDialog.cs:AppUpdateDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/AppUpdateDialog.cs:AppUpdateDialog", "target": "function:Controls/AppUpdateDialog.cs:AppUpdateDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/AppUpdateDialog.cs", "target": "class:Controls/AppUpdateDialog.cs:AppUpdateDialog", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Controls/AppUpdateDialog.cs", "target": "file:Helpers/Ui.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Controls/ColorPickerDialog.cs", "target": "class:Controls/ColorPickerDialog.cs:ColorPickerDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ColorPickerDialog.cs", "target": "function:Controls/ColorPickerDialog.cs:ColorPickerDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ColorPickerDialog.cs", "target": "function:Controls/ColorPickerDialog.cs:BuildColorArea", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ColorPickerDialog.cs", "target": "function:Controls/ColorPickerDialog.cs:BuildHueBar", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ColorPickerDialog.cs", "target": "function:Controls/ColorPickerDialog.cs:BuildAlphaRow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ColorPickerDialog.cs", "target": "function:Controls/ColorPickerDialog.cs:UpdateSelectedFromHsv", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/ColorPickerDialog.cs:ColorPickerDialog", "target": "function:Controls/ColorPickerDialog.cs:ColorPickerDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/ColorPickerDialog.cs:ColorPickerDialog", "target": "function:Controls/ColorPickerDialog.cs:BuildColorArea", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/ColorPickerDialog.cs:ColorPickerDialog", "target": "function:Controls/ColorPickerDialog.cs:BuildHueBar", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/ColorPickerDialog.cs:ColorPickerDialog", "target": "function:Controls/ColorPickerDialog.cs:BuildAlphaRow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/ColorPickerDialog.cs:ColorPickerDialog", "target": "function:Controls/ColorPickerDialog.cs:UpdateSelectedFromHsv", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ColorPickerDialog.cs", "target": "class:Controls/ColorPickerDialog.cs:ColorPickerDialog", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Controls/ColorPickerDialog.cs", "target": "file:Helpers/Ui.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Controls/ColorPickerDialog.cs", "target": "file:Services/CssColor.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Controls/GenDialog.cs", "target": "class:Controls/GenDialog.cs:GenDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenDialog.cs", "target": "function:Controls/GenDialog.cs:GenDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenDialog.cs", "target": "function:Controls/GenDialog.cs:AddToQueue", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/GenDialog.cs:GenDialog", "target": "function:Controls/GenDialog.cs:GenDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/GenDialog.cs:GenDialog", "target": "function:Controls/GenDialog.cs:AddToQueue", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenDialog.cs", "target": "class:Controls/GenDialog.cs:GenDialog", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Controls/GenDialog.cs", "target": "file:Helpers/Ui.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Controls/GenDialog.cs", "target": "file:Models/GenerationOptions.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Controls/GenDialog.cs", "target": "file:Models/GenQueueItem.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Controls/GenQueueWindow.Converters.cs", "target": "file:Helpers/Ui.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Controls/GenQueueWindow.Converters.cs", "target": "file:Controls/GenQueueWindow.cs", "type": "related", "direction": "forward", "weight": 0.5},
+
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "class:Controls/GenQueueWindow.cs:GenQueueWindow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "function:Controls/GenQueueWindow.cs:GenQueueWindow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "function:Controls/GenQueueWindow.cs:QueueTemplate", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "function:Controls/GenQueueWindow.cs:StartQueueAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "function:Controls/GenQueueWindow.cs:ShowBillingDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "function:Controls/GenQueueWindow.cs:ShowErrorLog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "function:Controls/GenQueueWindow.cs:RenderFlow", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "function:Controls/GenQueueWindow.cs:MakeNode", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/GenQueueWindow.cs:GenQueueWindow", "target": "function:Controls/GenQueueWindow.cs:StartQueueAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "class:Controls/GenQueueWindow.cs:GenQueueWindow", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "file:Helpers/Ui.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "file:Models/GenQueueItem.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Controls/GenQueueWindow.cs", "target": "file:Services/SiteGenerator.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Controls/ImageEditDialog.cs", "target": "class:Controls/ImageEditDialog.cs:ImageEditDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ImageEditDialog.cs", "target": "function:Controls/ImageEditDialog.cs:ImageEditDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ImageEditDialog.cs", "target": "function:Controls/ImageEditDialog.cs:Save_Click", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/ImageEditDialog.cs:ImageEditDialog", "target": "function:Controls/ImageEditDialog.cs:ImageEditDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/ImageEditDialog.cs:ImageEditDialog", "target": "function:Controls/ImageEditDialog.cs:Save_Click", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ImageEditDialog.cs", "target": "class:Controls/ImageEditDialog.cs:ImageEditDialog", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Controls/ImageEditDialog.cs", "target": "file:Helpers/Ui.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Controls/ImageEditDialog.cs", "target": "file:Models/ImageEntry.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+
+    {"source": "file:Controls/ImageScrapeDialog.cs", "target": "class:Controls/ImageScrapeDialog.cs:ImageScrapeDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ImageScrapeDialog.cs", "target": "function:Controls/ImageScrapeDialog.cs:ImageScrapeDialog", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ImageScrapeDialog.cs", "target": "function:Controls/ImageScrapeDialog.cs:EnsureWebAsync", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ImageScrapeDialog.cs", "target": "function:Controls/ImageScrapeDialog.cs:StartFetch", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ImageScrapeDialog.cs", "target": "function:Controls/ImageScrapeDialog.cs:AddCard", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ImageScrapeDialog.cs", "target": "function:Controls/ImageScrapeDialog.cs:DownloadSelected", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "class:Controls/ImageScrapeDialog.cs:ImageScrapeDialog", "target": "function:Controls/ImageScrapeDialog.cs:StartFetch", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:Controls/ImageScrapeDialog.cs", "target": "class:Controls/ImageScrapeDialog.cs:ImageScrapeDialog", "type": "exports", "direction": "forward", "weight": 0.8},
+    {"source": "file:Controls/ImageScrapeDialog.cs", "target": "file:Helpers/Ui.cs", "type": "depends_on", "direction": "forward", "weight": 0.6},
+    {"source": "file:Controls/ImageScrapeDialog.cs", "target": "file:Services/NetworkImageScraper.cs", "type": "depends_on", "direction": "forward", "weight": 0.6}
+  ]
+}

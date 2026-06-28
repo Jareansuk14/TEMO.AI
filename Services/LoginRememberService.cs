@@ -8,8 +8,6 @@ internal static class LoginRememberService
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "TEMO.AI", "login_remember.json");
 
-    private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
-
     private sealed class Persisted
     {
         public bool RememberUsername { get; set; }
@@ -21,7 +19,7 @@ internal static class LoginRememberService
     {
         try
         {
-            var p = JsonFile.Read<Persisted>(FilePath, Json);
+            var p = JsonFile.Read<Persisted>(FilePath);
             if (p == null || !p.RememberUsername || string.IsNullOrWhiteSpace(p.Username))
                 return (null, null, false);
 
@@ -48,7 +46,7 @@ internal static class LoginRememberService
         {
             if (!rememberCredentials)
             {
-                if (File.Exists(FilePath)) File.Delete(FilePath);
+                Io.DeleteFile(FilePath);
                 return;
             }
 
@@ -66,7 +64,7 @@ internal static class LoginRememberService
                 Username = username?.Trim() ?? "",
                 PasswordProtectedBase64 = pwdB64,
             };
-            JsonFile.Write(FilePath, p, Json);
+            JsonFile.Write(FilePath, p);
         }
         catch { }
     }

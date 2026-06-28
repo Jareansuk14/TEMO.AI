@@ -1,0 +1,35 @@
+{
+  "projectRoot": "c:/MainProject/Autoweb/TEMO.AI",
+  "batchFiles": [
+    {"path": "Views/MainWindow.CssAI.cs", "language": "csharp", "sizeLines": 122, "fileCategory": "code"},
+    {"path": "Views/MainWindow.Deploy.cs", "language": "csharp", "sizeLines": 25, "fileCategory": "code"},
+    {"path": "Views/MainWindow.Gen.cs", "language": "csharp", "sizeLines": 25, "fileCategory": "code"},
+    {"path": "Views/MainWindow.Images.cs", "language": "csharp", "sizeLines": 358, "fileCategory": "code"},
+    {"path": "Views/MainWindow.Keywords.cs", "language": "csharp", "sizeLines": 277, "fileCategory": "code"},
+    {"path": "Views/MainWindow.Layout.cs", "language": "csharp", "sizeLines": 331, "fileCategory": "code"},
+    {"path": "Views/MainWindow.OpenAi.cs", "language": "csharp", "sizeLines": 141, "fileCategory": "code"},
+    {"path": "Views/MainWindow.Panels.cs", "language": "csharp", "sizeLines": 23, "fileCategory": "code"},
+    {"path": "Views/MainWindow.Project.cs", "language": "csharp", "sizeLines": 295, "fileCategory": "code"},
+    {"path": "Views/MainWindow.Server.cs", "language": "csharp", "sizeLines": 237, "fileCategory": "code"},
+    {"path": "Views/MainWindow.Site.cs", "language": "csharp", "sizeLines": 205, "fileCategory": "code"},
+    {"path": "Views/MainWindow.Unsaved.cs", "language": "csharp", "sizeLines": 225, "fileCategory": "code"},
+    {"path": "Views/MainWindow.xaml", "language": "xaml", "sizeLines": 762, "fileCategory": "code"},
+    {"path": "Views/MainWindow.xaml.cs", "language": "csharp", "sizeLines": 195, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "Views/MainWindow.CssAI.cs": [],
+    "Views/MainWindow.Deploy.cs": [],
+    "Views/MainWindow.Gen.cs": [],
+    "Views/MainWindow.Images.cs": [],
+    "Views/MainWindow.Keywords.cs": [],
+    "Views/MainWindow.Layout.cs": [],
+    "Views/MainWindow.OpenAi.cs": [],
+    "Views/MainWindow.Panels.cs": [],
+    "Views/MainWindow.Project.cs": [],
+    "Views/MainWindow.Server.cs": [],
+    "Views/MainWindow.Site.cs": [],
+    "Views/MainWindow.Unsaved.cs": [],
+    "Views/MainWindow.xaml": [],
+    "Views/MainWindow.xaml.cs": []
+  }
+}

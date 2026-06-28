@@ -49,7 +49,10 @@ internal sealed partial class VercelDeployDialog : Window
         Closed += (_, _) =>
         {
             _loginPollCts?.Cancel();
+            _loginPollCts?.Dispose();
             _deployCts?.Cancel();
+            _deployCts?.Dispose();
+            StopLogTimer();
         };
     }
 

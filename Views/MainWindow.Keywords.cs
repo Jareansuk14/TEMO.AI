@@ -113,6 +113,11 @@ public partial class MainWindow
 
         KeywordsPanel.Children.Add(innerTc);
 
+        RewireBrandKeywordListener();
+    }
+
+    private void RewireBrandKeywordListener()
+    {
         if (_brandKwListener is not null)
             _brandKwListener.TextChanged -= OnBrandTextChanged;
 

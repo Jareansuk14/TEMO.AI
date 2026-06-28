@@ -4,6 +4,8 @@ internal static class CssStore
 {
     public const string ThemeRel = @"styles\theme.css";
 
+    private static readonly Regex RootBlock = new(@":root\s*\{([\s\S]*?)\}", RegexOptions.Compiled | RegexOptions.Singleline);
+
     private static string Src(string root) => ProjectPaths.Src(root, ThemeRel);
 
     public static string Read(string root) => Io.ReadOrNull(Src(root)) ?? "";
@@ -11,7 +13,7 @@ internal static class CssStore
     public static List<(string Name, string Value)>? ReadVariables(string root)
     {
         if (Io.ReadOrNull(Src(root)) is not { } content) return null;
-        var rootMatch = Regex.Match(content, @":root\s*\{([\s\S]*?)\}", RegexOptions.Singleline);
+        var rootMatch = RootBlock.Match(content);
         return rootMatch.Success ? LineCodec.ParseCss(rootMatch.Groups[1].Value).ToList() : [];
     }
 

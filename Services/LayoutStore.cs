@@ -6,6 +6,18 @@ internal static class LayoutStore
 
     private const string GeneratedCssImport = "import \"@/styles/sections.generated.css\";";
 
+    private static readonly Regex BannerTag = new(@"[ \t]*<Banner(\s[^/]*)?\s*/?>[ \t]*", RegexOptions.Compiled);
+    private static readonly Regex ComponentTag = new(@"<(\w+)(\s+[^>]*)?\s*/?>", RegexOptions.Compiled | RegexOptions.Multiline);
+    private static readonly Regex SectionImport = new(
+        @"import\s+(\w+)\s+from\s+""@/components/sections/(\w+)\.astro""", RegexOptions.Compiled | RegexOptions.Multiline);
+    private static readonly Regex BaseLayoutBlock = new(
+        @"(<BaseLayout\b[^>]*>\s*)([\s\S]*?)(\s*</BaseLayout>)", RegexOptions.Compiled);
+    private static readonly Regex SectionImportLine = new(
+        @"^import\s+\w+\s+from\s+""@/components/sections/[^""]+"";\s*\r?\n", RegexOptions.Compiled | RegexOptions.Multiline);
+    private static readonly Regex GeneratedCssLine = new(
+        @"^import\s+""@/styles/sections\.generated\.css"";\s*\r?\n", RegexOptions.Compiled | RegexOptions.Multiline);
+    private static readonly Regex AnyImportLine = new(@"^import\s+.+?;\s*$", RegexOptions.Compiled | RegexOptions.Multiline);
+
     public static string? ReadIndex(string root) => Io.ReadOrNull(ProjectPaths.Src(root, IndexRel));
 
     public static void WriteIndex(string root, string content) =>
@@ -13,19 +25,26 @@ internal static class LayoutStore
 
     public static string ParseBannerLine(string content)
     {
-        var m = Regex.Match(content, @"[ \t]*<Banner(\s[^/]*)?\s*/?>[ \t]*");
+        var m = BannerTag.Match(content);
         return m.Success ? m.Value.TrimEnd() : "  <Banner />";
     }
 
     public static IEnumerable<string> ParseComponentNames(string content) =>
-        Regex.Matches(content, @"<(\w+)(\s+[^>]*)?\s*/?>", RegexOptions.Multiline)
-             .Select(m => m.Groups[1].Value);
+        ComponentTag.Matches(content).Select(m => m.Groups[1].Value);
+
+    public static Dictionary<string, string> ParseSectionImportKinds(string content)
+    {
+        var map = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (Match m in SectionImport.Matches(content))
+            map.TryAdd(m.Groups[1].Value, m.Groups[2].Value);
+        return map;
+    }
 
     public static string? BuildIndex(string content, string bannerLine, IReadOnlyList<LayoutComponent> components)
     {
         content = SyncImports(content, components);
 
-        var match = Regex.Match(content, @"(<BaseLayout[^>]*>\s*\n)([\s\S]*?)(</BaseLayout>)");
+        var match = BaseLayoutBlock.Match(content);
         if (!match.Success) return null;
 
         var sb = new StringBuilder();
@@ -45,10 +64,8 @@ internal static class LayoutStore
 
     private static string SyncImports(string content, IReadOnlyList<LayoutComponent> components)
     {
-        content = Regex.Replace(content,
-            @"^import\s+\w+\s+from\s+""@/components/sections/[^""]+"";\s*\r?\n", "", RegexOptions.Multiline);
-        content = Regex.Replace(content,
-            @"^import\s+""@/styles/sections\.generated\.css"";\s*\r?\n", "", RegexOptions.Multiline);
+        content = SectionImportLine.Replace(content, "");
+        content = GeneratedCssLine.Replace(content, "");
 
         var imports = components
             .Where(x => !string.IsNullOrWhiteSpace(x.ImportPath))
@@ -59,7 +76,7 @@ internal static class LayoutStore
             .ToList();
         imports.Add(GeneratedCssImport);
 
-        var importMatches = Regex.Matches(content, @"^import\s+.+?;\s*$", RegexOptions.Multiline);
+        var importMatches = AnyImportLine.Matches(content);
         if (importMatches.Count == 0)
             return string.Join(Environment.NewLine, imports) + Environment.NewLine + content;
 

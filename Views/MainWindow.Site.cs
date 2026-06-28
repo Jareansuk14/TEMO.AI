@@ -2,7 +2,7 @@ namespace TEMO.AI;
 
 public partial class MainWindow
 {
-    private readonly Dictionary<string, TextBox> _siteBoxes = [];
+    private Dictionary<string, TextBox> _siteBoxes => _session.SiteBoxes;
 
     private ImageEntry? _siteQrEntry;
     private System.Windows.Controls.Image? _siteQrThumb;
