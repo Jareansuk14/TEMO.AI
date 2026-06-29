@@ -4,9 +4,26 @@ internal static class SectionCatalog
 {
     private static IReadOnlyList<SectionDefinition>? _definitions;
 
-    public static IReadOnlyList<SectionDefinition> All => _definitions ??= ComponentStore.List();
+    public static IReadOnlyList<string> Warnings { get; private set; } = [];
 
-    public static void Reload() => _definitions = null;
+    public static IReadOnlyList<SectionDefinition> All => _definitions ??= Build();
+
+    private static IReadOnlyList<SectionDefinition> Build()
+    {
+        var defs = ComponentStore.List();
+        Warnings = ComponentValidator.Validate(defs);
+        foreach (var w in Warnings)
+            System.Diagnostics.Debug.WriteLine($"[ComponentValidator] {w}");
+        return defs;
+    }
+
+    public static void Reload()
+    {
+        _definitions = null;
+        ImageSpecRegistry.Reload();
+        ImageGroupCatalog.Reload();
+        ShellSlot.Reload();
+    }
 
     public static SectionDefinition? FindByComponentName(string componentName) =>
         All.FirstOrDefault(x => x.ComponentName.Equals(componentName, StringComparison.Ordinal));

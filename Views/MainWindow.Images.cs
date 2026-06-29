@@ -23,8 +23,12 @@ public partial class MainWindow
 
         var rng = new Random();
         var palette = PaletteStore.Random(rng);
-        var options = new GenerationOptions(brand, type, null, AiModels.TextDefault,
-            Style: ImageStyleCatalog.Random(rng), Render: ImageRenderCatalog.Random(rng));
+        var render = ImageRenderCatalog.Random(rng);
+        var options = new GenerationOptions(brand, type, AiModels.TextDefault,
+            Style: ImageStyleCatalog.RandomForRender(rng, render), Render: render);
+
+        var genLog = new GenerationLog(_projectPath, brand, $"TAB IMG — สร้างรูป/CSS แบรนด์: {brand}", "img");
+        genLog.Line($"ContentType: {type} | Style: {options.Style?.Name} | Render: {options.Render?.Name} | Palette: {palette.Name}");
 
         _vm.Ai.Busy = true;
         ShowAiOverlayLoading();
@@ -35,12 +39,14 @@ public partial class MainWindow
 
             var (ok, error, count) = await ImageCssRegenerator.RunAsync(
                 _projectPath, options, palette, apiKey,
-                m => Dispatcher.Invoke(() => AiOverlayStatusText.Text = m));
+                m => Dispatcher.Invoke(() => AiOverlayStatusText.Text = m), default, genLog);
             if (!ok)
             {
+                genLog.Finish(false, error ?? "สร้างรูป/CSS ล้มเหลว");
                 ShowAiError(error, "สร้างรูป/CSS ล้มเหลว");
                 return;
             }
+            genLog.Finish(true, $"สร้างรูป + CSS ใหม่แล้ว ({count} รูป)");
 
             HideAiOverlay();
             ImgAiPanel.Visibility = Visibility.Collapsed;
@@ -84,9 +90,7 @@ public partial class MainWindow
             if (entry.Group != lastGroup)
             {
                 if (lastGroup != null) ImagesPanel.Children.Add(Ui.Divider());
-                ImagesPanel.Children.Add(entry.Group == PromoGroup
-                    ? MakePromoHeader()
-                    : Ui.SectionHeader(entry.Group));
+                ImagesPanel.Children.Add(Ui.SectionHeader(entry.Group));
                 wrap = new WrapPanel
                 {
                     Orientation = System.Windows.Controls.Orientation.Horizontal,
@@ -97,97 +101,6 @@ public partial class MainWindow
             }
             wrap!.Children.Add(MakeImageCard(entry));
         }
-    }
-
-    private const string PromoGroup = "โปรโมชั่น";
-
-    private int PromoCount => _vm.Images.PromoCount;
-
-    private UIElement MakePromoHeader()
-    {
-        var grid = new Grid { Margin = new Thickness(0, 8, 0, 0) };
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
-        var header = Ui.SectionHeader(PromoGroup);
-        header.Margin = new Thickness(0);
-        header.VerticalAlignment = VerticalAlignment.Center;
-        Grid.SetColumn(header, 0);
-        grid.Children.Add(header);
-
-        var buttons = new StackPanel
-        {
-            Orientation = System.Windows.Controls.Orientation.Horizontal,
-            VerticalAlignment = VerticalAlignment.Center,
-        };
-
-        var removeBtn = new Button
-        {
-            Content = "− ลบรูป",
-            Style = (Style)FindResource("Btn"),
-            Height = 26,
-            Padding = new Thickness(10, 0, 10, 0),
-            FontSize = 11,
-            Margin = new Thickness(0, 0, 6, 0),
-            IsEnabled = PromoCount > ImagesStore.MinPromos,
-        };
-        removeBtn.Click += (_, _) => RemovePromoImage();
-
-        var addBtn = new Button
-        {
-            Content = "+ เพิ่มรูป",
-            Style = (Style)FindResource("Btn"),
-            Height = 26,
-            Padding = new Thickness(10, 0, 10, 0),
-            FontSize = 11,
-            IsEnabled = PromoCount < ImagesStore.MaxPromos,
-        };
-        addBtn.Click += (_, _) => AddPromoImage();
-
-        buttons.Children.Add(removeBtn);
-        buttons.Children.Add(addBtn);
-        Grid.SetColumn(buttons, 1);
-        grid.Children.Add(buttons);
-
-        return grid;
-    }
-
-    private void AddPromoImage()
-    {
-        if (!HasOpenProject()) { ShowMsg("⚠️  เปิดโปรเจคก่อน"); return; }
-
-        var ok = ImagesStore.RewritePromos(_projectPath, blocks =>
-        {
-            if (blocks.Count >= ImagesStore.MaxPromos) { ShowMsg($"เพิ่มรูปโปรโมชั่นได้สูงสุด {ImagesStore.MaxPromos} รูป"); return false; }
-            int next = ImagesStore.NextPromoNumber(blocks);
-            blocks.Add(ImagesStore.NewImageBlock($"/images/promo{next}.webp", "", $"promo-{blocks.Count}"));
-            return true;
-        });
-        if (!ok) return;
-
-        BuildImagesPanel();
-        PullImages();
-        ShowMsg("เพิ่มช่องรูปโปรโมชั่นแล้ว — คลิกที่การ์ดเพื่ออัปโหลดรูป");
-    }
-
-    private void RemovePromoImage()
-    {
-        if (!HasOpenProject()) { ShowMsg("⚠️  เปิดโปรเจคก่อน"); return; }
-
-        var removedSrc = "";
-        var ok = ImagesStore.RewritePromos(_projectPath, blocks =>
-        {
-            if (blocks.Count <= ImagesStore.MinPromos) { ShowMsg($"ต้องมีรูปโปรโมชั่นอย่างน้อย {ImagesStore.MinPromos} รูป"); return false; }
-            removedSrc = TsBlockParser.QuotedVal(blocks[^1], "src");
-            blocks.RemoveAt(blocks.Count - 1);
-            return true;
-        });
-        if (!ok) return;
-
-        if (!string.IsNullOrEmpty(removedSrc)) Io.DeleteFile(PublicPath(removedSrc));
-        BuildImagesPanel();
-        PullImages();
-        ShowMsg("ลบรูปโปรโมชั่นแล้ว");
     }
 
     private Border MakeImageCard(ImageEntry entry)

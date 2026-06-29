@@ -10,8 +10,8 @@ internal static class ImagesStore
     public const int MaxPromos = 6;
     public const int ButtonWidth = 512;
     public const int ButtonHeight = 240;
-    public const int GameWidth = 240;
-    public const int GameHeight = 512;
+    public const int GameWidth = 1024;
+    public const int GameHeight = 1536;
 
     private static readonly Regex SeoIdPattern = new(@"id:\s*""seo-(\d+)""", RegexOptions.Compiled);
     private static readonly Regex GameSlicePattern = new(@"GAME_CARDS\.slice\(\s*0\s*,\s*(\d+)\s*\)", RegexOptions.Compiled);
@@ -56,6 +56,93 @@ internal static class ImagesStore
         SyncSeoImages(root, deleteFile);
         if (promoCount is { } target) SyncPromoImages(root, target, deleteFile);
         NormalizeStandardDimensions(root);
+    }
+
+    public static void ApplyImages(string root, ContentSpec spec, int count, Action<string> deleteFile)
+    {
+        if (count < 0 || string.IsNullOrWhiteSpace(spec.ImageGroup)) return;
+        if (ImageGroupCatalog.Find(spec.ImageGroup) is not { } group) return;
+
+        var size = RatioMap.Resolve(spec.ImageRatio)
+            ?? (group.Width > 0 && group.Height > 0 ? (group.Width, group.Height) : (1536, 864));
+
+        switch (group.Structure)
+        {
+            case "array":
+                ResizeArrayGroup(root, group, count, size, deleteFile);
+                break;
+            case "stringRecord":
+                ResizeRecordGroup(root, group, count, size, deleteFile);
+                break;
+            case "named":
+                ResizeNamedGroup(root, group, size);
+                break;
+        }
+    }
+
+    private static void ResizeArrayGroup(string root, ImageGroupSpec g, int count, (int Width, int Height) size, Action<string> deleteFile)
+    {
+        var path = Path(root);
+        if (Io.ReadOrNull(path) is not { } text) return;
+        var m = TsBlockParser.ArrayMatch(text, g.TsConst);
+        if (!m.Success) return;
+
+        var blocks = TsBlockParser.AllBlocks(m.Groups[2].Value);
+        var removed = new List<string>();
+        if (blocks.Count > count)
+        {
+            for (int i = count; i < blocks.Count; i++)
+                removed.Add(TsBlockParser.QuotedVal(blocks[i], "src"));
+            blocks = blocks.Take(count).ToList();
+        }
+        else
+        {
+            for (int i = blocks.Count; i < count; i++)
+                blocks.Add($"{{ src: \"/images/{g.Key}{i + 1}.webp\", alt: \"\", width: {size.Width}, height: {size.Height} }}");
+        }
+
+        blocks = blocks.Select(b => NormalizeImageBlock(b, size)).ToList();
+        WriteArrayBody(path, text, m, blocks);
+        DeleteAll(removed, deleteFile);
+    }
+
+    private static void ResizeRecordGroup(string root, ImageGroupSpec g, int count, (int Width, int Height) size, Action<string> deleteFile)
+    {
+        var path = Path(root);
+        if (Io.ReadOrNull(path) is not { } text) return;
+        if (TsBlockParser.FirstBlock(text, $"export const {g.TsConst}") is not { } block) return;
+
+        var existing = new Dictionary<int, string>();
+        foreach (Match km in Regex.Matches(block, $"\"{Regex.Escape(g.Key)}-(\\d+)\"\\s*:"))
+            if (TsBlockParser.FirstBlock(block[km.Index..], $"\"{g.Key}-{km.Groups[1].Value}\":") is { } b)
+                existing[int.Parse(km.Groups[1].Value)] = b;
+
+        var removed = existing.Where(kv => kv.Key > count)
+            .Select(kv => TsBlockParser.QuotedVal(kv.Value, "src")).ToList();
+
+        var sb = new StringBuilder("{\n");
+        for (int k = 1; k <= count; k++)
+        {
+            var item = existing.TryGetValue(k, out var b)
+                ? WhitespaceRun.Replace(b, " ").Trim()
+                : $"{{ src: \"/images/{g.Key}{k}.webp\", alt: \"\", width: {size.Width}, height: {size.Height} }}";
+            item = NormalizeImageBlock(item, size);
+            sb.Append($"  \"{g.Key}-{k}\": {item},\n");
+        }
+        sb.Append('}');
+
+        var updated = text.Replace(block, sb.ToString());
+        if (updated != text) Io.Write(path, updated);
+        DeleteAll(removed, deleteFile);
+    }
+
+    private static void ResizeNamedGroup(string root, ImageGroupSpec g, (int Width, int Height) size)
+    {
+        var path = Path(root);
+        if (Io.ReadOrNull(path) is not { } text) return;
+        if (TsBlockParser.FirstBlock(text, $"export const {g.TsConst}") is not { } block) return;
+        var updated = text.Replace(block, NormalizeSingleImageBlock(block, size));
+        if (updated != text) Io.Write(path, updated);
     }
 
     public static void SyncGameImages(string root, Action<string> deleteFile)
@@ -299,6 +386,46 @@ internal static class ImagesStore
         foreach (var n in seoNumbers)
             defs.Add(($"seo-{n}", $"บทความ {n}", "บทความ SEO", true));
 
+        defs.AddRange(DiscoverExtraDefs(content));
+
+        return defs;
+    }
+    private static IEnumerable<(string, string, string, bool)> DiscoverExtraDefs(string content)
+    {
+        var defs = new List<(string, string, string, bool)>();
+        foreach (var g in ImageGroupCatalog.ExtraGroups)
+        {
+            if (string.IsNullOrWhiteSpace(g.TsConst)) continue;
+            var label = string.IsNullOrWhiteSpace(g.Label) ? g.Key : g.Label;
+
+            switch (g.Structure)
+            {
+                case "named":
+                    if (TsBlockParser.FirstBlock(content, $"export const {g.TsConst}") is not null)
+                        defs.Add((g.Key, label.Replace("{n}", ""), g.Group, g.HasAlt));
+                    break;
+
+                case "nestedRecord":
+                    if (TsBlockParser.FirstBlock(content, $"export const {g.TsConst}") is { } nested)
+                    {
+                        var keys = ButtonKeyPattern.Matches(nested).Select(m => m.Groups[1].Value).ToList();
+                        for (int i = 0; i < keys.Count; i++)
+                            defs.Add(($"{g.Key}-{keys[i]}", label.Replace("{n}", (i + 1).ToString()), g.Group, g.HasAlt));
+                    }
+                    break;
+
+                case "array":
+                    for (int i = 0; i < TsBlockParser.CountArray(content, g.TsConst); i++)
+                        defs.Add(($"{g.Key}-{i}", label.Replace("{n}", (i + 1).ToString()), g.Group, g.HasAlt));
+                    break;
+
+                case "stringRecord":
+                    if (TsBlockParser.FirstBlock(content, $"export const {g.TsConst}") is { } rec)
+                        foreach (Match km in Regex.Matches(rec, "\"([^\"]+)\"\\s*:"))
+                            defs.Add((km.Groups[1].Value, label, g.Group, g.HasAlt));
+                    break;
+            }
+        }
         return defs;
     }
 
@@ -324,8 +451,23 @@ internal static class ImagesStore
         var s when s.StartsWith("promo-")  => ReadArrayAt(content, PromoArray, int.Parse(s["promo-".Length..])),
         var s when s.StartsWith("review-") => ReadArrayAt(content, "REVIEWS", int.Parse(s["review-".Length..])),
         var s when s.StartsWith("seo-")    => ReadRecordAt(content, "SEO_ARTICLE_IMAGES", $"seo-{s["seo-".Length..]}"),
-        _ => ("", ""),
+        _ => ReadExtra(content, id),
     };
+
+    private static (string Src, string Alt) ReadExtra(string content, string id)
+    {
+        if (ImageGroupCatalog.FindExtra(id) is not { } g) return ("", "");
+
+        return g.Structure switch
+        {
+            "named" => ReadNamedConst(content, g.TsConst),
+            "nestedRecord" => ReadNestedKey(content, g.TsConst, id[(g.Key.Length + 1)..]),
+            "array" => int.TryParse(id[(g.Key.Length + 1)..], out var idx)
+                ? ReadArrayAt(content, g.TsConst, idx) : ("", ""),
+            "stringRecord" => ReadRecordAt(content, g.TsConst, id),
+            _ => ("", ""),
+        };
+    }
 
     public static (string Src, string Alt) ReadNamedConst(string content, string name)
     {

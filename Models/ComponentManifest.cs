@@ -15,7 +15,17 @@ internal sealed class ComponentManifest
     public string DataFile { get; set; } = "";
     public string DataConst { get; set; } = "";
     public bool Repeatable { get; set; }
+    public bool SelectByCount { get; set; }
+    public int HeadingMin { get; set; }
+    public int HeadingMax { get; set; }
+    public int ImageMin { get; set; }
+    public int ImageMax { get; set; }
+    public string ImageRatio { get; set; } = "";
+    public string ImageType { get; set; } = "";
+    public string Link { get; set; } = "none";
+    public string ImageGroup { get; set; } = "";
     public List<ManifestField> Fields { get; set; } = [];
+    public List<ManifestImage> Images { get; set; } = [];
 }
 
 internal sealed class ManifestField
@@ -25,4 +35,14 @@ internal sealed class ManifestField
     public string Label { get; set; } = "";
     public string Type { get; set; } = "text";
     public string Group { get; set; } = "";
+}
+
+internal sealed class ManifestImage
+{
+    public string Id { get; set; } = "";
+    public string Role { get; set; } = "";
+    public string Ratio { get; set; } = "";
+    public int Width { get; set; }
+    public int Height { get; set; }
+    public bool Required { get; set; }
 }

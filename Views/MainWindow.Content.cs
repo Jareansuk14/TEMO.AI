@@ -28,11 +28,17 @@ public partial class MainWindow
         var (prompt, count) = AiPromptBuilder.Build(type, brand, _fields, values, selected);
         if (count == 0) { ShowMsg("ไม่มี field ให้สร้าง"); return; }
 
+        var genLog = new GenerationLog(_projectPath, brand, $"TAB CONTENT — สร้างเนื้อหา แบรนด์: {brand}", "content");
+        genLog.Line($"ContentType: {type} | จำนวน field: {count}");
+        genLog.Prompt("Content", prompt);
+
         ContentAiGenBtn.IsEnabled = false;
         try
         {
             var text = await RequestOpenAiAsync(model, prompt);
-            if (text is null) return;
+            if (text is null) { genLog.Finish(false, "เรียก AI ล้มเหลว"); return; }
+
+            genLog.Block("Content ตอบกลับ", text);
 
             var applied = 0;
             foreach (var (id, value) in LineCodec.ParseContent(text))
@@ -40,11 +46,13 @@ public partial class MainWindow
 
             if (applied == 0)
             {
+                genLog.Finish(false, "AI ตอบกลับไม่ตรงรูปแบบ");
                 ShowAiOverlayError(text);
                 ShowMsg("AI ตอบกลับไม่ตรงรูปแบบ");
                 return;
             }
 
+            genLog.Finish(true, $"อัปเดตเนื้อหา {applied} field");
             HideAiOverlay();
             ContentAiPanel.Visibility = Visibility.Collapsed;
             SaveAll_Click(null!, null!);

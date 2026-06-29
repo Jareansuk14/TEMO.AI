@@ -6,8 +6,6 @@ internal sealed class ImagesViewModel
 
     public ImagesViewModel(ProjectSession session) => _session = session;
 
-    public int PromoCount => _session.ImageEntries.Count(e => e.Id.StartsWith("promo-"));
-
     public void LoadEntries()
     {
         _session.ImageEntries.Clear();
@@ -31,6 +29,10 @@ internal sealed class ImagesViewModel
             e.AltValue = alt;
             e.OriginalSrc = src;
         }
+
+        var usage = ImageUsage.CollectUsageText(_session.ProjectPath);
+        _session.ImageEntries.RemoveAll(e =>
+            !ImageUsage.ShowOnSite(_session.ProjectPath, usage, e.Id, e.SrcValue));
         return true;
     }
 }

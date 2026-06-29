@@ -17,7 +17,8 @@ internal static class SiteGenerator
         if (templates.Count == 0) return new(false, "ยังไม่มี Template — อัปเดต Template ก่อน", null);
 
         var rng = new Random();
-        options = options with { Style = ImageStyleCatalog.Random(rng), Render = ImageRenderCatalog.Random(rng) };
+        var render = ImageRenderCatalog.Random(rng);
+        options = options with { Style = ImageStyleCatalog.RandomForRender(rng, render), Render = render };
         var template = templates[rng.Next(templates.Count)];
         var dest = UniqueProjectPath(brand);
         var genLog = new GenerationLog(dest, brand);
@@ -34,7 +35,7 @@ internal static class SiteGenerator
         genLog.Line($"สไตล์ภาพ: {options.Style?.Name} ({options.Style?.Visual})");
         genLog.Line($"Render: {options.Render?.Name} ({options.Render?.Visual})");
         genLog.Line($"TextModel: {options.TextModel} | ImageModel: {options.ImageModel} | CssModel: {options.CssModel}");
-        genLog.Line($"ContentType: {options.ContentType} | GameCardCount: {options.GameCardCount}");
+        genLog.Line($"ContentType: {options.ContentType}");
 
         try
         {
@@ -45,9 +46,15 @@ internal static class SiteGenerator
 
             log("กำลังสุ่ม Component…");
             genLog.Section("สุ่ม Layout/Component");
-            var composed = await Task.Run(() => LayoutComposer.Compose(dest, rng, options.GameCardCount), ct);
+            var composed = await Task.Run(() => LayoutComposer.Compose(dest, rng), ct);
             genLog.Line($"Component ที่สุ่มได้: {composed.Count} ตัว");
             foreach (var c in composed) genLog.Line($"  - {c.Kind}: {c.Name} ({c.Variant})");
+
+            var counts = await Task.Run(() => ComponentCountApplier.Apply(
+                dest, composed, rng, src => Io.DeleteFile(ProjectPaths.Public(dest, src))), ct);
+            genLog.Section("สุ่มจำนวนหัวข้อ/รูป (ต่อ Component)");
+            foreach (var (kind, h, i) in counts)
+                genLog.Line($"  - {kind}: หัวข้อ {h}, รูป {i}");
 
             log("กำลังสุ่มธีมสี…");
             var palette = PaletteStore.Random(rng);
@@ -85,11 +92,9 @@ internal static class SiteGenerator
             log("กำลังบันทึกเนื้อหา…");
             await Task.Run(() => ContentStore.Save(dest, fields, values), ct);
 
-            var promoCount = rng.Next(ImagesStore.MinPromoCount, ImagesStore.MaxPromos + 1);
             genLog.Section("เตรียมรูป");
-            genLog.Line($"จำนวนรูปโปรโมชั่นที่สุ่ม: {promoCount}");
             await Task.Run(() =>
-                ImagesStore.SyncStandard(dest, src => Io.DeleteFile(ProjectPaths.Public(dest, src)), promoCount), ct);
+                ImagesStore.SyncStandard(dest, src => Io.DeleteFile(ProjectPaths.Public(dest, src))), ct);
 
             var (genOk, genErr, _) = await ImageCssRegenerator.RunAsync(
                 dest, options, palette, apiKey, log, ct, genLog, usage);

@@ -157,7 +157,18 @@ internal static class ComponentStore
                 manifest.DataFile,
                 manifest.DataConst,
                 manifest.Repeatable,
-                manifest.Fields);
+                manifest.Fields,
+                manifest.Images,
+                manifest.SelectByCount,
+                new ContentSpec(
+                    manifest.HeadingMin,
+                    manifest.HeadingMax,
+                    manifest.ImageMin,
+                    manifest.ImageMax,
+                    string.IsNullOrWhiteSpace(manifest.ImageRatio) ? "" : manifest.ImageRatio.Trim(),
+                    string.IsNullOrWhiteSpace(manifest.ImageType) ? "" : manifest.ImageType.Trim().ToLowerInvariant(),
+                    string.IsNullOrWhiteSpace(manifest.Link) ? "none" : manifest.Link.Trim(),
+                    string.IsNullOrWhiteSpace(manifest.ImageGroup) ? "" : manifest.ImageGroup.Trim()));
         }
         catch
         {

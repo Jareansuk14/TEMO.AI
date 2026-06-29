@@ -209,6 +209,9 @@ public partial class MainWindow
         StatusText.Text = on ? "Running" : "Offline";
         ServerBtn.Content = on ? "■  STOP" : "▶  START";
         SaveTemplateBtn.IsEnabled = on;
+        BackNavBtn.IsEnabled = on;
+        ForwardNavBtn.IsEnabled = on;
+        RefreshNavBtn.IsEnabled = on;
 
         if (on)
         {

@@ -92,7 +92,6 @@ public partial class MainWindow : Window
     {
         ActionBar.Opacity = 1;
         UpdateSaveAllUi();
-        ApiKeyBtn.IsEnabled = true;
         UpdateDeployUi();
         ContentTabToolbar.IsEnabled = true;
         CssTabToolbar.IsEnabled = true;
@@ -110,7 +109,6 @@ public partial class MainWindow : Window
     private void LockContentPanel()
     {
         SaveAllBtn.IsEnabled = false;
-        ApiKeyBtn.IsEnabled = false;
         UpdateDeployUi();
         ContentTabToolbar.IsEnabled = false;
         CssTabToolbar.IsEnabled = false;

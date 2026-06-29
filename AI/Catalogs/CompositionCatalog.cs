@@ -2,156 +2,89 @@ namespace TEMO.AI.Ai;
 
 internal static class CompositionCatalog
 {
-    public static readonly IReadOnlyDictionary<string, string[]> Groups = new Dictionary<string, string[]>
+    public static readonly string[] RealisticModel =
+    [
+        "ผู้ชายผิวขาว",
+        "ผู้ชายผิวดำ",
+        "ผู้ชายผิวแทน",
+        "ผู้ชายเอเชีย",
+        "ผู้ชายยุโรป",
+        "ผู้หญิงผิวขาว",
+        "ผู้หญิงผิวแทน",
+        "ผู้หญิงเอเชีย",
+        "ผู้ชายสไตล์นักธุรกิจ",
+        "ผู้หญิงสไตล์แฟชั่น",
+    ];
+
+    public static readonly string[] StylizedModel =
+    [
+        "นักรบเกราะทอง",
+        "เจ้าหญิงเวทมนตร์",
+        "โจรสลัดทะเลแฟนตาซี",
+        "นักผจญภัยหนุ่ม",
+        "แม่มดป่าเวทมนตร์",
+        "อัศวินดาบแสง",
+        "นักล่าสัตว์ประหลาด",
+        "เด็กสาวเวทมนตร์",
+        "ราชามังกร",
+        "นักเล่นแร่แปรธาตุ",
+    ];
+
+    public static readonly IReadOnlyDictionary<string, string[]> GameModel = new Dictionary<string, string[]>(StringComparer.Ordinal)
     {
-    ["แฟนตาซี / โบราณ / เหนือธรรมชาติ"] =
-    [
-        "ตัวละครแฟนตาซีอะไรก็ได้",
-        "ตัวละครโบราณอะไรก็ได้",
-        "ตัวละครแนวนักเวทอะไรก็ได้",
-        "ตัวละครแนวนักรบอะไรก็ได้",
-        "ตัวละครแนวราชสำนักอะไรก็ได้",
-        "ตัวละครแนวชนเผ่าอะไรก็ได้",
-        "ตัวละครแนวโลกเวทมนตร์อะไรก็ได้",
-        "ตัวละครแนวเทพนิยายอะไรก็ได้",
-        "ตัวละครแนวตำนานพื้นบ้านอะไรก็ได้",
-        "ตัวละครแนวผู้ปกครองอาณาจักรอะไรก็ได้",
-        "ตัวละครแนวนักบวชอะไรก็ได้",
-        "ตัวละครแนวผู้รักษาอะไรก็ได้",
-        "ตัวละครแนวนักธนูอะไรก็ได้",
-        "ตัวละครแนวนักดาบอะไรก็ได้",
-        "เทพอะไรก็ได้",
-        "สิ่งศักดิ์สิทธิ์อะไรก็ได้",
-        "วิญญาณอะไรก็ได้",
-        "ภูตอะไรก็ได้",
-        "ผู้พิทักษ์เหนือธรรมชาติอะไรก็ได้"
-    ],
-
-    ["ไซไฟ / อนาคต / ไม่ใช่มนุษย์"] =
-    [
-        "ตัวละครไซไฟอะไรก็ได้",
-        "ตัวละครอนาคตอะไรก็ได้",
-        "ตัวละครแนวเมืองอนาคตอะไรก็ได้",
-        "ตัวละครแนวโลกหลังภัยพิบัติอะไรก็ได้",
-        "ตัวละครแนวอวกาศอะไรก็ได้",
-        "ตัวละครแนวหุ่นยนต์อะไรก็ได้",
-        "ตัวละครแนวเอเลี่ยนอะไรก็ได้",
-        "หุ่นยนต์อะไรก็ได้",
-        "สิ่งประดิษฐ์มีชีวิตอะไรก็ได้",
-        "เอเลี่ยนอะไรก็ได้",
-        "สิ่งมีชีวิตอนาคตอะไรก็ได้"
-    ],
-
-    ["สัตว์ / สิ่งมีชีวิต / ธรรมชาติ"] =
-    [
-        "สัตว์อะไรก็ได้",
-        "สัตว์เลี้ยงอะไรก็ได้",
-        "สัตว์ป่าอะไรก็ได้",
-        "สัตว์มงคลอะไรก็ได้",
-        "สัตว์แฟนตาซีอะไรก็ได้",
-        "สัตว์ในตำนานอะไรก็ได้",
-        "สัตว์น่ารักอะไรก็ได้",
-        "สัตว์เท่อะไรก็ได้",
-        "สัตว์บินได้อะไรก็ได้",
-        "สัตว์บกอะไรก็ได้",
-        "สิ่งมีชีวิตแฟนตาซีอะไรก็ได้",
-        "สิ่งมีชีวิตเวทมนตร์อะไรก็ได้",
-        "ตัวละครแนวสัตว์พูดได้อะไรก็ได้",
-        "ตัวละครแนวทะเลอะไรก็ได้",
-        "ตัวละครแนวป่าอะไรก็ได้",
-        "ตัวละครแนวทะเลทรายอะไรก็ได้",
-        "ตัวละครแนวภูเขาอะไรก็ได้"
-    ],
-        ["ฮีโร่ / วายร้าย / พลังพิเศษ"] =
-    [
-        "ฮีโร่พลังแสง",
-        "ฮีโร่พลังไฟ",
-        "ฮีโร่พลังน้ำแข็ง",
-        "ฮีโร่สายความเร็ว",
-        "ฮีโร่เกราะพลังงาน",
-        "ฮีโร่ไซเบอร์",
-        "ฮีโร่เวทมนตร์",
-        "ฮีโร่ผู้พิทักษ์เมือง",
-        "วายร้ายอัจฉริยะ",
-        "วายร้ายพลังเงา",
-        "วายร้ายหุ่นยนต์",
-        "วายร้ายราชาปีศาจ",
-        "ตัวละครมีพลังจิต",
-        "ตัวละครแปลงร่างได้",
-        "ตัวละครควบคุมธาตุ"
-    ],
-
-    ["ตัวละครเสมือนเกม / ฟาร์ม / ชุมชน"] =
-    [
-        "ชาวสวนในเกมฟาร์ม",
-        "เจ้าของฟาร์ม",
-        "คนเลี้ยงสัตว์",
-        "ชาวบ้านในหมู่บ้าน",
-        "พ่อค้าในตลาดหมู่บ้าน",
-        "แม่ค้าขายผัก",
-        "ช่างไม้ในหมู่บ้าน",
-        "คนทำขนมปัง",
-        "หมูในฟาร์มน่ารัก",
-        "ไก่ในฟาร์มน่ารัก",
-        "วัวนมในฟาร์ม",
-        "แกะขนฟู",
-        "ม้าในฟาร์ม",
-        "สุนัขเฝ้าฟาร์ม",
-        "แมวประจำบ้านฟาร์ม"
-    ],
-
-    ["มอนสเตอร์ / ศัตรูในเกม / บอส"] =
-    [
-        "สไลม์น่ารัก",
-        "เห็ดปีศาจ",
-        "ก็อบลินตัวเล็ก",
-        "ออร์คนักรบ",
-        "หมาป่าปีศาจ",
-        "แมงมุมยักษ์",
-        "ค้างคาวปีศาจ",
-        "ต้นไม้มีชีวิต",
-        "หินโกเล็ม",
-        "มังกรตัวเล็ก",
-        "ปีศาจเงา",
-        "นักเวทมืด",
-        "บอสประจำด่าน",
-        "ราชามอนสเตอร์",
-        "สัตว์ประหลาดน่ารัก"
-    ],
-
-    ["เทศกาล / อีเวนต์ / งานเฉลิมฉลอง"] =
-    [
-        "ตัวละครงานเทศกาล",
-        "ตัวละครงานปาร์ตี้",
-        "ตัวละครถือของขวัญ",
-        "ตัวละครงานแฟร์",
-        "ตัวละครขบวนพาเหรด",
-        "ตัวละครนักมายากล",
-        "ตัวละครตัวตลกน่ารัก",
-        "ตัวละครพิธีกรงานอีเวนต์",
-        "ตัวละครแจกของรางวัล",
-        "ตัวละครเปิดตัวสินค้า",
-        "ตัวละครเฉลิมฉลองโปรโมชั่น"
-    ]
-
+        ["Human"] =
+        [
+            "ผู้ชายผิวขาว",
+            "ผู้ชายผิวดำ",
+            "ผู้ชายผิวแทน",
+            "ผู้ชายผิวสีน้ำผึ้ง",
+            "ผู้ชายเอเชีย",
+            "ผู้ชายยุโรป",
+            "ผู้หญิงผิวขาว",
+            "ผู้หญิงเอเชีย",
+            "ผู้หญิงสไตล์แฟชั่น",
+            "ผู้ชายสไตล์นักธุรกิจ",
+        ],
+        ["Animal"] =
+        [
+            "เสือโคร่งเวทมนตร์",
+            "มังกรควันไฟ",
+            "สิงโตคิงของป่า",
+            "อินทรีทอง",
+            "หมาป่าจันทรา",
+            "งูเงินสีรุ้ง",
+            "วัวกระทิงพาันธง",
+            "ปลาวาฬฟ้า",
+            "แมวป่าเงา",
+            "ม้าสีเพลิง",
+        ],
     };
 
-    private const int MinMainCast = 2;
-    private const int MaxMainCast = 5;
+    private const int MainCastCount = 6;
 
-    public static List<string> PickMainCast(Random rng)
+    public static List<string> PickMainCast(Random rng, bool realistic)
     {
-        if (Groups.Count == 0) return [];
-
-        var keys = Groups.Keys.ToList();
-        var group = Groups[keys[rng.Next(keys.Count)]];
-        if (group.Length == 0) return [];
-
-        var count = Math.Min(rng.Next(MinMainCast, MaxMainCast + 1), group.Length);
-        var pool = group.ToList();
+        var pool = (realistic ? RealisticModel : StylizedModel).ToList();
+        var count = Math.Min(MainCastCount, pool.Count);
         var cast = new List<string>(count);
         for (var i = 0; i < count; i++)
         {
+            var index = rng.Next(pool.Count);
+            cast.Add(pool[index]);
+            pool.RemoveAt(index);
+        }
+        return cast;
+    }
+
+    public static List<string> PickGameCast(Random rng, int count)
+    {
+        if (GameModel.Count == 0 || count <= 0) return [];
+        var keys = GameModel.Keys.ToList();
+        var pool = GameModel[keys[rng.Next(keys.Count)]].ToList();
+        var cast = new List<string>(count);
+        for (var i = 0; i < count; i++)
+        {
+            if (pool.Count == 0) pool = GameModel[keys[rng.Next(keys.Count)]].ToList();
             var index = rng.Next(pool.Count);
             cast.Add(pool[index]);
             pool.RemoveAt(index);
@@ -164,24 +97,18 @@ internal static class CompositionCatalog
         if (mainCast.Count == 0 || maxTotal <= 0) return "";
 
         var lo = Math.Max(1, minTotal);
-        var hi = Math.Max(lo, maxTotal);
+        var hi = Math.Max(lo, Math.Min(maxTotal, mainCast.Count));
         var total = rng.Next(lo, hi + 1);
-        var groups = rng.Next(1, Math.Min(total, mainCast.Count) + 1);
 
         var pool = mainCast.ToList();
-        var chosen = new List<string>(groups);
-        for (var i = 0; i < groups; i++)
+        var chosen = new List<string>(total);
+        for (var i = 0; i < total; i++)
         {
             var index = rng.Next(pool.Count);
             chosen.Add(pool[index]);
             pool.RemoveAt(index);
         }
 
-        var counts = new int[groups];
-        for (var i = 0; i < groups; i++) counts[i] = 1;
-        for (var i = 0; i < total - groups; i++)
-            counts[rng.Next(groups)]++;
-
-        return string.Join(" กับ ", chosen.Select((c, i) => $"{c} {counts[i]}"));
+        return string.Join(" กับ ", chosen);
     }
 }

@@ -11,6 +11,6 @@ internal static class ImageSizeCatalog
         var s when s.StartsWith("game-") => (ImagesStore.GameWidth, ImagesStore.GameHeight),
         var s when s.StartsWith("promo-") => (1536, 864),
         var s when s.StartsWith("seo-") => (1536, 864),
-        _ => (1536, 864),
+        _ => ImageSpecRegistry.Size(id) ?? ImageGroupCatalog.Size(id) ?? (1536, 864),
     };
 }

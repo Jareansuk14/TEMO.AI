@@ -29,11 +29,9 @@ internal sealed class GenQueueItem : INotifyPropertyChanged
         _ => "คาสิโนออนไลน์",
     };
 
-    public string GameText => Options.GameCardCount is { } n ? $"รูปเกม x{n}" : "ไม่ใช้รูปเกม";
+    public string Summary => $"{Brand}  ประเภทเนื้อหา{ContentTypeText}";
 
-    public string Summary => $"{Brand}  ประเภทเนื้อหา{ContentTypeText}  {GameText}";
-
-    public string Meta => $"{ContentTypeText} • {GameText}";
+    public string Meta => ContentTypeText;
 
     public string Status
     {

@@ -1,22 +1,64 @@
 namespace TEMO.AI;
 
+internal sealed class SlotDef
+{
+    public string Slot { get; set; } = "";
+    public string Path { get; set; } = "";
+}
+
 internal static class ShellSlot
 {
-    public static readonly string[] All =
-        ["header", "banner", "faq", "page:promotions", "page:contact"];
+    public const string FileName = "slots.json";
+
+    private static readonly SlotDef[] Defaults =
+    [
+        new() { Slot = "header", Path = "components/Header.astro" },
+        new() { Slot = "banner", Path = "components/Banner.astro" },
+        new() { Slot = "faq", Path = "components/FAQSection.astro" },
+        new() { Slot = "page:promotions", Path = "components/page/PromotionsBody.astro" },
+        new() { Slot = "page:contact", Path = "components/page/ContactBody.astro" },
+    ];
+
+    private static List<SlotDef>? _defs;
+
+    public static void Reload() => _defs = null;
+
+    private static IReadOnlyList<SlotDef> Defs => _defs ??= Load();
+
+    public static IReadOnlyList<string> All => Defs.Select(d => d.Slot).ToList();
 
     public static string? AstroPath(string projectPath, string slot)
     {
-        var src = ProjectPaths.Src(projectPath);
-        string C(params string[] parts) => Path.Combine(new[] { src }.Concat(parts).ToArray());
-        return slot switch
+        var rel = Defs.FirstOrDefault(d => d.Slot == slot)?.Path;
+        if (string.IsNullOrWhiteSpace(rel)) return null;
+        return ProjectPaths.Src(projectPath, rel.Replace('/', Path.DirectorySeparatorChar));
+    }
+
+    private static List<SlotDef> Load()
+    {
+        var path = ResolvePath();
+        if (path is null || JsonFile.Read<List<SlotDef>>(path) is not { Count: > 0 } loaded)
+            return Defaults.ToList();
+
+        var order = new List<string>(Defaults.Select(d => d.Slot));
+        var byName = Defaults.ToDictionary(d => d.Slot, StringComparer.Ordinal);
+        foreach (var d in loaded)
         {
-            "header" => C("components", "Header.astro"),
-            "banner" => C("components", "Banner.astro"),
-            "faq" => C("components", "FAQSection.astro"),
-            "page:promotions" => C("components", "page", "PromotionsBody.astro"),
-            "page:contact" => C("components", "page", "ContactBody.astro"),
-            _ => null,
-        };
+            if (string.IsNullOrWhiteSpace(d.Slot)) continue;
+            if (!byName.ContainsKey(d.Slot)) order.Add(d.Slot);
+            byName[d.Slot] = d;
+        }
+        return order.Select(s => byName[s]).ToList();
+    }
+
+    private static string? ResolvePath()
+    {
+        if (Workspace.FindAncestorDir(System.IO.Path.Combine("Templates", "Component")) is { } local)
+        {
+            var p = System.IO.Path.Combine(local, FileName);
+            if (File.Exists(p)) return p;
+        }
+        var shipped = System.IO.Path.Combine(ComponentStore.Root, FileName);
+        return File.Exists(shipped) ? shipped : null;
     }
 }

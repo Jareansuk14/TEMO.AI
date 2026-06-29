@@ -26,12 +26,18 @@ internal static class AiImageGenerator
 
         ctx.Promos = AssignPromos(ordered, ctx.Rng);
         ctx.Slogans = AssignSlogans(ordered, ctx.Rng);
-        ctx.MainCast = CompositionCatalog.PickMainCast(ctx.Rng);
+        ctx.Realistic = ImageRenderCatalog.IsRealistic(options.Render ?? ImageRenderCatalog.All[0]);
+        ctx.MainCast = CompositionCatalog.PickMainCast(ctx.Rng, ctx.Realistic);
+        ctx.GameMascot = ActiveGame.IsMascot(projectPath);
+        AssignGame(ctx, ordered);
 
         ctx.GenLog?.Section("AI รูป — เตรียมการสุ่ม");
         ctx.GenLog?.Line($"จำนวนรูปทั้งหมด: {ordered.Count}");
         ctx.GenLog?.Line($"Concurrency สูงสุด: {MaxConcurrency}");
         ctx.GenLog?.Block("ตัวละครหลัก (MainCast)", ctx.MainCast.Count == 0 ? "(ไม่มี)" : string.Join("\n", ctx.MainCast));
+        if (ctx.GameChars.Count > 0)
+            ctx.GenLog?.Block($"เกม (mascot={ctx.GameMascot})",
+                string.Join("\n", ctx.GameChars.Select(g => $"{g.Key}: {g.Value} + provider {(ctx.GameRefs.ContainsKey(g.Key) ? "yes" : "no")}")));
         ctx.GenLog?.Block("Promo ที่สุ่มได้", ctx.Promos.Count == 0 ? "(ไม่มี)" : string.Join("\n", ctx.Promos.Select(p => $"{p.Key}: {p.Value}")));
         ctx.GenLog?.Block("Slogan ที่สุ่มได้", ctx.Slogans.Count == 0 ? "(ไม่มี)" : string.Join("\n", ctx.Slogans.Select(p => $"{p.Key}: {p.Value}")));
 
@@ -148,13 +154,18 @@ internal static class AiImageGenerator
 
     private static async Task<(bool Ok, byte[]? Bytes, string? Caption, string? Error)> GenSingleAsync(GenContext ctx, ImagePlanItem item)
     {
-        var isButton = item.Id.StartsWith("btn-", StringComparison.Ordinal);
-        var transparent = item.Id == "logo" || isButton;
-        var useLogo = ctx.LogoReference is not null && NeedsLogo(item.Id);
+        var isGame = item.Id.StartsWith("game-", StringComparison.Ordinal);
+        var imageType = isGame
+            ? (ctx.GameMascot ? "transparent" : "normal")
+            : ImageGroupCatalog.ImageTypeOf(item.Id);
+        var isButton = imageType == "button";
+        var transparent = imageType is "button" or "transparent";
+        var useLogo = !isGame && ctx.LogoReference is not null && NeedsLogo(item.Id);
         var useButtonRef = isButton && ctx.ButtonReference is not null;
+        var gameRef = isGame ? ctx.GameRefs.GetValueOrDefault(item.Id) : null;
         var model = transparent ? TransparentModel : ctx.Options.ImageModel;
         ctx.GenLog?.Section($"สร้างรูป: {item.Id} ({item.Width}x{item.Height})");
-        ctx.GenLog?.Line($"model={model} transparent={transparent} useLogo={useLogo} useButtonRef={useButtonRef}");
+        ctx.GenLog?.Line($"model={model} transparent={transparent} useLogo={useLogo} useButtonRef={useButtonRef} gameRef={(gameRef is not null)}");
 
         for (var attempt = 0; attempt <= MaxModerationRetries; attempt++)
         {
@@ -163,24 +174,36 @@ internal static class AiImageGenerator
             string composition; string caption;
             lock (ctx.RngSync)
             {
-                var (compMin, compMax) = CompositionRange(item.Id);
-                composition = CompositionCatalog.Compose(ctx.Rng, ctx.MainCast, compMin, compMax);
-                caption = CaptionFor(item.Id, ctx.Promos, ctx.Slogans, ctx.Rng, attempt > 0);
+                if (isGame)
+                {
+                    composition = ctx.GameChars.GetValueOrDefault(item.Id, "");
+                    caption = "";
+                }
+                else
+                {
+                    var (compMin, compMax) = CompositionRange(item.Id);
+                    composition = CompositionCatalog.Compose(ctx.Rng, ctx.MainCast, compMin, compMax);
+                    caption = CaptionFor(item.Id, ctx.Promos, ctx.Slogans, ctx.Rng, attempt > 0);
+                }
             }
             if (attempt > 0) ctx.GenLog?.Line($"attempt {attempt + 1}: re-roll composition/caption");
             ctx.GenLog?.Line($"composition: {(string.IsNullOrEmpty(composition) ? "(ไม่มี)" : composition)}");
             if (!string.IsNullOrEmpty(caption)) ctx.GenLog?.Line($"caption: {caption}");
-            var prompt = useButtonRef
-                ? ImagePromptCatalog.BuildButtonReferencePrompt(item)
-                : ImagePromptCatalog.BuildPrompt(item, ctx.Options, ctx.Palette, composition, caption, useLogo);
+            var prompt = isGame
+                ? ImagePromptCatalog.BuildGamePrompt(item, ctx.Options, ctx.Palette, composition, transparent, gameRef is not null)
+                : useButtonRef
+                    ? ImagePromptCatalog.BuildButtonReferencePrompt(item)
+                    : ImagePromptCatalog.BuildPrompt(item, ctx.Options, ctx.Palette, composition, caption, useLogo);
             ctx.GenLog?.Prompt(item.Id + (attempt > 0 ? $"-retry{attempt}" : ""), prompt);
 
             var (ok, bytes, _, error) =
-                useButtonRef
-                    ? await OpenAiClient.GenerateImageWithReferenceAsync(ctx.ApiKey, model, prompt, ctx.ButtonReference!, item.Width, item.Height, ctx.Ct, transparent: true, tracker: ctx.Usage)
-                    : useLogo
-                        ? await OpenAiClient.GenerateImageWithReferenceAsync(ctx.ApiKey, model, prompt, ctx.LogoReference!, item.Width, item.Height, ctx.Ct, tracker: ctx.Usage)
-                        : await OpenAiClient.GenerateImageAsync(ctx.ApiKey, model, prompt, item.Width, item.Height, transparent, ctx.Ct, tracker: ctx.Usage);
+                gameRef is not null
+                    ? await OpenAiClient.GenerateImageWithReferenceAsync(ctx.ApiKey, model, prompt, gameRef, item.Width, item.Height, ctx.Ct, transparent: transparent, tracker: ctx.Usage)
+                    : useButtonRef
+                        ? await OpenAiClient.GenerateImageWithReferenceAsync(ctx.ApiKey, model, prompt, ctx.ButtonReference!, item.Width, item.Height, ctx.Ct, transparent: true, tracker: ctx.Usage)
+                        : useLogo
+                            ? await OpenAiClient.GenerateImageWithReferenceAsync(ctx.ApiKey, model, prompt, ctx.LogoReference!, item.Width, item.Height, ctx.Ct, tracker: ctx.Usage)
+                            : await OpenAiClient.GenerateImageAsync(ctx.ApiKey, model, prompt, item.Width, item.Height, transparent, ctx.Ct, tracker: ctx.Usage);
 
             if (ok)
             {
@@ -208,6 +231,32 @@ internal static class AiImageGenerator
         return (false, null, null, "moderation retries exhausted");
     }
 
+    private static void AssignGame(GenContext ctx, IReadOnlyList<ImagePlanItem> items)
+    {
+        var ids = items.Where(p => p.Id.StartsWith("game-", StringComparison.Ordinal))
+            .Select(p => p.Id).ToList();
+        if (ids.Count == 0) return;
+
+        var chars = CompositionCatalog.PickGameCast(ctx.Rng, ids.Count);
+        var providers = LoadProviderPool(ctx.ProjectPath).OrderBy(_ => ctx.Rng.Next()).ToList();
+
+        for (var i = 0; i < ids.Count; i++)
+        {
+            if (chars.Count > 0) ctx.GameChars[ids[i]] = chars[i];
+            if (providers.Count > 0) ctx.GameRefs[ids[i]] = providers[i % providers.Count];
+        }
+    }
+
+    private static List<byte[]> LoadProviderPool(string projectPath)
+    {
+        var dir = Path.Combine(projectPath, "public", "Provider");
+        if (!Directory.Exists(dir)) return [];
+        var list = new List<byte[]>();
+        foreach (var f in Directory.EnumerateFiles(dir, "*.png"))
+            try { list.Add(File.ReadAllBytes(f)); } catch { }
+        return list;
+    }
+
     private static Dictionary<string, string> AssignPromos(IReadOnlyList<ImagePlanItem> items, Random rng)
     {
         var ids = items.Where(p => p.Id.StartsWith("promo-", StringComparison.Ordinal)).Select(p => p.Id).ToList();
@@ -232,23 +281,19 @@ internal static class AiImageGenerator
         string id, IReadOnlyDictionary<string, string> promos,
         IReadOnlyDictionary<string, string> slogans, Random rng, bool reroll)
     {
-        if (id.StartsWith("promo-", StringComparison.Ordinal))
-            return !reroll && promos.TryGetValue(id, out var p) ? p : PromotionCatalog.Pick(rng, 1).FirstOrDefault() ?? "";
-        if (id.StartsWith("seo-", StringComparison.Ordinal))
-            return !reroll && slogans.TryGetValue(id, out var s) ? s : SeoSloganCatalog.Pick(rng, 1).FirstOrDefault() ?? "";
-        return "";
+        return (ImageGroupCatalog.ByPrefix(id)?.CaptionSource ?? "") switch
+        {
+            "promo" => !reroll && promos.TryGetValue(id, out var p) ? p : PromotionCatalog.Pick(rng, 1).FirstOrDefault() ?? "",
+            "seo" => !reroll && slogans.TryGetValue(id, out var s) ? s : SeoSloganCatalog.Pick(rng, 1).FirstOrDefault() ?? "",
+            _ => "",
+        };
     }
 
     private static bool NeedsLogo(string id) =>
-        id == "banner" || id.StartsWith("promo-", StringComparison.Ordinal) || id.StartsWith("seo-", StringComparison.Ordinal);
+        ImageGroupCatalog.ByPrefix(id)?.UseLogoReference ?? false;
 
-    private static (int Min, int Max) CompositionRange(string id) => id switch
-    {
-        "banner" => (2, 5),
-        var s when s.StartsWith("seo-", StringComparison.Ordinal) => (1, 3),
-        var s when s.StartsWith("promo-", StringComparison.Ordinal) => (1, 2),
-        _ => (0, 0),
-    };
+    private static (int Min, int Max) CompositionRange(string id) =>
+        ImageGroupCatalog.ByPrefix(id) is { } g ? (g.CompositionMin, g.CompositionMax) : (0, 0);
 
     private static byte[] ToPng(byte[] bytes)
     {
@@ -274,7 +319,11 @@ internal static class AiImageGenerator
 
         public Dictionary<string, string> Promos = [];
         public Dictionary<string, string> Slogans = [];
+        public Dictionary<string, string> GameChars = [];
+        public Dictionary<string, byte[]> GameRefs = [];
+        public bool GameMascot;
         public List<string> MainCast = [];
+        public bool Realistic;
         public List<(ImagePlanItem Item, byte[] Bytes, string Alt)> Buttons = [];
         public byte[]? LogoReference;
         public byte[]? ButtonReference;

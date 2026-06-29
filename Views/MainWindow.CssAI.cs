@@ -114,9 +114,14 @@ public partial class MainWindow
             new { type = "image_url", image_url = new { url = $"data:{mime};base64,{base64}" } }
         };
 
+        var brand = ContentStore.CurrentBrandName(_projectPath);
+        var genLog = new GenerationLog(_projectPath, brand, $"TAB CSS — ปรับ CSS แบรนด์: {brand}", "css");
+        genLog.Line($"CssModel: {CssGptModel} | variables: {_cssBoxes.Count}");
+        genLog.Prompt("CSS", promptText);
+
         await RunAiApplyAsync(CssAiGenBtn, CssGptModel, messageContent,
             text => LineCodec.ApplyCss(text, _cssBoxes), CssAiPanel,
             applied => $"🤖  CSS applied {applied} variable(s) — บันทึกอัตโนมัติแล้ว!",
-            "AI ตอบกลับแล้ว — ไม่พบ CSS variable ที่ตรงกัน");
+            "AI ตอบกลับแล้ว — ไม่พบ CSS variable ที่ตรงกัน", genLog);
     }
 }

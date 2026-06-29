@@ -4,7 +4,7 @@ internal static class LayoutComposer
 {
     private const int OptionalSkipPercent = 35;
 
-    public static IReadOnlyList<LayoutComponent> Compose(string projectPath, Random rng, int? gameCardCount = null)
+    public static IReadOnlyList<LayoutComponent> Compose(string projectPath, Random rng)
     {
         ComponentStore.EnsureSeeded();
         SectionCatalog.Reload();
@@ -22,14 +22,6 @@ internal static class LayoutComposer
                      .GroupBy(d => d.Kind, StringComparer.Ordinal))
         {
             var variants = group.ToList();
-            if (group.Key.Equals("Game", StringComparison.Ordinal))
-            {
-                if (gameCardCount is null) continue;
-                if (GameVariant(variants, gameCardCount.Value) is { } game)
-                    chosen.Add(game);
-                continue;
-            }
-
             var required = variants.Any(v => v.Required);
             if (!required && rng.Next(100) < OptionalSkipPercent) continue;
             chosen.Add(variants[rng.Next(variants.Count)]);
@@ -57,8 +49,4 @@ internal static class LayoutComposer
         LegacySectionRepair.Repair(projectPath, components);
         return components;
     }
-
-    private static SectionDefinition? GameVariant(IReadOnlyList<SectionDefinition> variants, int count) =>
-        variants.FirstOrDefault(v => v.Variant.Equals($"Cards{count}", StringComparison.OrdinalIgnoreCase))
-        ?? variants.FirstOrDefault(v => Regex.IsMatch(v.DisplayName, $@"\b{count}\b"));
 }

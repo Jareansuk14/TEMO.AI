@@ -39,7 +39,7 @@ internal sealed partial class GenQueueWindow : Window
 
     public GenQueueWindow()
     {
-        Title = "TEMO.GEN";
+        Title = "TEMO.AI";
         Width = 900;
         Height = 800;
         ResizeMode = ResizeMode.NoResize;
@@ -99,8 +99,7 @@ internal sealed partial class GenQueueWindow : Window
         var dock = new DockPanel { Background = Ui.Brush(0x111111), LastChildFill = true };
 
         var title = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
-        title.Children.Add(Text("TEMO.GEN", 0xFFFFFF, 21, FontWeights.Bold));
-        title.Children.Add(Text("ตัวสร้างเว็บอัตโนมัติ • ระบบคิว", 0x606060, 11, margin: new Thickness(0, 3, 0, 0)));
+        title.Children.Add(Text("TEMO.AI", 0xFFFFFF, 21, FontWeights.Bold));
         var titleBar = Bar(0x0D0D0D, new Thickness(20, 0, 20, 0), title);
         titleBar.Height = HeaderHeight;
         DockTop(dock, titleBar);

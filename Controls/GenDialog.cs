@@ -6,7 +6,6 @@ internal sealed class GenDialog : Window
     private readonly System.Windows.Controls.RadioButton _casino;
     private readonly System.Windows.Controls.RadioButton _lottery;
     private readonly System.Windows.Controls.RadioButton _slot;
-    private readonly System.Windows.Controls.ComboBox _gameCount;
     private readonly Button _generateBtn;
     private readonly Button _cancelBtn;
     private readonly TextBlock _status;
@@ -15,7 +14,7 @@ internal sealed class GenDialog : Window
 
     public GenDialog()
     {
-        Title = "TEMO.GEN — สร้างเว็บอัตโนมัติ";
+        Title = "TEMO.AI — สร้างเว็บอัตโนมัติ";
         Width = 460;
         SizeToContent = SizeToContent.Height;
         ResizeMode = ResizeMode.NoResize;
@@ -38,23 +37,6 @@ internal sealed class GenDialog : Window
         types.Children.Add(_lottery);
         types.Children.Add(_slot);
         root.Children.Add(types);
-
-        root.Children.Add(Ui.FieldLabel("จำนวนการ์ดเกม"));
-        _gameCount = new System.Windows.Controls.ComboBox
-        {
-            Height = 34,
-            Margin = new Thickness(0, 0, 0, 16),
-            Background = Ui.Brush(0x111111),
-            Foreground = Ui.Brush(0xDEDEDE),
-            BorderBrush = Ui.Brush(0x333333),
-            SelectedValuePath = "Tag",
-        };
-        _gameCount.Items.Add(new System.Windows.Controls.ComboBoxItem { Content = "ไม่ใช้การ์ดเกม", Tag = "" });
-        _gameCount.Items.Add(new System.Windows.Controls.ComboBoxItem { Content = "2 รูป", Tag = "2" });
-        _gameCount.Items.Add(new System.Windows.Controls.ComboBoxItem { Content = "4 รูป", Tag = "4" });
-        _gameCount.Items.Add(new System.Windows.Controls.ComboBoxItem { Content = "6 รูป", Tag = "6" });
-        _gameCount.SelectedIndex = 0;
-        root.Children.Add(_gameCount);
 
         _status = new TextBlock
         {
@@ -93,9 +75,6 @@ internal sealed class GenDialog : Window
     private AiPromptType SelectedType =>
         ContentTypes.FromRadios(_lottery.IsChecked == true, _slot.IsChecked == true);
 
-    private int? SelectedGameCount =>
-        int.TryParse(_gameCount.SelectedValue?.ToString(), out var count) ? count : null;
-
     private void AddToQueue()
     {
         var brand = _brand.Text.Trim();
@@ -107,7 +86,7 @@ internal sealed class GenDialog : Window
             return;
         }
 
-        Options = new GenerationOptions(brand, SelectedType, SelectedGameCount, AiModels.TextDefault);
+        Options = new GenerationOptions(brand, SelectedType, AiModels.TextDefault);
         DialogResult = true;
     }
 

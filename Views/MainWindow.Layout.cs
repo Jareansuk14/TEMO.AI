@@ -4,7 +4,7 @@ public partial class MainWindow
 {
     private string _bannerLine = "  <Banner />";
 
-    private const bool DevLayoutMode = false;
+    private const bool DevLayoutMode = true;
 
     public static Visibility DevEditVisibility =>
         DevLayoutMode ? Visibility.Visible : Visibility.Collapsed;

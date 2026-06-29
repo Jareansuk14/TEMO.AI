@@ -117,4 +117,6 @@ internal static class ImageRenderCatalog
 
     public static ImageStyle RandomStylized(Random rng) =>
         PromptUsedStore.Pick("render", Stylized, s => s.Name, rng, 1)[0];
+
+    public static bool IsRealistic(ImageStyle render) => Array.IndexOf(Realistic, render) >= 0;
 }

@@ -45,8 +45,12 @@ internal static class ImagePlanBuilder
         var s when s.StartsWith("game-") => Uses(sources, "GAME_CARDS"),
         var s when s.StartsWith("promo-") => Uses(sources, "PROMOS") || Uses(sources, "getPromoPreview"),
         var s when s.StartsWith("seo-") => Uses(sources, "SEO_ARTICLE_IMAGES"),
-        _ => true,
+        _ => IsExtraUsed(sources, id),
     };
+
+    private static bool IsExtraUsed(List<string> sources, string id) =>
+        ImageGroupCatalog.FindExtra(id) is not { } g
+        || ImageGroupCatalog.UsageTokens(g).Any(t => Uses(sources, t));
 
     private static bool UsesButton(List<string> sources, string key) =>
         Uses(sources, $"ACTION_BUTTONS.{key}")
@@ -111,6 +115,6 @@ internal static class ImagePlanBuilder
         var s when s.StartsWith("game-") => "game card",
         var s when s.StartsWith("promo-") => "promotion card",
         var s when s.StartsWith("seo-") => "SEO article image",
-        _ => "website image",
+        _ => ImageSpecRegistry.Role(id) ?? "website image",
     };
 }

@@ -9,6 +9,51 @@ internal static class ContentStore
     private static readonly Regex BrandNamePrefix = new(@"export\s+const\s+BRAND_NAME\s*=\s*""", RegexOptions.Compiled);
     private static readonly Regex BrandNameAny = new(@"export\s+const\s+BRAND_NAME\s*=\s*""([^""]*)""", RegexOptions.Compiled);
     private static readonly Regex BrandNameValue = new(@"export\s+const\s+BRAND_NAME\s*=\s*""([^""]+)""", RegexOptions.Compiled);
+    private static readonly Regex WhitespaceRun = new(@"\s+", RegexOptions.Compiled);
+    private static readonly Regex IdNumberPattern = new(@"(\bid:\s*""[^""]*?)(\d+)("")", RegexOptions.Compiled);
+
+    public static void ApplyHeadings(string root, SectionDefinition def, int count)
+    {
+        if (count < 0 || string.IsNullOrEmpty(def.DataFile) || string.IsNullOrEmpty(def.DataConst))
+            return;
+
+        var path = Src(root, def.DataFile);
+        if (Io.ReadOrNull(path) is not { } content) return;
+
+        var m = TsBlockParser.ArrayMatch(content, def.DataConst);
+        if (!m.Success) return;
+
+        var blocks = TsBlockParser.AllBlocks(m.Groups[2].Value);
+        if (blocks.Count == 0 && def.Fields.Count == 0) return;
+
+        var template = blocks.Count > 0 ? blocks[^1] : SkeletonBlock(def.Fields);
+
+        if (blocks.Count > count)
+            blocks = blocks.Take(count).ToList();
+        else
+            while (blocks.Count < count) blocks.Add(template);
+
+        blocks = blocks.Select((b, i) => RenumberId(b, i + 1)).ToList();
+
+        var body = blocks.Count == 0
+            ? ""
+            : "\n" + string.Join(",\n", blocks.Select(b => "  " + WhitespaceRun.Replace(b, " ").Trim())) + "\n";
+
+        var updated = content[..m.Groups[2].Index] + body
+            + content[(m.Groups[2].Index + m.Groups[2].Length)..];
+        if (updated != content) Io.Write(path, updated);
+    }
+
+    private static string RenumberId(string block, int number) =>
+        IdNumberPattern.Replace(block, mm => mm.Groups[1].Value + number + mm.Groups[3].Value, 1);
+
+    private static string SkeletonBlock(IReadOnlyList<ManifestField> fields)
+    {
+        var keys = fields.Select(f => f.Key).Distinct().ToList();
+        return keys.Count == 0
+            ? "{}"
+            : "{ " + string.Join(", ", keys.Select(k => $"{k}: \"\"")) + " }";
+    }
 
     private static string Src(string root, string rel) =>
         ProjectPaths.Src(root, rel.Replace('/', '\\'));
@@ -18,21 +63,35 @@ internal static class ContentStore
         var fields = new List<FieldDef>();
         AddBrandField(root, fields);
 
+        var addedKinds = new HashSet<string>(StringComparer.Ordinal);
         foreach (var lc in layout)
         {
             var def = SectionCatalog.FindByComponentName(lc.Name) ?? SectionCatalog.AnyOfKind(lc.Kind);
-            if (def is not null) AddDefFields(root, fields, def);
+            if (def is not null)
+            {
+                AddDefFields(root, fields, def);
+                addedKinds.Add(def.Kind);
+            }
         }
 
-        AddKindFields(root, fields, "PromotionsPage");
-        AddKindFields(root, fields, "ContactPage");
-        AddKindFields(root, fields, "Faq");
+
+        AddKindFields(root, fields, "PromotionsPage", addedKinds);
+        AddKindFields(root, fields, "ContactPage", addedKinds);
+        AddKindFields(root, fields, "Faq", addedKinds);
+
+        foreach (var def in SectionCatalog.All
+                     .Where(d => d.Slot != "body" && d.Fields.Count > 0)
+                     .GroupBy(d => d.Kind, StringComparer.Ordinal)
+                     .Select(g => g.First())
+                     .OrderBy(d => d.Kind, StringComparer.Ordinal))
+            AddKindFields(root, fields, def.Kind, addedKinds);
 
         return fields;
     }
 
-    private static void AddKindFields(string root, List<FieldDef> fields, string kind)
+    private static void AddKindFields(string root, List<FieldDef> fields, string kind, HashSet<string> addedKinds)
     {
+        if (!addedKinds.Add(kind)) return;
         if (SectionCatalog.AnyOfKind(kind) is { } def) AddDefFields(root, fields, def);
     }
 

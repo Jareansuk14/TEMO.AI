@@ -8,14 +8,16 @@ internal sealed class GenerationLog
     private readonly StringBuilder _sb = new();
     private readonly string _projectPath;
     private readonly string _brand;
+    private readonly string _prefix;
     private DateTime _start;
 
-    public GenerationLog(string projectPath, string brand)
+    public GenerationLog(string projectPath, string brand, string? title = null, string prefix = "gen")
     {
         _projectPath = projectPath;
         _brand = brand;
+        _prefix = prefix;
         _start = DateTime.Now;
-        Section($"เริ่มสร้างเว็บ แบรนด์: {brand}");
+        Section(title ?? $"เริ่มสร้างเว็บ แบรนด์: {brand}");
         Line($"เวลาเริ่ม: {_start:yyyy-MM-dd HH:mm:ss}");
     }
 
@@ -85,7 +87,7 @@ internal sealed class GenerationLog
         try
         {
             Directory.CreateDirectory(_projectPath);
-            var path = Path.Combine(_projectPath, $"gen-{_start:yyyyMMdd-HHmmss}.log");
+            var path = Path.Combine(_projectPath, $"{_prefix}-{_start:yyyyMMdd-HHmmss}.log");
             lock (_sync) File.WriteAllText(path, _sb.ToString(), Encoding.UTF8);
         }
         catch { }

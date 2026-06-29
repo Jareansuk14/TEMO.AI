@@ -46,6 +46,23 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="6"/>
                                 <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="GenBtn" Content="⚡  สร้างเว็บอัตโนมัติ"
+                                    Style="{StaticResource BtnAccent}"
+                                    Grid.Column="0"
+                                    Height="36" FontSize="12" Padding="0"
+                                    Click="Gen_Click"/>
+                            <Button x:Name="ApiKeyBtn" Content="🔑" Grid.Column="2"
+                                    Style="{StaticResource Btn}"
+                                    Width="38" Height="36" FontSize="15" Padding="0"
+                                    ToolTip="API Key"
+                                    Click="ApiKeyToggle_Click"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="6"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="6"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
@@ -88,11 +105,6 @@
                                 </Viewbox>
                             </Button>
                         </Grid>
-                        <Button x:Name="GenBtn" Content="⚡  สร้างเว็บอัตโนมัติ (GEN)"
-                                Style="{StaticResource Btn}"
-                                Height="34" FontSize="12" Padding="0"
-                                Margin="0,0,0,8"
-                                Click="Gen_Click"/>
                         <TextBox x:Name="FolderPathBox" Style="{StaticResource Input}"
                                  FontSize="18" FontWeight="Bold" Padding="9,8" IsReadOnly="True"
                                  Margin="0,0,0,8"/>
@@ -108,8 +120,9 @@
                                     Height="36" FontSize="12" Padding="0"
                                     IsEnabled="False"
                                     Click="ToggleServer_Click"/>
-                            <Button Grid.Column="1" Style="{StaticResource Btn}"
+                            <Button x:Name="BackNavBtn" Grid.Column="1" Style="{StaticResource Btn}"
                                     Width="36" Height="36" Margin="6,0,0,0" Padding="0"
+                                    IsEnabled="False"
                                     ToolTip="ย้อนกลับ" Click="Back_Click">
                                 <Viewbox Width="14" Height="14">
                                     <Canvas Width="24" Height="24">
@@ -121,8 +134,9 @@
                                     </Canvas>
                                 </Viewbox>
                             </Button>
-                            <Button Grid.Column="2" Style="{StaticResource Btn}"
+                            <Button x:Name="ForwardNavBtn" Grid.Column="2" Style="{StaticResource Btn}"
                                     Width="36" Height="36" Margin="6,0,0,0" Padding="0"
+                                    IsEnabled="False"
                                     ToolTip="ไปหน้า" Click="Forward_Click">
                                 <Viewbox Width="14" Height="14">
                                     <Canvas Width="24" Height="24">
@@ -134,8 +148,9 @@
                                     </Canvas>
                                 </Viewbox>
                             </Button>
-                            <Button Grid.Column="3" Style="{StaticResource Btn}"
+                            <Button x:Name="RefreshNavBtn" Grid.Column="3" Style="{StaticResource Btn}"
                                     Width="36" Height="36" Margin="6,0,0,0" Padding="0"
+                                    IsEnabled="False"
                                     ToolTip="รีเฟรช" Click="Refresh_Click">
                                 <Viewbox Width="15" Height="15">
                                     <Canvas Width="24" Height="24">
@@ -156,8 +171,6 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="8"/>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="6"/>
-                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Button x:Name="SaveAllBtn" Content="SAVE ALL"
                                 Style="{StaticResource BtnAccent}"
@@ -169,12 +182,6 @@
                                 Width="86" Height="38" FontSize="12" Padding="0"
                                 IsEnabled="False"
                                 Click="Deploy_Click"/>
-                        <Button x:Name="ApiKeyBtn" Content="🔑" Grid.Column="4"
-                                Style="{StaticResource Btn}"
-                                Width="38" Height="38" FontSize="15" Padding="0"
-                                IsEnabled="False"
-                                ToolTip="API Key"
-                                Click="ApiKeyToggle_Click"/>
                     </Grid>
                 </Border>
 

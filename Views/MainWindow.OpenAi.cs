@@ -49,17 +49,20 @@ public partial class MainWindow
     private async Task RunAiApplyAsync(
         Button button, string model, object messageContent,
         Func<string, int> apply, UIElement panelToClose,
-        Func<int, string> successMessage, string noMatchMessage)
+        Func<int, string> successMessage, string noMatchMessage,
+        GenerationLog? genLog = null)
     {
         button.IsEnabled = false;
         try
         {
             var text = await RequestOpenAiAsync(model, messageContent);
-            if (text is null) return;
+            if (text is null) { genLog?.Finish(false, "เรียก AI ล้มเหลว"); return; }
 
+            genLog?.Block("ตอบกลับ", text);
             var applied = apply(text);
             if (applied > 0)
             {
+                genLog?.Finish(true, successMessage(applied));
                 HideAiOverlay();
                 panelToClose.Visibility = Visibility.Collapsed;
                 SaveAll_Click(null!, null!);
@@ -67,6 +70,7 @@ public partial class MainWindow
             }
             else
             {
+                genLog?.Finish(false, noMatchMessage);
                 ShowAiOverlayError(text);
                 ShowMsg(noMatchMessage);
             }
