@@ -2,7 +2,7 @@ namespace TEMO.AI;
 
 internal static class Workspace
 {
-    public static readonly bool DevLayoutMode = true;
+    public static readonly bool DevLayoutMode = false;
 
     private static readonly Lazy<string?> WorkspaceTemplatesLazy = new(() => FindAncestorDir("Templates"));
     private static readonly Lazy<string?> WorkspaceComponentLazy = new(() => FindAncestorDir(Path.Combine("Templates", "Component")));

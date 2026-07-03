@@ -9,6 +9,9 @@ public partial class MainWindow
     public static Visibility DevEditVisibility =>
         DevLayoutMode ? Visibility.Visible : Visibility.Collapsed;
 
+    public static Visibility DevReadOnlyVisibility =>
+        DevLayoutMode ? Visibility.Collapsed : Visibility.Visible;
+
     private void ApplyDevLayoutMode()
     {
         ShellSectionWrap.Visibility = DevLayoutMode ? Visibility.Visible : Visibility.Collapsed;
@@ -211,6 +214,7 @@ public partial class MainWindow
         RefreshLayoutList();
         _selectedIndexForSwap = -1;
 
+        RebuildContentForLayout();
         MarkLayoutChanged($"สลับแล้ว: {sourceComp.DisplayName} ⇄ {targetComp.DisplayName}", rebuildContent: false);
     }
 

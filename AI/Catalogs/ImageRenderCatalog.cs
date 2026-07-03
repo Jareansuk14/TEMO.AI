@@ -9,14 +9,16 @@ internal static class ImageRenderCatalog
         new("Action freeze frame", "Action freeze frame"),
         new("Cyberpunk neon", "Cyberpunk neon"),
         new("สดใส ร่าเริง", "สดใส ร่าเริง"),
+        new("Party", "Party"),
+        new("Celebrating", "Celebrating"),
         new("เคร่งขรึม น่าเกรงขาม", "เคร่งขรึม น่าเกรงขาม"),
         new("Fashion", "Fashion"),
         new("ป้ายโฆษณา", "ป้ายโฆษณา"),
         new("Portrait ศิลปะ", "Portrait ศิลปะ"),
-        new("ไลฟ์สไตล์", "ไลฟ์สไตล์"),
-        new("โปรไฟล์ธุรกิจ", "โปรไฟล์ธุรกิจ"),
         new("ความงามธรรมชาติ", "ความงามธรรมชาติ"),
         new("สง่าผ่าเผย", "สง่าผ่าเผย"),
+        new("Night club", "Night club"),
+        new("Night party", "Night party"),
     ];
 
     public static readonly ImageStyle[] Stylized =

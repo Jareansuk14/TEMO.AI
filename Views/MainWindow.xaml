@@ -400,7 +400,7 @@
                                     </ListBox>
                                 </StackPanel>
 
-                                <Grid Margin="0,0,0,12">
+                                <Grid x:Name="LayoutSectionHeader" Margin="0,0,0,12">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
@@ -408,7 +408,12 @@
                                     <StackPanel>
                                         <TextBlock Text="จัดเรียง Section"
                                                    FontSize="13" FontWeight="Bold"
-                                                   Foreground="#AAAAAA"/>
+                                                   Foreground="#AAAAAA"
+                                                   Visibility="{x:Static local:MainWindow.DevEditVisibility}"/>
+                                        <TextBlock Text="Section"
+                                                   FontSize="13" FontWeight="Bold"
+                                                   Foreground="#AAAAAA"
+                                                   Visibility="{x:Static local:MainWindow.DevReadOnlyVisibility}"/>
                                     </StackPanel>
                                     <Button x:Name="AddSectionBtn"
                                             Grid.Column="1"
@@ -463,15 +468,22 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
                                                 <StackPanel Margin="12,10">
-                                                    <TextBlock Text="{Binding DisplayName}" 
+                                                    <TextBlock Text="{Binding DisplayName}"
                                                                VerticalAlignment="Center"
-                                                               FontSize="14"/>
+                                                               FontSize="14"
+                                                               Visibility="{x:Static local:MainWindow.DevEditVisibility}"/>
+                                                    <TextBlock Text="{Binding KindUpper}"
+                                                               VerticalAlignment="Center"
+                                                               FontSize="14"
+                                                               FontWeight="SemiBold"
+                                                               Visibility="{x:Static local:MainWindow.DevReadOnlyVisibility}"/>
                                                     <TextBlock Text="{Binding Variant}"
                                                                FontSize="10"
                                                                Foreground="#666666"
-                                                               Margin="0,3,0,0"/>
+                                                               Margin="0,3,0,0"
+                                                               Visibility="{x:Static local:MainWindow.DevEditVisibility}"/>
                                                 </StackPanel>
-                                                <Border x:Name="SwapIconBorder" 
+                                                <Border x:Name="SwapIconBorder"
                                                         Grid.Column="1"
                                                         Background="Transparent"
                                                         Padding="10"

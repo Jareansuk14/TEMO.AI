@@ -18,5 +18,7 @@ internal sealed class LayoutComponent
     public bool CanRemove { get; set; } = true;
     public bool CanChangeVariant { get; set; } = true;
 
+    public string KindUpper => Kind.ToUpperInvariant();
+
     public override string ToString() => DisplayName;
 }
