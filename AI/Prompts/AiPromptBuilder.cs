@@ -55,7 +55,8 @@ internal static class AiPromptBuilder
         AiPromptType type, string brand,
         IReadOnlyList<FieldDef> fields,
         IReadOnlyDictionary<string, string> values,
-        IReadOnlySet<string> selected)
+        IReadOnlySet<string> selected,
+        IReadOnlyList<string>? keywords = null)
     {
         var sb = new StringBuilder(GetPrompt(type).TrimEnd());
         sb.Append("\r\n\r\n");
@@ -64,6 +65,8 @@ internal static class AiPromptBuilder
 
         if (selected.Contains("FAQ"))
             sb.Append(PromptFaqRules);
+
+        sb.Append(KeywordRules(keywords));
 
         if (!string.IsNullOrEmpty(brand))
             sb.AppendLine($"ชื่อแบรนด์ของเรา: {brand} (ด้านล่างนี้คือเนื้อหาที่ใช้อยู่ตอนนี้ ช่วยแก้ไขให้ตรงกับข้อกำหนดด้านบน)\r\n");
@@ -80,5 +83,25 @@ internal static class AiPromptBuilder
             count++;
         }
         return (sb.ToString(), count);
+    }
+
+    private static string KeywordRules(IReadOnlyList<string>? keywords)
+    {
+        var keys = keywords?
+            .Select(k => k.Trim())
+            .Where(k => k.Length > 0)
+            .Take(3)
+            .ToList() ?? [];
+        if (keys.Count == 0) return "";
+
+        int[] spots = keys.Count switch { 1 => [3], 2 => [2, 2], _ => [2, 1, 1] };
+
+        var sb = new StringBuilder();
+        sb.Append("ข้อกำหนดการแทรก Keyword พิเศษ (สำคัญมาก ต้องทำตามอย่างเคร่งครัด):\r\n");
+        sb.Append("- สอดแทรกคำ/วลีต่อไปนี้ลงในเนื้อหาของ id ที่ขึ้นต้นด้วย sub- หรือ faq-a- เท่านั้น แทรกให้กลมกลืนเป็นธรรมชาติ ณ ตำแหน่งใดก็ได้ในเนื้อหา:\r\n");
+        for (int i = 0; i < keys.Count; i++)
+            sb.Append($"  • \"{keys[i]}\" ต้องปรากฏรวมทั้งหมด {spots[i]} จุด\r\n");
+        sb.Append("- ห้ามแทรกคำเหล่านี้ใน id อื่นที่ไม่ได้ขึ้นต้นด้วย sub- หรือ faq-a- และห้ามใส่เกินจำนวนจุดที่ระบุ\r\n\r\n");
+        return sb.ToString();
     }
 }

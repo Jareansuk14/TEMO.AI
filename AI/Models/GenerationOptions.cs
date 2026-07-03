@@ -7,4 +7,5 @@ internal sealed record GenerationOptions(
     string ImageModel = AiModels.Image,
     string CssModel = AiModels.CssDefault,
     ImageStyle? Style = null,
-    ImageStyle? Render = null);
+    ImageStyle? Render = null,
+    IReadOnlyList<string>? Keywords = null);

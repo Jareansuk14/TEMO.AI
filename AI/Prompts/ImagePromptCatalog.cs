@@ -9,6 +9,13 @@ internal static class ImagePromptCatalog
         _ => "คาสิโนออนไลน์",
     };
 
+    public static string ThemeLabelEn(AiPromptType type) => type switch
+    {
+        AiPromptType.Lottery => "lottery",
+        AiPromptType.Slot => "slot casino",
+        _ => "casino",
+    };
+
     public static string BuildPrompt(
         ImagePlanItem item, GenerationOptions options, ThemePalette palette,
         string composition, string promo, bool hasLogoReference)
@@ -16,9 +23,38 @@ internal static class ImagePromptCatalog
         var theme = ThemeLabel(options.ContentType);
         var style = options.Style ?? ImageStyleCatalog.All[0];
         var render = options.Render ?? ImageRenderCatalog.All[0];
+
+        if (item.Id == "logo")
+        {
+            var themeEn = ThemeLabelEn(options.ContentType);
+            if (ImageRenderCatalog.IsRealistic(render))
+                return
+                    $"You are an expert in website logo design. Please design a luxury {themeEn} wordmark logo for \u201c{options.Brand}\u201d. " +
+                    $"Do not interpret the company name literally when designing the logo, with {themeEn} elements integrated directly into the letters. " +
+                    $"Style: formal, elegant, premium, professional, clearly{themeEn}-related. " +
+                    "Not too minimal, not cluttered, no slogan, no separate icon, no multi-part layout. " +
+                    "May or may not be a background image behind the company name. " +
+                    "Use medium-to-bold lettering for strong readability on dark and light backgrounds. " +
+            $"Colors: {palette.Primary}, {palette.Secondary}, {palette.Accent}, plus gold / silver if needed. " +
+            $"{FlatBgEn} 512x512px.";
+
+            return
+                "You are an expert in website logo design.\n" +
+                $"Please design an art {themeEn} wordmark logo for \u201c{options.Brand}\u201d.\n" +
+                $"Do not interpret the company name literally when designing the logo, with {themeEn} elements integrated directly into the letters.\n" +
+                $"Style: formal, premium, professional, clearly {themeEn}-related.\n" +
+                $"Render: {render.Name}\n" +
+                $"Theme: {style.Name}\n" +
+                "Not too minimal, not cluttered, no slogan, no separate icon, no multi-part layout.\n" +
+                "May or may not be a background image behind the company name.\n" +
+                "Use medium-to-bold lettering for strong readability on dark and light backgrounds.\n" +
+            $"Colors: {palette.Primary}, {palette.Secondary}, {palette.Accent}.\n" +
+            $"{FlatBgEn} 512x512px.";
+        }
+
         var subject = string.IsNullOrEmpty(composition)
             ? ""
-            : $" โดยมี{composition} ให้แต่งกายและออกแบบตัวละครให้เข้ากับธีม{style.Name}";
+            : $" โดยมี{composition} ให้แต่งกายและออกแบบตัวละครให้เข้ากับธีม{style.Name}หากเป็นมนุษย์ให้มีทรงผมหลากหลายไม่ซ้ำกัน";
         var backdrop = $" และมีองค์ประกอบอยู่เบื้องหลังที่สื่อถึง{theme}";
         var logo = hasLogoReference ? " และนำรูปโลโก้ที่แนบมาไปไว้ในภาพด้วย" : "";
         var logoSubtle = hasLogoReference ? " และนำรูปโลโก้ที่แนบมาไปไว้ในภาพ แต่ห้ามอยู่กลางภาพ กลมกลืนกับองค์ประกอบ" : "";
@@ -26,22 +62,22 @@ internal static class ImagePromptCatalog
 
         var request = item.Id switch
         {
-            "logo" =>
-                $"ขอโลโก้แบรนด์ \"{options.Brand}\" ที่สื่อถึง{theme} (ตีความเป็นกราฟิกโลโก้เท่านั้น ไม่ใช่ภาพถ่ายของของจริง) พื้นหลังโปร่งใส ข้อความแบรนด์อ่านชัด ไม่มีมาสคอต ไม่มีสโลแกน ห้ามวาดเหรียญ ทองคำแท่ง ธนบัตร อัญมณี หรือสิ่งของจริงใด ๆ ให้เป็นตราสัญลักษณ์นามธรรมเพียวๆ",
+            "play" =>
+                $"ขอปุ่มกด ธีม{style.Name} (ตีความเป็นกราฟิกปุ่มเท่านั้น ไม่ใช่ภาพถ่ายของของจริง) พื้นหลังโปร่งใส มีข้อความว่า \"{RandomPlayText()}\" อยู่กลางปุ่ม อ่านชัด ไม่มีคำอื่น ไม่มีไอคอน ห้ามวาดเหรียญ ทองคำ ธนบัตร หรือสิ่งของจริงใด ๆ",
             "banner" =>
-                $"ขอรูปภาพแบนเนอร์หลัก ธีม{style.Name}{subject}{backdrop}{logo} จัดองค์ประกอบเด่นเห็นชัด พร้อมใส่สโลแกนสั้นๆที่เกี่ยวกับ{theme}",
+                $"ขอรูปภาพแบนเนอร์หลัก ธีม{style.Name}{subject}{backdrop}{logo} จัดองค์ประกอบเด่นเห็นชัด พร้อมใส่สโลแกนภาษาไทยสั้นๆที่เกี่ยวกับ{theme}{BgSubtle}",
             "background" =>
                 $"ขอรูปภาพพื้นหลังเว็บ ธีม{style.Name}{backdrop} ไม่มีข้อความ ไม่มีตัวเลข ไม่มีโลโก้ ไม่มีตัวละครเด่น ใช้เป็นฉากหลังหลังเนื้อหาได้ดี",
             var s when s.StartsWith("btn-") =>
-                $"ขอปุ่มกดทรงโค้งมนพรีเมียม ธีม{style.Name} (ตีความเป็นกราฟิกปุ่มเท่านั้น ไม่ใช่ภาพถ่ายของของจริง) พื้นหลังโปร่งใส มีข้อความภาษาไทยว่า \"{ButtonText(s["btn-".Length..])}\" อยู่กลางปุ่ม อ่านชัด ไม่มีคำอื่น ไม่มีไอคอน ห้ามวาดเหรียญ ทองคำ ธนบัตร หรือสิ่งของจริงใด ๆ",
+                $"ขอปุ่มกด ธีม{style.Name} (ตีความเป็นกราฟิกปุ่มเท่านั้น ไม่ใช่ภาพถ่ายของของจริง) พื้นหลังโปร่งใส มีข้อความภาษาไทยว่า \"{ButtonText(s["btn-".Length..])}\" อยู่กลางปุ่ม อ่านชัด ไม่มีคำอื่น ไม่มีไอคอน ห้ามวาดเหรียญ ทองคำ ธนบัตร หรือสิ่งของจริงใด ๆ",
             var s when s.StartsWith("promo-") =>
-                $"ขอรูปภาพการ์ดโปรโมชั่น ธีม{style.Name}{subject}{logoSubtle} มีข้อความโปรโมชั่นภาษาไทยว่า \"{promo}\" เด่นชัดอ่านง่ายในภาพ ออกแบบให้ดูเป็นแบนเนอร์โปรโมชั่นน่าสนใจ{backdrop}",
+                $"ขอรูปภาพการ์ดโปรโมชั่น ธีม{style.Name}{subject}{logoSubtle} มีข้อความโปรโมชั่นภาษาไทยว่า \"{promo}\" เด่นชัดอ่านง่ายในภาพ ออกแบบให้ดูเป็นแบนเนอร์โปรโมชั่นน่าสนใจ{backdrop}{BgSubtle}",
             var s when s.StartsWith("seo-") =>
-                $"ขอรูปภาพประกอบบทความ ธีม{style.Name}{subject}{logoSubtle} มีสโลแกนสั้นภาษาไทยว่า \"{promo}\" เด่นชัดอ่านง่ายในภาพ สื่อความหมายชัดเจน ไม่มีบล็อกข้อความอื่นที่อ่านได้{backdrop}",
+                $"ขอรูปภาพประกอบบทความ ธีม{style.Name}{subject}{logoSubtle} มีสโลแกนสั้นภาษาไทยว่า \"{promo}\" เด่นชัดอ่านง่ายในภาพ สื่อความหมายชัดเจน ไม่มีบล็อกข้อความอื่นที่อ่านได้{backdrop}{BgSubtle}",
             var s when s.StartsWith("game-") =>
                 $"ขอรูปภาพการ์ดเกมแนวตั้ง ธีม{style.Name} ไม่มีข้อความ ตัวเลข หรือโลโก้ที่อ่านได้",
             _ when imageType == "transparent" && ImageGroupCatalog.ByPrefix(item.Id) is { Role.Length: > 0 } g =>
-                $"ขอรูป{g.Role}แบบตัวละครหรือมาสคอตเดี่ยวธีม{style.Name}{subject} เป็นวัตถุหลักเพียงตัวเดียว ไม่ใช่ปุ่ม ไม่ใช่โลโก้ ไม่มีข้อความ ไม่มีตัวเลข ไม่มีฉากหลัง",
+                $"ขอรูป{g.Role}แบบตัวละครเดี่ยวธีม{style.Name}{subject} เป็นวัตถุหลักเพียงตัวเดียว ไม่ใช่ปุ่ม ไม่ใช่โลโก้ ไม่มีข้อความ ไม่มีตัวเลข ไม่มีฉากหลัง",
             _ when ImageGroupCatalog.ByPrefix(item.Id) is { Role.Length: > 0 } g =>
                 $"ขอรูปภาพ{g.Role} ธีม{style.Name}{subject}{backdrop} สื่อความหมายชัดเจน ไม่มีบล็อกข้อความอื่นที่อ่านได้",
             _ =>
@@ -50,7 +86,7 @@ internal static class ImagePromptCatalog
 
         var transparent = imageType is "button" or "transparent";
         var transparentNote = transparent
-            ? "พื้นหลังต้องโปร่งใสจริง (alpha channel) ทั้งภาพ ไม่มีพื้นหลังสีทึบ ไม่มีพื้นหลังขาว ไม่มีกรอบหรือฉากหลัง วางวัตถุลอยบนพื้นโปร่งใสเท่านั้น\n"
+            ? "สำคัญ: พื้นหลังสีพื้นเรียบเพียงสีเดียว ตัดกับตัวละครอย่างชัดเจน โดยใช้สีที่ไม่ซ้ำและไม่มีอยู่ในตัวละครหรือเอฟเฟกต์ใดๆ ไม่มีลวดลาย ไม่มีเงา ไม่มีไล่สี เพื่อให้แยกตัวละครและลบพื้นหลังได้ง่าย\n"
             : "";
 
         return
@@ -72,10 +108,10 @@ internal static class ImagePromptCatalog
         var render = options.Render ?? ImageRenderCatalog.All[0];
         var subject = string.IsNullOrWhiteSpace(character) ? "ตัวละครหรือมาสคอตเดี่ยว" : character;
         var provider = hasProviderRef
-            ? $"และนำรูปโลโก้ค่ายเกมที่แนบมาวางไว้ในรูปด้วย แสดงโลโก้เป็นองค์ประกอบที่แยกออกจากตัวละคร แต่ให้วางทับซ้อนกับตัวละครในเชิงภาพ โดยห้ามนำโลโก้ไปรวมเป็นส่วนหนึ่งของชุด เกราะ สัญลักษณ์กลางอก ผ้าคลุม เข็มขัด หรืออุปกรณ์เสริม วางโลโก้ให้ทับซ้อนอยู่บริเวณส่วนล่างของตัวละคร ห้ามวางโลโก้ไว้ตรงกลางหน้าอก ให้วางเอาไว้บริเวณล่างของรูป และใช้เอฟเฟคหรือโทนสีของธีม{style.Name} เพื่อทำให้โลโก้กับตัวละครดูกลมกลืนกัน ให้ขนาดของโลโก้คิดเป็น 25%ของภาพ"
+            ? $"และนำรูปโลโก้ค่ายเกมที่แนบมาวางไว้ในรูปด้วย แสดงโลโก้เป็นองค์ประกอบที่แยกออกจากตัวละคร แต่ให้วางทับซ้อนกับตัวละครในเชิงภาพ โดยห้ามนำโลโก้ไปรวมเป็นส่วนหนึ่งของชุด เกราะ สัญลักษณ์กลางอก ผ้าคลุม เข็มขัด หรืออุปกรณ์เสริม วางโลโก้ให้ทับซ้อนอยู่บริเวณส่วนล่างของตัวละคร ห้ามวางโลโก้ไว้ตรงกลางหน้าอก ให้วางเอาไว้บริเวณล่างของรูป และสร้างกรอบให้กับโลโก้ที่แนบไปให้เขากับธีม{style.Name} เพื่อทำให้โลโก้กับตัวละครดูกลมกลืนกัน ให้ขนาดของโลโก้คิดเป็น 25%ของภาพ"
             : "";
         var transparentNote = transparent
-            ? "พื้นหลังต้องโปร่งใสจริง (alpha channel) ทั้งภาพ ไม่มีพื้นหลังสีทึบ ไม่มีพื้นหลังขาว ไม่มีกรอบหรือฉากหลัง วางตัวละครลอยบนพื้นโปร่งใส\n"
+            ? "สำคัญ: พื้นหลังสีพื้นเรียบเพียงสีเดียว ตัดกับตัวละครหรือโลโก้อย่างชัดเจน โดยใช้สีที่ไม่ซ้ำและไม่มีอยู่ในตัวละครหรือเอฟเฟกต์ใดๆ ไม่มีลวดลาย ไม่มีเงา ไม่มีไล่สี เพื่อให้แยกตัวละครและลบพื้นหลังได้ง่าย\n"
             : "";
         var request = transparent
             ? $"ขอรูปการ์ดเกมแนวตั้งเป็น{subject}เพียงตัวเดียว ให้แต่งกายและออกแบบตัวละครให้เข้ากับธีม{style.Name} ไม่ใช่ปุ่ม ไม่ใช่โลโก้ ไม่มีข้อความ ไม่มีตัวเลข{provider}"
@@ -93,16 +129,33 @@ internal static class ImagePromptCatalog
 
     public static string BuildButtonReferencePrompt(ImagePlanItem item)
     {
-        var text = ButtonText(item.Id["btn-".Length..]);
+        var isPlay = item.Id == "play";
+        var text = isPlay ? RandomPlayText() : ButtonText(item.Id["btn-".Length..]);
+        var langNote = isPlay
+            ? "ข้อความอยู่กลางปุ่ม อ่านชัด ไม่มีคำอื่น ไม่มีไอคอน"
+            : "ข้อความภาษาไทยอยู่กลางปุ่ม อ่านชัด ไม่มีคำอื่น ไม่มีไอคอน";
         return
             "คุณคือผู้เชี่ยวชาญด้านกราฟฟิกดีไซน์ของปุ่มกดบนเว็บไซต์\n" +
             $"โดยสร้างรูปให้เหมือนกับรูปที่แนบไป แต่เปลี่ยนคำข้างในเป็น \"{text}\"\n" +
             "คงสไตล์ รูปทรง สี ขนาด และองค์ประกอบทั้งหมดให้เหมือนรูปที่แนบไปทุกประการ เปลี่ยนเฉพาะข้อความเท่านั้น\n" +
             "ห้ามวาดเหรียญ ทองคำ ธนบัตร หรือสิ่งของจริงใด ๆ\n" +
-            "ข้อความภาษาไทยอยู่กลางปุ่ม อ่านชัด ไม่มีคำอื่น ไม่มีไอคอน\n" +
-            "พื้นหลังต้องโปร่งใสจริง (alpha channel) ทั้งภาพ ไม่มีพื้นหลังสีทึบ ไม่มีพื้นหลังขาว ไม่มีกรอบหรือฉากหลัง\n" +
+            $"{langNote}\n" +
+            "สำคัญ: พื้นหลังสีพื้นเรียบเพียงสีเดียว ตัดกับตัวละครอย่างชัดเจน โดยใช้สีที่ไม่ซ้ำและไม่มีอยู่ในตัวละครหรือเอฟเฟกต์ใดๆ ไม่มีลวดลาย ไม่มีเงา ไม่มีไล่สี เพื่อให้แยกตัวละครและลบพื้นหลังได้ง่าย\n" +
             $"ขนาดภาพ: {item.Width}x{item.Height}";
     }
+
+    private static readonly string[] s_playTexts = ["Play", "เล่นเกม", "เล่นเลย"];
+
+    private const string FlatBgEn =
+        "Important: use a flat solid single-color background that contrasts sharply with the logo, " +
+        "using a unique color not present in the logo or any effects — no patterns, no shadows, no gradients — " +
+        "so the logo can be easily isolated and the background removed.";
+
+    private const string BgSubtle =
+        " พื้นหลังและฉากหลังมีรายละเอียดน้อย ไม่เยอะ เพื่อไม่ให้แย่งความเด่นไปจากข้อความและตัวละคร";
+
+    private static string RandomPlayText() =>
+        s_playTexts[Random.Shared.Next(s_playTexts.Length)];
 
     public static string ButtonText(string key) => key switch
     {

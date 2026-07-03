@@ -8,16 +8,14 @@ internal static class GeneratedImageWriter
         var target = ProjectPaths.Public(projectPath, src);
         Directory.CreateDirectory(Path.GetDirectoryName(target)!);
 
-        if (IsResized(item.Id))
-        {
+        if (item.Id == "logo")
+            SaveContain(bytes, target, item.Width, item.Height);
+        else if (IsResized(item.Id))
             SaveCover(bytes, target, item.Width, item.Height);
-            ImagesStore.SaveEntry(projectPath, item.Src, src, alt, item.HasAlt, item.Id);
-        }
         else
-        {
             SaveOriginal(bytes, target);
-            ImagesStore.SaveEntry(projectPath, item.Src, src, alt, item.HasAlt, item.Id);
-        }
+
+        ImagesStore.SaveEntry(projectPath, item.Src, src, alt, item.HasAlt, item.Id);
     }
 
     public static void SaveButtons(
@@ -49,7 +47,7 @@ internal static class GeneratedImageWriter
     }
 
     private static bool IsResized(string id) =>
-        id is "background" or "logo" or "banner";
+        id is "background" or "banner";
 
     private static string EnsureWebp(string src)
     {
@@ -81,6 +79,33 @@ internal static class GeneratedImageWriter
         canvas.Clear(SkiaSharp.SKColors.Transparent);
 
         var scale = Math.Max(width / (float)bitmap.Width, height / (float)bitmap.Height);
+        var drawW = bitmap.Width * scale;
+        var drawH = bitmap.Height * scale;
+        var dest = new SkiaSharp.SKRect(
+            (width - drawW) / 2f, (height - drawH) / 2f,
+            (width + drawW) / 2f, (height + drawH) / 2f);
+
+        using var paint = new SkiaSharp.SKPaint { IsAntialias = true };
+        using var source = SkiaSharp.SKImage.FromBitmap(bitmap);
+        canvas.DrawImage(source, dest, HighQuality, paint);
+
+        using var image = surface.Snapshot();
+        using var data = image.Encode(SkiaSharp.SKEncodedImageFormat.Webp, 95);
+        using var stream = File.Create(target);
+        data.SaveTo(stream);
+    }
+
+    // ครอปพื้นหลังออกแล้ว fit ให้อยู่ในกรอบ width x height โดยคงสัดส่วน วางกึ่งกลางบนผืนผ้าใบโปร่งใส
+    private static void SaveContain(byte[] bytes, string target, int width, int height)
+    {
+        using var bitmap = SkiaSharp.SKBitmap.Decode(bytes);
+        if (bitmap is null) throw new InvalidOperationException("AI image decode failed");
+
+        using var surface = SkiaSharp.SKSurface.Create(new SkiaSharp.SKImageInfo(width, height));
+        var canvas = surface.Canvas;
+        canvas.Clear(SkiaSharp.SKColors.Transparent);
+
+        var scale = Math.Min(width / (float)bitmap.Width, height / (float)bitmap.Height);
         var drawW = bitmap.Width * scale;
         var drawH = bitmap.Height * scale;
         var dest = new SkiaSharp.SKRect(

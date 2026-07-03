@@ -69,6 +69,11 @@ internal static class ComponentValidator
                     warnings.Add($"{who} image \"{img.Id}\" ไม่มีทั้ง ratio และ width/height (จะใช้ขนาด default)");
             }
 
+            if (d.Spec.HeadingCount < 0)
+                warnings.Add($"{who} headingCount ต้องไม่ติดลบ");
+            if (d.Spec.HeadingCount > 0 && !d.Repeatable)
+                warnings.Add($"{who} headingCount > 0 แต่ repeatable=false (ไม่มี array ให้ปรับจำนวน)");
+
             ValidateSpec(d, who, warnings);
         }
 
@@ -76,37 +81,23 @@ internal static class ComponentValidator
     }
 
     private static readonly string[] KnownImageTypes = ["normal", "transparent", "button"];
-    private static readonly string[] KnownLinks = ["none", "imagesfollowheadings", "headingsfollowimages"];
 
     private static void ValidateSpec(SectionDefinition d, string who, List<string> warnings)
     {
         var spec = d.Spec;
-        if (!spec.IsDefined) return;
-
-        if (spec.HeadingMin < 0 || spec.ImageMin < 0)
-            warnings.Add($"{who} spec มีจำนวนติดลบ");
-        if (spec.HeadingMax > 0 && spec.HeadingMin > spec.HeadingMax)
-            warnings.Add($"{who} headingMin ({spec.HeadingMin}) > headingMax ({spec.HeadingMax})");
-        if (spec.ImageMax > 0 && spec.ImageMin > spec.ImageMax)
-            warnings.Add($"{who} imageMin ({spec.ImageMin}) > imageMax ({spec.ImageMax})");
+        if (!spec.HasImageGroup) return;
 
         if (!string.IsNullOrWhiteSpace(spec.ImageType)
             && !KnownImageTypes.Contains(spec.ImageType, StringComparer.OrdinalIgnoreCase))
             warnings.Add($"{who} imageType ไม่รู้จัก: \"{spec.ImageType}\" (รองรับ: {string.Join(", ", KnownImageTypes)})");
 
-        var link = (spec.Link ?? "none").ToLowerInvariant();
-        if (!KnownLinks.Contains(link))
-            warnings.Add($"{who} link ไม่รู้จัก: \"{spec.Link}\" (รองรับ: none, imagesFollowHeadings, headingsFollowImages)");
-        else if (link == "imagesfollowheadings" && !spec.HasHeadings)
-            warnings.Add($"{who} link=imagesFollowHeadings แต่ไม่มีหัวข้อ (headingMax=0)");
-        else if (link == "headingsfollowimages" && !spec.HasImages)
-            warnings.Add($"{who} link=headingsFollowImages แต่ไม่มีรูป (imageMax=0)");
-
         if (!string.IsNullOrWhiteSpace(spec.ImageRatio) && !RatioMap.IsValid(spec.ImageRatio))
             warnings.Add($"{who} imageRatio ผิดรูปแบบ: \"{spec.ImageRatio}\" (เช่น 3:4, 1:1, 16:9, auto)");
 
-        if (spec.HasImages && !string.IsNullOrWhiteSpace(spec.ImageGroup)
-            && ImageGroupCatalog.All.All(g => !string.Equals(g.Key, spec.ImageGroup, StringComparison.Ordinal)))
-            warnings.Add($"{who} imageGroup ไม่พบใน. image-groups.json: \"{spec.ImageGroup}\"");
+        if (ImageGroupCatalog.All.All(g => !string.Equals(g.Key, spec.ImageGroup, StringComparison.Ordinal)))
+            warnings.Add($"{who} imageGroup ไม่พบใน image-groups.json: \"{spec.ImageGroup}\"");
+
+        if (spec.ImageCount < 0)
+            warnings.Add($"{who} imageCount ต้องไม่ติดลบ");
     }
 }

@@ -53,10 +53,14 @@ internal static class ShellSlot
 
     private static string? ResolvePath()
     {
-        if (Workspace.FindAncestorDir(System.IO.Path.Combine("Templates", "Component")) is { } local)
+        if (Workspace.DevLayoutMode)
         {
-            var p = System.IO.Path.Combine(local, FileName);
-            if (File.Exists(p)) return p;
+            if (Workspace.WorkspaceComponentDir is { } local)
+            {
+                var p = System.IO.Path.Combine(local, FileName);
+                if (File.Exists(p)) return p;
+            }
+            return null;
         }
         var shipped = System.IO.Path.Combine(ComponentStore.Root, FileName);
         return File.Exists(shipped) ? shipped : null;

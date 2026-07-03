@@ -287,6 +287,11 @@
                                                      GroupName="ContentAiType"
                                                      Style="{StaticResource BtnModel}"/>
                                     </UniformGrid>
+                                    <TextBlock x:Name="ContentAiKwLabel"
+                                               Text="Keyword เสริม (ไม่บังคับ • สูงสุด 3)"
+                                               FontSize="10" FontWeight="Bold"
+                                               Foreground="#555555" Margin="0,10,0,6"/>
+                                    <Grid x:Name="ContentAiKwHost"/>
                                     <Button x:Name="ContentAiGenBtn" Content="✦  GEN"
                                             Style="{StaticResource BtnAccent}"
                                             Height="34" FontSize="12" Padding="0"
@@ -551,36 +556,6 @@
                                     IsEnabled="False">
                                 <StackPanel Orientation="Horizontal">
                                     <Button Style="{StaticResource Btn}" Height="32" Padding="12,0"
-                                            Margin="0,0,5,0" Click="CssExport_Click">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Viewbox Width="13" Height="13" Margin="0,0,6,0">
-                                                <Canvas Width="24" Height="24">
-                                                    <Path Fill="Transparent"
-                                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                                                          StrokeThickness="2" StrokeLineJoin="Round"
-                                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                                                          Data="M3 11v8h18v-8M12 3v11M9 7l3-4 3 4"/>
-                                                </Canvas>
-                                            </Viewbox>
-                                            <TextBlock Text="EXPORT" VerticalAlignment="Center" FontSize="11"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Style="{StaticResource Btn}" Height="32" Padding="12,0"
-                                            Margin="0,0,5,0" Click="CssImportToggle_Click">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Viewbox Width="13" Height="13" Margin="0,0,6,0">
-                                                <Canvas Width="24" Height="24">
-                                                    <Path Fill="Transparent"
-                                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                                                          StrokeThickness="2" StrokeLineJoin="Round"
-                                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                                                          Data="M3 11v8h18v-8M12 3v11M9 11l3 4 3-4"/>
-                                                </Canvas>
-                                            </Viewbox>
-                                            <TextBlock Text="IMPORT" VerticalAlignment="Center" FontSize="11"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Style="{StaticResource Btn}" Height="32" Padding="12,0"
                                             Click="CssAiToggle_Click">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                             <TextBlock Text="Generate AI" VerticalAlignment="Center" FontSize="11"/>
@@ -599,37 +574,6 @@
                                         </StackPanel>
                                     </Button>
 
-                                </StackPanel>
-                            </Border>
-
-                            <Border x:Name="CssImportPanel" DockPanel.Dock="Top" Background="#0C0C0C"
-                                    BorderBrush="#1E1E1E" BorderThickness="0,0,0,1" Padding="18,12"
-                                    Visibility="Collapsed">
-                                <StackPanel>
-                                    <TextBlock Text="IMPORT CSS — วาง --variable: value; แล้วกด APPLY"
-                                               FontSize="11" FontWeight="Bold"
-                                               Foreground="#666666" Margin="0,0,0,8"/>
-                                    <TextBox x:Name="CssImportBox"
-                                             Style="{StaticResource Input}"
-                                             Height="110" TextWrapping="Wrap"
-                                             AcceptsReturn="True" FontSize="12"
-                                             FontFamily="Consolas"
-                                             VerticalScrollBarVisibility="Auto"/>
-                                    <Grid Margin="0,8,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="8"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Button Content="✓  APPLY"
-                                                Style="{StaticResource BtnAccent}"
-                                                Height="32" FontSize="12" Padding="0"
-                                                Click="CssImportApply_Click"/>
-                                        <Button Content="✕" Grid.Column="2"
-                                                Style="{StaticResource Btn}"
-                                                Width="32" Height="32" FontSize="13" Padding="0"
-                                                Click="CssImportClose_Click"/>
-                                    </Grid>
                                 </StackPanel>
                             </Border>
 

@@ -91,15 +91,15 @@ internal static class OpenAiClient
     }
 
     public static async Task<(bool Ok, byte[] Bytes, string RawJson, string? Error)> GenerateImageAsync(
-        string apiKey, string model, string prompt, int width, int height, bool transparent = false, CancellationToken ct = default, UsageTracker? tracker = null)
+        string apiKey, string model, string prompt, int width, int height, bool transparent = false, CancellationToken ct = default, UsageTracker? tracker = null, string? sizeOverride = null)
     {
         var body = JsonSerializer.Serialize(new
         {
             model,
             prompt,
-            size = ImageSize(width, height),
+            size = sizeOverride ?? ImageSize(width, height),
             quality = "medium",
-            background = transparent ? "transparent" : "opaque",
+            background = transparent ? "auto" : "opaque",
             n = 1
         });
 
@@ -129,7 +129,7 @@ internal static class OpenAiClient
     }
 
     public static async Task<(bool Ok, byte[] Bytes, string RawJson, string? Error)> GenerateImageWithReferenceAsync(
-        string apiKey, string model, string prompt, byte[] referencePng, int width, int height, CancellationToken ct = default, bool transparent = false, UsageTracker? tracker = null)
+        string apiKey, string model, string prompt, byte[] referencePng, int width, int height, CancellationToken ct = default, bool transparent = false, UsageTracker? tracker = null, string? sizeOverride = null)
     {
         var (status, json) = await SendWithRetryAsync(() =>
         {
@@ -137,9 +137,9 @@ internal static class OpenAiClient
             {
                 { new StringContent(model), "model" },
                 { new StringContent(prompt), "prompt" },
-                { new StringContent(ImageSize(width, height)), "size" },
+                { new StringContent(sizeOverride ?? ImageSize(width, height)), "size" },
                 { new StringContent("medium"), "quality" },
-                { new StringContent(transparent ? "transparent" : "opaque"), "background" },
+                { new StringContent(transparent ? "auto" : "opaque"), "background" },
                 { new StringContent("1"), "n" },
             };
 

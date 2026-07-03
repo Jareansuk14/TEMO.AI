@@ -6,6 +6,7 @@ internal sealed class GenDialog : Window
     private readonly System.Windows.Controls.RadioButton _casino;
     private readonly System.Windows.Controls.RadioButton _lottery;
     private readonly System.Windows.Controls.RadioButton _slot;
+    private readonly TextBox[] _keywords;
     private readonly Button _generateBtn;
     private readonly Button _cancelBtn;
     private readonly TextBlock _status;
@@ -37,6 +38,22 @@ internal sealed class GenDialog : Window
         types.Children.Add(_lottery);
         types.Children.Add(_slot);
         root.Children.Add(types);
+
+        root.Children.Add(Ui.FieldLabel("Keyword เสริม (ไม่บังคับ • สูงสุด 3)"));
+        var kwRow = new Grid { Margin = new Thickness(0, 0, 0, 18) };
+        for (int i = 0; i < 3; i++)
+            kwRow.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        _keywords = new TextBox[3];
+        for (int i = 0; i < _keywords.Length; i++)
+        {
+            var kw = Ui.MakeDarkInput();
+            kw.Margin = new Thickness(i == 0 ? 0 : 6, 0, 0, 0);
+            kw.KeyDown += (_, e) => { if (e.Key == Key.Enter) AddToQueue(); };
+            Grid.SetColumn(kw, i);
+            kwRow.Children.Add(kw);
+            _keywords[i] = kw;
+        }
+        root.Children.Add(kwRow);
 
         _status = new TextBlock
         {
@@ -86,7 +103,14 @@ internal sealed class GenDialog : Window
             return;
         }
 
-        Options = new GenerationOptions(brand, SelectedType, AiModels.TextDefault);
+        var keywords = _keywords
+            .Select(k => k.Text.Trim())
+            .Where(k => k.Length > 0)
+            .Take(3)
+            .ToList();
+
+        Options = new GenerationOptions(brand, SelectedType, AiModels.TextDefault,
+            Keywords: keywords.Count > 0 ? keywords : null);
         DialogResult = true;
     }
 

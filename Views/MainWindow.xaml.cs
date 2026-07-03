@@ -164,6 +164,7 @@ public partial class MainWindow : Window
             PullSiteSettings();
             BuildKeywordsPanel();
             PullKeywords();
+            BuildContentKeywordRow();
             ImagesStore.NormalizeStandardDimensions(_projectPath);
             BuildImagesPanel();
             PullImages();

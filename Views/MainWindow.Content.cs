@@ -2,6 +2,8 @@ namespace TEMO.AI;
 
 public partial class MainWindow
 {
+    private readonly TextBox[] _contentKwBoxes = new TextBox[3];
+
     private void BuildFields() => _vm.Content.BuildFields();
 
     private void ContentAiToggle_Click(object sender, RoutedEventArgs e) =>
@@ -15,17 +17,25 @@ public partial class MainWindow
         if (!HasOpenProject()) { ShowMsg("⚠️  เปิดโปรเจคก่อน"); return; }
         if (!TryGetApiKey(out var apiKey)) return;
 
+        EnsureFieldsMatchDisk();
+
         var brand = ContentStore.CurrentBrandName(_projectPath);
         if (string.IsNullOrWhiteSpace(brand)) { ShowMsg("⚠️  ไม่พบชื่อแบรนด์"); return; }
 
         var type = ContentTypes.FromRadios(ContentAiLottery.IsChecked == true, ContentAiSlot.IsChecked == true);
         const string model = AiModels.TextDefault;
 
+        var keywords = _contentKwBoxes
+            .Select(k => k.Text.Trim())
+            .Where(k => k.Length > 0)
+            .Take(3)
+            .ToList();
+
         var values = CaptureAllBoxValues();
         var selected = _fields.Select(f => f.Section)
             .Where(s => !string.IsNullOrEmpty(s))
             .ToHashSet(StringComparer.Ordinal);
-        var (prompt, count) = AiPromptBuilder.Build(type, brand, _fields, values, selected);
+        var (prompt, count) = AiPromptBuilder.Build(type, brand, _fields, values, selected, keywords);
         if (count == 0) { ShowMsg("ไม่มี field ให้สร้าง"); return; }
 
         var genLog = new GenerationLog(_projectPath, brand, $"TAB CONTENT — สร้างเนื้อหา แบรนด์: {brand}", "content");
@@ -55,12 +65,30 @@ public partial class MainWindow
             genLog.Finish(true, $"อัปเดตเนื้อหา {applied} field");
             HideAiOverlay();
             ContentAiPanel.Visibility = Visibility.Collapsed;
+            SetKeywordsIntoTabs(keywords);
+            ContentStore.SaveTheme(_projectPath, ImagePromptCatalog.ThemeLabel(type));
             SaveAll_Click(null!, null!);
-            ShowMsg($"🤖  อัปเดตเนื้อหา {applied} field");
+            ShowMsg($"✅  อัปเดตเนื้อหา {applied} field");
         }
         finally
         {
             ContentAiGenBtn.IsEnabled = true;
+        }
+    }
+
+    private void BuildContentKeywordRow()
+    {
+        ContentAiKwHost.Children.Clear();
+        ContentAiKwHost.ColumnDefinitions.Clear();
+        for (int i = 0; i < 3; i++)
+            ContentAiKwHost.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        for (int i = 0; i < _contentKwBoxes.Length; i++)
+        {
+            var kw = Ui.MakeDarkInput();
+            kw.Margin = new Thickness(i == 0 ? 0 : 6, 0, 0, 0);
+            Grid.SetColumn(kw, i);
+            ContentAiKwHost.Children.Add(kw);
+            _contentKwBoxes[i] = kw;
         }
     }
 
@@ -102,6 +130,13 @@ public partial class MainWindow
 
     private void SwapVariantPreservingText(SectionDefinition selected) =>
         ComponentStore.CopyToProject(_projectPath, selected);
+
+    private void EnsureFieldsMatchDisk()
+    {
+        if (!HasOpenProject()) return;
+        if (ContentStore.BuildFields(_projectPath, _layoutComponents).Count == _fields.Count) return;
+        RebuildContentForLayout();
+    }
 
     private void BuildContentPanel()
     {

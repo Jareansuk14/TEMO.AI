@@ -3,6 +3,10 @@ namespace TEMO.AI;
 internal static class TemplateStore
 {
     private const string TemplatesZipUrl = "https://github.com/Jareansuk14/Templates-TEMO.AI/archive/refs/heads/main.zip";
+    private const string VersionFileUrl = "https://raw.githubusercontent.com/Jareansuk14/Templates-TEMO.AI/main/version.txt";
+    private const string VersionFileName = "version.txt";
+
+    public static string LocalVersionPath => Path.Combine(Root, VersionFileName);
 
     private static readonly HttpClient Http = new()
     {
@@ -41,9 +45,7 @@ internal static class TemplateStore
     public static string? LocalRoot => LocalRootLazy.Value;
 
     private static string? ResolveLocalRoot() =>
-        Workspace.FindAncestorDir(Path.Combine("Templates", ComponentDirName)) is { } componentDir
-            ? Path.GetDirectoryName(componentDir)
-            : null;
+        Workspace.WorkspaceTemplatesDir;
 
     private static bool IsWorkspace(string templatePath) =>
         LocalRoot is { } local &&
@@ -51,7 +53,11 @@ internal static class TemplateStore
 
     private static IEnumerable<string> EnumerateRoots()
     {
-        if (LocalRoot is { } local) yield return local;
+        if (Workspace.DevLayoutMode)
+        {
+            if (LocalRoot is { } local) yield return local;
+            yield break;
+        }
         yield return Root;
     }
 
@@ -105,6 +111,47 @@ internal static class TemplateStore
         }
     }
 
+    public static async Task EnsureLatestAsync(IProgress<string>? progress = null)
+    {
+        if (Workspace.DevLayoutMode) return;
+
+        var localVersion = ReadLocalVersion();
+        string? remoteVersion = null;
+
+        try
+        {
+            using var req = new HttpRequestMessage(HttpMethod.Get, VersionFileUrl);
+            req.Headers.UserAgent.ParseAdd("TEMO.AI");
+            using var resp = await Http.SendAsync(req);
+            if (resp.IsSuccessStatusCode)
+                remoteVersion = (await resp.Content.ReadAsStringAsync()).Trim();
+        }
+        catch { }
+
+        if (string.IsNullOrWhiteSpace(remoteVersion))
+        {
+            if (localVersion is null)
+                progress?.Report("ไม่สามารถดึงเวอร์ชัน Templates ได้ — กรุณากด Update Template ภายหลัง");
+            return;
+        }
+
+        if (localVersion is not null && Version.TryParse(localVersion, out var localV)
+            && Version.TryParse(remoteVersion, out var remoteV) && localV >= remoteV)
+        {
+            progress?.Report($"Templates เป็นเวอร์ชันล่าสุดแล้ว ({localVersion})");
+            return;
+        }
+
+        progress?.Report($"กำลังอัปเดต Templates {localVersion ?? "(ยังไม่มี)"} → {remoteVersion}...");
+        await UpdateFromRemoteAsync(progress);
+    }
+
+    private static string? ReadLocalVersion()
+    {
+        try { return File.Exists(LocalVersionPath) ? File.ReadAllText(LocalVersionPath).Trim() : null; }
+        catch { return null; }
+    }
+
     private const string ComponentDirName = "Component";
 
     private static void ReplaceTemplatesFromZip(string zipPath, string extractRoot, IProgress<string>? progress)
@@ -122,12 +169,20 @@ internal static class TemplateStore
         var componentDir = allDirs.FirstOrDefault(dir =>
             string.Equals(Path.GetFileName(dir), ComponentDirName, StringComparison.OrdinalIgnoreCase));
 
+        var providerDir = allDirs.FirstOrDefault(dir =>
+            string.Equals(Path.GetFileName(dir), "Provider", StringComparison.OrdinalIgnoreCase));
+        if (providerDir is null)
+        {
+            var ex1Provider = Path.Combine(repositoryRoot, "EX.1", "public", "Provider");
+            if (Directory.Exists(ex1Provider)) providerDir = ex1Provider;
+        }
+
         var templateDirs = allDirs
-            .Where(dir => dir != componentDir)
+            .Where(dir => dir != componentDir && dir != providerDir)
             .OrderBy(Path.GetFileName)
             .ToList();
 
-        if (componentDir is null && templateDirs.Count == 0)
+        if (componentDir is null && templateDirs.Count == 0 && providerDir is null)
             throw new InvalidOperationException("ไม่พบโฟลเดอร์ Template ใน repository");
 
         if (componentDir is not null)
@@ -135,6 +190,13 @@ internal static class TemplateStore
             progress?.Report("กำลังอัปเดต Component...");
             Io.DeleteDirectory(ComponentStore.Root, ignoreErrors: false);
             Copy(componentDir, ComponentStore.Root);
+        }
+
+        if (providerDir is not null)
+        {
+            progress?.Report("กำลังอัปเดต Provider...");
+            Io.DeleteDirectory(ProviderStore.Root, ignoreErrors: true);
+            Copy(providerDir, ProviderStore.Root);
         }
 
         if (templateDirs.Count > 0)
@@ -156,6 +218,13 @@ internal static class TemplateStore
                 progress?.Report($"กำลังติดตั้ง Template: {name}");
                 Copy(dir, dest);
             }
+        }
+
+        var versionSrc = Path.Combine(repositoryRoot, VersionFileName);
+        if (File.Exists(versionSrc))
+        {
+            Directory.CreateDirectory(Root);
+            File.Copy(versionSrc, LocalVersionPath, overwrite: true);
         }
     }
 

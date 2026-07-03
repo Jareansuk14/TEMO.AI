@@ -43,6 +43,7 @@ internal static class SiteGenerator
             genLog.Line("กำลังคัดลอกต้นแบบ");
             await Task.Run(() => TemplateStore.Copy(template, dest), ct);
             AstroProjectSettings.DisableDevToolbar(dest);
+            ApplyKeywords(dest, options.Keywords);
 
             log("กำลังสุ่ม Component…");
             genLog.Section("สุ่ม Layout/Component");
@@ -70,7 +71,7 @@ internal static class SiteGenerator
             values["brand"] = brand;
 
             var selected = fields.Select(f => f.Section).Where(s => !string.IsNullOrEmpty(s)).ToHashSet(StringComparer.Ordinal);
-            var (prompt, count) = AiPromptBuilder.Build(options.ContentType, brand, fields, values, selected);
+            var (prompt, count) = AiPromptBuilder.Build(options.ContentType, brand, fields, values, selected, options.Keywords);
             genLog.Section("AI เนื้อหา (Content)");
             genLog.Line($"จำนวน id ที่ส่ง: {count}");
             genLog.Prompt("Content", prompt);
@@ -91,10 +92,10 @@ internal static class SiteGenerator
 
             log("กำลังบันทึกเนื้อหา…");
             await Task.Run(() => ContentStore.Save(dest, fields, values), ct);
+            ContentStore.SaveTheme(dest, ImagePromptCatalog.ThemeLabel(options.ContentType));
 
             genLog.Section("เตรียมรูป");
-            await Task.Run(() =>
-                ImagesStore.SyncStandard(dest, src => Io.DeleteFile(ProjectPaths.Public(dest, src))), ct);
+            await Task.Run(() => ImagesStore.SyncStandard(dest), ct);
 
             var (genOk, genErr, _) = await ImageCssRegenerator.RunAsync(
                 dest, options, palette, apiKey, log, ct, genLog, usage);
@@ -119,6 +120,34 @@ internal static class SiteGenerator
         {
             genLog.Error(ex.ToString());
             return Done(false, $"สร้างเว็บไม่สำเร็จ: {ex.Message}", dest);
+        }
+    }
+
+    private static readonly (string Rel, string Var)[] KeywordFiles =
+    [
+        (Path.Combine("pages", "index.astro"), "indexKeywords"),
+        (Path.Combine("pages", "promotions.astro"), "promoKeywords"),
+        (Path.Combine("pages", "contact.astro"), "contactKeywords"),
+    ];
+
+    private static void ApplyKeywords(string dest, IReadOnlyList<string>? keywords)
+    {
+        var cleaned = keywords?
+            .Select(k => k.Trim().Replace("\"", "").Replace("\r", "").Replace("\n", " "))
+            .Where(k => k.Length > 0)
+            .Take(3)
+            .ToList() ?? [];
+        if (cleaned.Count == 0) return;
+
+        var arr = string.Join(", ", cleaned.Select(k => $"\"{k}\""));
+        foreach (var (rel, varName) in KeywordFiles)
+        {
+            var path = ProjectPaths.Src(dest, rel);
+            if (Io.ReadOrNull(path) is not { } content) continue;
+            var updated = Regex.Replace(content,
+                $@"const {Regex.Escape(varName)}\s*:\s*string\[\]\s*=\s*\[[^\n]*\];",
+                $"const {varName}: string[] = [{arr}];");
+            if (updated != content) Io.Write(path, updated);
         }
     }
 

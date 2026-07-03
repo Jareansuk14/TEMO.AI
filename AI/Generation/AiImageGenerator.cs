@@ -164,8 +164,9 @@ internal static class AiImageGenerator
         var useButtonRef = isButton && ctx.ButtonReference is not null;
         var gameRef = isGame ? ctx.GameRefs.GetValueOrDefault(item.Id) : null;
         var model = transparent ? TransparentModel : ctx.Options.ImageModel;
+        var sizeOverride = item.Id == "banner" ? "auto" : null;
         ctx.GenLog?.Section($"สร้างรูป: {item.Id} ({item.Width}x{item.Height})");
-        ctx.GenLog?.Line($"model={model} transparent={transparent} useLogo={useLogo} useButtonRef={useButtonRef} gameRef={(gameRef is not null)}");
+        ctx.GenLog?.Line($"model={model} transparent={transparent} useLogo={useLogo} useButtonRef={useButtonRef} gameRef={(gameRef is not null)} size={(sizeOverride ?? "computed")}");
 
         for (var attempt = 0; attempt <= MaxModerationRetries; attempt++)
         {
@@ -198,17 +199,18 @@ internal static class AiImageGenerator
 
             var (ok, bytes, _, error) =
                 gameRef is not null
-                    ? await OpenAiClient.GenerateImageWithReferenceAsync(ctx.ApiKey, model, prompt, gameRef, item.Width, item.Height, ctx.Ct, transparent: transparent, tracker: ctx.Usage)
+                    ? await OpenAiClient.GenerateImageWithReferenceAsync(ctx.ApiKey, model, prompt, gameRef, item.Width, item.Height, ctx.Ct, transparent: transparent, tracker: ctx.Usage, sizeOverride: sizeOverride)
                     : useButtonRef
                         ? await OpenAiClient.GenerateImageWithReferenceAsync(ctx.ApiKey, model, prompt, ctx.ButtonReference!, item.Width, item.Height, ctx.Ct, transparent: true, tracker: ctx.Usage)
                         : useLogo
-                            ? await OpenAiClient.GenerateImageWithReferenceAsync(ctx.ApiKey, model, prompt, ctx.LogoReference!, item.Width, item.Height, ctx.Ct, tracker: ctx.Usage)
-                            : await OpenAiClient.GenerateImageAsync(ctx.ApiKey, model, prompt, item.Width, item.Height, transparent, ctx.Ct, tracker: ctx.Usage);
+                            ? await OpenAiClient.GenerateImageWithReferenceAsync(ctx.ApiKey, model, prompt, ctx.LogoReference!, item.Width, item.Height, ctx.Ct, tracker: ctx.Usage, sizeOverride: sizeOverride)
+                            : await OpenAiClient.GenerateImageAsync(ctx.ApiKey, model, prompt, item.Width, item.Height, transparent, ctx.Ct, tracker: ctx.Usage, sizeOverride: sizeOverride);
 
             if (ok)
             {
-                ctx.GenLog?.Line($"สำเร็จ ได้รูป {bytes.Length} bytes");
-                return (true, bytes, caption, null);
+                var outBytes = transparent ? BackgroundRemover.Remove(bytes, autoCrop: !isGame) : bytes;
+                ctx.GenLog?.Line($"สำเร็จ ได้รูป {bytes.Length} bytes{(transparent ? (isGame ? " (ลบพื้นหลัง)" : " (ลบพื้นหลัง+ครอป)") : "")}");
+                return (true, outBytes, caption, null);
             }
 
             ctx.GenLog?.Error($"{item.Id}: {error}");
@@ -238,7 +240,7 @@ internal static class AiImageGenerator
         if (ids.Count == 0) return;
 
         var chars = CompositionCatalog.PickGameCast(ctx.Rng, ids.Count);
-        var providers = LoadProviderPool(ctx.ProjectPath).OrderBy(_ => ctx.Rng.Next()).ToList();
+        var providers = LoadProviderPool().OrderBy(_ => ctx.Rng.Next()).ToList();
 
         for (var i = 0; i < ids.Count; i++)
         {
@@ -247,13 +249,17 @@ internal static class AiImageGenerator
         }
     }
 
-    private static List<byte[]> LoadProviderPool(string projectPath)
+    private static List<byte[]> LoadProviderPool()
     {
-        var dir = Path.Combine(projectPath, "public", "Provider");
-        if (!Directory.Exists(dir)) return [];
+        if (!Directory.Exists(ProviderStore.Root)) return [];
+
         var list = new List<byte[]>();
-        foreach (var f in Directory.EnumerateFiles(dir, "*.png"))
-            try { list.Add(File.ReadAllBytes(f)); } catch { }
+        foreach (var f in Directory.EnumerateFiles(ProviderStore.Root, "*.*")
+                    .Where(p => p.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
+                                || p.EndsWith(".webp", StringComparison.OrdinalIgnoreCase)))
+        {
+            try { list.Add(ToPng(File.ReadAllBytes(f))); } catch { }
+        }
         return list;
     }
 
@@ -292,8 +298,11 @@ internal static class AiImageGenerator
     private static bool NeedsLogo(string id) =>
         ImageGroupCatalog.ByPrefix(id)?.UseLogoReference ?? false;
 
-    private static (int Min, int Max) CompositionRange(string id) =>
-        ImageGroupCatalog.ByPrefix(id) is { } g ? (g.CompositionMin, g.CompositionMax) : (0, 0);
+    private static (int Min, int Max) CompositionRange(string id)
+    {
+        if (ImageGroupCatalog.ByPrefix(id) is not { } g) return (0, 0);
+        return (g.CompositionMin, g.CompositionMax);
+    }
 
     private static byte[] ToPng(byte[] bytes)
     {

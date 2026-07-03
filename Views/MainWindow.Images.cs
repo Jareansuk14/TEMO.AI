@@ -48,6 +48,8 @@ public partial class MainWindow
             }
             genLog.Finish(true, $"สร้างรูป + CSS ใหม่แล้ว ({count} รูป)");
 
+            ContentStore.SaveTheme(_projectPath, ImagePromptCatalog.ThemeLabel(type));
+
             HideAiOverlay();
             ImgAiPanel.Visibility = Visibility.Collapsed;
 

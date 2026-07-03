@@ -5,20 +5,12 @@ internal static class ComponentStore
     public static string Root => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Component");
 
-    private static readonly Lazy<string?> LocalRootLazy = new(ResolveLocalRoot);
+    private static string? LocalRoot => Workspace.WorkspaceComponentDir;
 
-    private static string? LocalRoot => LocalRootLazy.Value;
-
-    private static string? ResolveLocalRoot() =>
-        Workspace.FindAncestorDir(Path.Combine("Templates", "Component"));
-
-    private static List<string> Roots()
-    {
-        var roots = new List<string>();
-        if (LocalRoot is { } local) roots.Add(local);
-        roots.Add(Root);
-        return roots;
-    }
+    private static List<string> Roots() =>
+        Workspace.DevLayoutMode
+            ? (LocalRoot is { } l ? [l] : [])
+            : [Root];
 
     public static IReadOnlyList<SectionDefinition> List()
     {
@@ -159,16 +151,12 @@ internal static class ComponentStore
                 manifest.Repeatable,
                 manifest.Fields,
                 manifest.Images,
-                manifest.SelectByCount,
                 new ContentSpec(
-                    manifest.HeadingMin,
-                    manifest.HeadingMax,
-                    manifest.ImageMin,
-                    manifest.ImageMax,
                     string.IsNullOrWhiteSpace(manifest.ImageRatio) ? "" : manifest.ImageRatio.Trim(),
                     string.IsNullOrWhiteSpace(manifest.ImageType) ? "" : manifest.ImageType.Trim().ToLowerInvariant(),
-                    string.IsNullOrWhiteSpace(manifest.Link) ? "none" : manifest.Link.Trim(),
-                    string.IsNullOrWhiteSpace(manifest.ImageGroup) ? "" : manifest.ImageGroup.Trim()));
+                    string.IsNullOrWhiteSpace(manifest.ImageGroup) ? "" : manifest.ImageGroup.Trim(),
+                    manifest.ImageCount,
+                    manifest.HeadingCount));
         }
         catch
         {

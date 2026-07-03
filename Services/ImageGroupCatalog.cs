@@ -73,10 +73,14 @@ internal static class ImageGroupCatalog
 
     private static string? ResolvePath()
     {
-        if (Workspace.FindAncestorDir(Path.Combine("Templates", "Component")) is { } local)
+        if (Workspace.DevLayoutMode)
         {
-            var p = Path.Combine(local, FileName);
-            if (File.Exists(p)) return p;
+            if (Workspace.WorkspaceComponentDir is { } local)
+            {
+                var p = Path.Combine(local, FileName);
+                if (File.Exists(p)) return p;
+            }
+            return null;
         }
         var shipped = Path.Combine(ComponentStore.Root, FileName);
         return File.Exists(shipped) ? shipped : null;
@@ -87,6 +91,7 @@ internal static class ImageGroupCatalog
         new() { Key = "background", TsConst = "BACKGROUND", Structure = "named", Role = "site background", Group = "หน้าหลัก", Label = "พื้นหลัง", HasAlt = false, ImageType = "normal", Width = 1920, Height = 1080 },
         new() { Key = "banner", TsConst = "BANNER", Structure = "named", Role = "hero banner", Group = "หน้าหลัก", Label = "Banner", HasAlt = true, ImageType = "normal", UseLogoReference = true, CompositionMin = 1, CompositionMax = 4, Width = 1600, Height = 900 },
         new() { Key = "heroMascot", TsConst = "HERO_MASCOT", Structure = "named", UsageTokens = ["HERO_MASCOT"], Role = "transparent hero character mascot", Group = "HERO", Label = "Hero Mascot", HasAlt = true, ImageType = "transparent", CompositionMin = 1, CompositionMax = 1, Width = 1024, Height = 1024 },
+        new() { Key = "ctaMascot", TsConst = "CTA_MASCOT", Structure = "named", UsageTokens = ["CTA_MASCOT"], Role = "transparent CTA character mascot", Group = "CTA", Label = "CTA Mascot", HasAlt = true, ImageType = "transparent", CompositionMin = 1, CompositionMax = 1, Width = 1024, Height = 1024 },
         new() { Key = "bannerMascot", TsConst = "BANNER_MASCOT", Structure = "named", UsageTokens = ["BANNER_MASCOT"], Role = "transparent banner character mascot", Group = "หน้าหลัก", Label = "Banner Mascot", HasAlt = true, ImageType = "transparent", CompositionMin = 1, CompositionMax = 1, Width = 1024, Height = 1024 },
         new() { Key = "seoMascot", TsConst = "SEO_MASCOT", Structure = "named", UsageTokens = ["SEO_MASCOT"], Role = "transparent SEO character mascot", Group = "บทความ SEO", Label = "SEO Mascot", HasAlt = true, ImageType = "transparent", CompositionMin = 1, CompositionMax = 1, Width = 1024, Height = 1024 },
         new() { Key = "gameMascot", TsConst = "GAME_MASCOT", Structure = "named", UsageTokens = ["GAME_MASCOT"], Role = "transparent game character mascot", Group = "เกม", Label = "Game Mascot", HasAlt = true, ImageType = "transparent", CompositionMin = 1, CompositionMax = 1, Width = 1024, Height = 1024 },
@@ -94,9 +99,9 @@ internal static class ImageGroupCatalog
         new() { Key = "play", TsConst = "PLAY_BUTTON", Structure = "named", Role = "play button", Group = "Logo & ปุ่ม", Label = "Play Button", HasAlt = false, ImageType = "normal", Width = 512, Height = 240 },
         new() { Key = "btn", TsConst = "ACTION_BUTTONS", Structure = "nestedRecord", Role = "action button", Group = "Logo & ปุ่ม", Label = "ปุ่ม {n}", HasAlt = true, ImageType = "button", Transparent = true, Width = 512, Height = 240 },
         new() { Key = "game", TsConst = "GAME_CARDS", Structure = "array", Role = "game character card", Group = "เกม", Label = "เกม{n}", HasAlt = true, ImageType = "normal", Width = 1024, Height = 1536 },
-        new() { Key = "promo", TsConst = "PROMOS", Structure = "array", UsageTokens = ["PROMOS", "getPromoPreview"], Role = "promotion card", Group = "โปรโมชั่น", Label = "โปร {n}", HasAlt = true, ImageType = "normal", UseLogoReference = true, CaptionSource = "promo", CompositionMin = 1, CompositionMax = 3, Width = 1536, Height = 864 },
+        new() { Key = "promo", TsConst = "PROMOS", Structure = "array", UsageTokens = ["PROMOS", "getPromoPreview"], Role = "promotion card", Group = "โปรโมชั่น", Label = "โปร {n}", HasAlt = true, ImageType = "normal", UseLogoReference = true, CaptionSource = "promo", CompositionMin = 1, CompositionMax = 2, Width = 1536, Height = 864 },
         new() { Key = "review", TsConst = "REVIEWS", Structure = "array", Role = "review", Group = "รีวิว", Label = "รีวิว {n}", HasAlt = true, ImageType = "normal", Width = 1536, Height = 864 },
-        new() { Key = "seo", TsConst = "SEO_ARTICLE_IMAGES", Structure = "stringRecord", Role = "SEO article image", Group = "บทความ SEO", Label = "บทความ {n}", HasAlt = true, ImageType = "normal", UseLogoReference = true, CaptionSource = "seo", CompositionMin = 1, CompositionMax = 3, Width = 1536, Height = 864 },
+        new() { Key = "seo", TsConst = "SEO_ARTICLE_IMAGES", Structure = "stringRecord", Role = "SEO article image", Group = "บทความ SEO", Label = "บทความ {n}", HasAlt = true, ImageType = "normal", UseLogoReference = true, CaptionSource = "seo", CompositionMin = 1, CompositionMax = 2, Width = 1536, Height = 864 },
         new() { Key = "line", TsConst = "LINE_QR", Structure = "named", Role = "contact QR", Group = "ติดต่อ", Label = "LINE QR", HasAlt = false, ImageType = "normal", Width = 180, Height = 180 },
         new() { Key = "provider", TsConst = "PROVIDER", Structure = "named", Role = "game providers", Group = "หน้าหลัก", Label = "ค่ายเกม", HasAlt = true, ImageType = "normal", Width = 1362, Height = 382 },
     ];

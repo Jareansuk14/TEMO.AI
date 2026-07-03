@@ -198,23 +198,10 @@ public partial class MainWindow
     {
         if (!HasOpenProject() || !HasUnsavedChanges()) return true;
 
-        var result = System.Windows.MessageBox.Show(
-            "มีการแก้ไขที่ยังไม่ได้บันทึก\nต้องการบันทึกก่อนหรือไม่?",
-            "TEMO.AI",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Question);
-
-        return result switch
-        {
-            MessageBoxResult.Yes => SaveFromPrompt(),
-            _ => true,
-        };
-    }
-
-    private bool SaveFromPrompt()
-    {
         SaveAll_Click(this, new RoutedEventArgs());
-        return !HasUnsavedChanges();
+
+        return true;
+
     }
 
     private void OnWindowClosing(object? sender, CancelEventArgs e)

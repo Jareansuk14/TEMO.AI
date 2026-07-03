@@ -16,38 +16,11 @@ public partial class MainWindow
 
     private const string CssFixedPrompt = "แก้ไข css ให้เป็นโทนเดียวกับรูปที่แนบไป";
 
-    private void CssExport_Click(object sender, RoutedEventArgs e)
-    {
-        if (string.IsNullOrEmpty(ReadThemeCss())) { ShowMsg("ไม่พบ theme.css"); return; }
-
-        Clipboard.SetText(BuildCssBlock());
-        ShowMsg($"CSS copied ({_cssBoxes.Count} variables)");
-        CollapseCssFlyouts();
-    }
-
-    private void CssImportToggle_Click(object sender, RoutedEventArgs e)
-    {
-        if (ToggleFlyout(CssImportPanel))
-        {
-            CssAiPanel.Visibility = Visibility.Collapsed;
-            CssImportBox.Focus();
-        }
-    }
-
-    private void CssAiToggle_Click(object sender, RoutedEventArgs e)
-    {
-        if (ToggleFlyout(CssAiPanel))
-            CssImportPanel.Visibility = Visibility.Collapsed;
-    }
+    private void CssAiToggle_Click(object sender, RoutedEventArgs e) =>
+        ToggleFlyout(CssAiPanel);
 
     private void CssAiClose_Click(object sender, RoutedEventArgs e) =>
         CssAiPanel.Visibility = Visibility.Collapsed;
-
-    private void CssImportClose_Click(object sender, RoutedEventArgs e)
-    {
-        CssImportPanel.Visibility = Visibility.Collapsed;
-        CssImportBox.Clear();
-    }
 
     private string ReadThemeCss() => CssStore.Read(_projectPath);
 
@@ -57,20 +30,6 @@ public partial class MainWindow
         sb.AppendLine(CssSystemPrompt);
         sb.AppendLine(ReadThemeCss());
         return sb.ToString();
-    }
-
-    private void CssImportApply_Click(object sender, RoutedEventArgs e)
-    {
-        var text = CssImportBox.Text;
-        if (string.IsNullOrWhiteSpace(text)) return;
-
-        var applied = LineCodec.ApplyCss(text, _cssBoxes);
-        ShowMsg(applied > 0 ? $"📥  Applied {applied} CSS variable(s)" : "ไม่พบ CSS variable ที่ตรงกัน");
-        if (applied > 0)
-        {
-            CssImportPanel.Visibility = Visibility.Collapsed;
-            CssImportBox.Clear();
-        }
     }
 
     private (string base64, string mime)? GetBannerImageData()

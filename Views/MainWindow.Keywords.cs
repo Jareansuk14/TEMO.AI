@@ -273,5 +273,18 @@ public partial class MainWindow
         }
     }
 
+    private void SetKeywordsIntoTabs(IReadOnlyList<string> keywords)
+    {
+        var picked = keywords.Take(MaxUserKeywords).ToList();
+        foreach (var (pageId, _, _, _) in KeywordPages)
+        {
+            if (!_kwRowPanels.TryGetValue(pageId, out var rowsPanel)) continue;
+            _kwBoxes[pageId].Clear();
+            rowsPanel.Children.Clear();
+            foreach (var kw in picked)
+                AddKeywordRow(pageId, kw);
+        }
+    }
+
     private string GetCurrentBrandName() => ContentStore.CurrentBrandName(_projectPath);
 }

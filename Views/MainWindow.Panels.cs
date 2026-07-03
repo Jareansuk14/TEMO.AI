@@ -11,7 +11,6 @@ public partial class MainWindow
 
     private void CollapseCssFlyouts()
     {
-        CssImportPanel.Visibility = Visibility.Collapsed;
         CssAiPanel.Visibility = Visibility.Collapsed;
         ContentAiPanel.Visibility = Visibility.Collapsed;
         ImgAiPanel.Visibility = Visibility.Collapsed;

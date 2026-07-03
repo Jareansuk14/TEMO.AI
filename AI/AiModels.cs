@@ -4,7 +4,7 @@ internal static class AiModels
 {
     public const string TextDefault = "gpt-5.5";
     public const string Image = "gpt-image-2";
-    public const string ImageTransparent = "gpt-image-1.5";
+    public const string ImageTransparent = "gpt-image-2";
     public const string CssDefault = "gpt-5.5";
 
     public const string BillingLimitMessage = "เครดิตของท่านหมดแล้ว กรุณาเติมเครดิต!!";

@@ -8,14 +8,13 @@ internal sealed class TemplateGalleryDialog : Window
 
     private List<string> _templates;
     private readonly WrapPanel _grid;
-    private readonly Button _updateBtn;
     private readonly TextBlock _statusText;
 
     public TemplateGalleryDialog()
     {
         _templates = TemplateStore.List();
 
-        Title = "เลือก Template — เริ่มโปรเจคใหม่";
+        Title = "เลือก Template";
         Width = 1000;
         Height = 720;
         Ui.StyleDialog(this);
@@ -33,7 +32,6 @@ internal sealed class TemplateGalleryDialog : Window
 
         var barGrid = new Grid();
         barGrid.ColumnDefinitions.Add(new ColumnDefinition());
-        barGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
         var heading = new TextBlock
         {
@@ -45,12 +43,7 @@ internal sealed class TemplateGalleryDialog : Window
         };
         Grid.SetColumn(heading, 0);
 
-        _updateBtn = Ui.DialogButton("Update Template", accent: true);
-        _updateBtn.Click += UpdateTemplate_Click;
-        Grid.SetColumn(_updateBtn, 1);
-
         barGrid.Children.Add(heading);
-        barGrid.Children.Add(_updateBtn);
         bar.Child = barGrid;
         root.Children.Add(bar);
 
@@ -81,37 +74,6 @@ internal sealed class TemplateGalleryDialog : Window
         RebuildGrid();
     }
 
-    private async void UpdateTemplate_Click(object sender, RoutedEventArgs e)
-    {
-        _updateBtn.IsEnabled = false;
-        _updateBtn.Content = "Updating...";
-        _statusText.Text = "กำลังโหลด Templates ใหม่...";
-
-        var progressDialog = new TemplateUpdateProgressDialog { Owner = this };
-        var progress = new Progress<string>(progressDialog.SetMessage);
-        progressDialog.Show();
-        IsEnabled = false;
-
-        try
-        {
-            await TemplateStore.UpdateFromRemoteAsync(progress);
-            _templates = TemplateStore.List();
-            RebuildGrid();
-            _statusText.Text = $"อัปเดต Templates สำเร็จ ({_templates.Count} รายการ)";
-        }
-        catch (Exception ex)
-        {
-            _statusText.Text = $"โหลด Templates ไม่สำเร็จ: {ex.Message}";
-        }
-        finally
-        {
-            IsEnabled = true;
-            progressDialog.Close();
-            _updateBtn.Content = "Update Template";
-            _updateBtn.IsEnabled = true;
-        }
-    }
-
     private void RebuildGrid()
     {
         _grid.Children.Clear();
@@ -120,7 +82,7 @@ internal sealed class TemplateGalleryDialog : Window
         {
             _grid.Children.Add(new TextBlock
             {
-                Text = "ยังไม่มี Template กด \"Update Template\"",
+                Text = "ยังไม่มี Template",
                 Foreground = Ui.Brush(0x555555),
                 FontSize = 13,
                 Margin = new Thickness(4, 20, 0, 0),

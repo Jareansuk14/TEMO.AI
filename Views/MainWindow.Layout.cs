@@ -4,7 +4,7 @@ public partial class MainWindow
 {
     private string _bannerLine = "  <Banner />";
 
-    private const bool DevLayoutMode = true;
+    private static readonly bool DevLayoutMode = Workspace.DevLayoutMode;
 
     public static Visibility DevEditVisibility =>
         DevLayoutMode ? Visibility.Visible : Visibility.Collapsed;
@@ -91,6 +91,11 @@ public partial class MainWindow
         if (picker.ShowDialog() != true || picker.SelectedSection is not { } selected) return;
 
         ComponentStore.CopyToProject(_projectPath, selected);
+        ComponentCountApplier.ApplyFixedHeadings(_projectPath, _layoutComponents, src => Io.DeleteFile(PublicPath(src)));
+        ImagesStore.SyncStandard(_projectPath);
+        ComponentCountApplier.ApplyFixedImages(_projectPath, _layoutComponents, src => Io.DeleteFile(PublicPath(src)));
+        BuildImagesPanel();
+        PullImages();
         LoadShellComponents();
 
         if (_devProcess is { HasExited: false })
@@ -250,10 +255,15 @@ public partial class MainWindow
             SaveLayoutToFile(showMessage: false);
         if (rebuildContent)
         {
+            if (HasOpenProject())
+            {
+                ComponentCountApplier.ApplyFixedHeadings(_projectPath, _layoutComponents, src => Io.DeleteFile(PublicPath(src)));
+                ImagesStore.SyncStandard(_projectPath);
+                ComponentCountApplier.ApplyFixedImages(_projectPath, _layoutComponents, src => Io.DeleteFile(PublicPath(src)));
+            }
             RebuildContentForLayout(refreshKind);
             if (HasOpenProject())
             {
-                ImagesStore.SyncStandard(_projectPath, src => Io.DeleteFile(PublicPath(src)));
                 BuildImagesPanel();
                 PullImages();
             }

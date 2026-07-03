@@ -5,16 +5,11 @@ internal static class ImagesStore
     public const string Rel = @"lib\images.ts";
 
     public const string PromoArray = "PROMOS";
-    public const int MinPromos = 1;
-    public const int MinPromoCount = 2;
-    public const int MaxPromos = 6;
     public const int ButtonWidth = 512;
     public const int ButtonHeight = 240;
     public const int GameWidth = 1024;
     public const int GameHeight = 1536;
 
-    private static readonly Regex SeoIdPattern = new(@"id:\s*""seo-(\d+)""", RegexOptions.Compiled);
-    private static readonly Regex GameSlicePattern = new(@"GAME_CARDS\.slice\(\s*0\s*,\s*(\d+)\s*\)", RegexOptions.Compiled);
     private static readonly Regex WidthPattern = new(@"(\bwidth:\s*)\d+", RegexOptions.Compiled);
     private static readonly Regex HeightPattern = new(@"(\bheight:\s*)\d+", RegexOptions.Compiled);
     private static readonly Regex WhitespaceRun = new(@"\s+", RegexOptions.Compiled);
@@ -22,7 +17,6 @@ internal static class ImagesStore
         @"(export\s+const\s+SEO_ARTICLE_IMAGES\b[^=]*=\s*\{)([\s\S]*?)(\n\};)", RegexOptions.Compiled);
     private static readonly Regex SeoKeyPattern = new(@"""seo-(\d+)""\s*:", RegexOptions.Compiled);
     private static readonly Regex ButtonKeyPattern = new(@"(\w+)\s*:\s*\{", RegexOptions.Compiled);
-    private static readonly Regex PromoNumberPattern = new(@"promo(\d+)", RegexOptions.Compiled);
     private static readonly Regex AltValuePattern = new(@"(\balt:\s*"")[^""]*("")", RegexOptions.Compiled);
 
     private static string Path(string root) => ProjectPaths.Src(root, Rel);
@@ -34,29 +28,19 @@ internal static class ImagesStore
 
     public static IReadOnlyList<int> SeoImageNumbers(string root)
     {
-        if (Io.ReadOrNull(SeoFile(root)) is not { } content) return [];
-        if (!content.Contains("SEO_ARTICLE_IMAGES")) return [];
-        var explicitIds = SeoIdPattern.Matches(content)
-            .Select(m => int.Parse(m.Groups[1].Value))
+        if (Io.ReadOrNull(SeoFile(root)) is not { } seo || !seo.Contains("SEO_ARTICLE_IMAGES"))
+            return [];
+
+        if (Io.ReadOrNull(Path(root)) is not { } text) return [];
+        var m = SeoImagesBlock.Match(text);
+        if (!m.Success) return [];
+
+        return SeoKeyPattern.Matches(m.Groups[2].Value)
+            .Select(km => int.Parse(km.Groups[1].Value))
             .Distinct().OrderBy(n => n).ToList();
-        if (explicitIds.Count > 0) return explicitIds;
-
-        var seoPath = ProjectPaths.Src(root, @"data\content\seo.ts");
-        if (Io.ReadOrNull(seoPath) is not { } seoContent) return [];
-        var count = TsBlockParser.CountArray(seoContent, "SEO");
-        return Enumerable.Range(1, count).ToList();
     }
 
-    private static string GameFile(string root) =>
-        ProjectPaths.Src(root, @"components\sections\Game.astro");
-
-    public static void SyncStandard(string root, Action<string> deleteFile, int? promoCount = null)
-    {
-        SyncGameImages(root, deleteFile);
-        SyncSeoImages(root, deleteFile);
-        if (promoCount is { } target) SyncPromoImages(root, target, deleteFile);
-        NormalizeStandardDimensions(root);
-    }
+    public static void SyncStandard(string root) => NormalizeStandardDimensions(root);
 
     public static void ApplyImages(string root, ContentSpec spec, int count, Action<string> deleteFile)
     {
@@ -143,41 +127,6 @@ internal static class ImagesStore
         if (TsBlockParser.FirstBlock(text, $"export const {g.TsConst}") is not { } block) return;
         var updated = text.Replace(block, NormalizeSingleImageBlock(block, size));
         if (updated != text) Io.Write(path, updated);
-    }
-
-    public static void SyncGameImages(string root, Action<string> deleteFile)
-    {
-        if (Io.ReadOrNull(GameFile(root)) is not { } game) return;
-        var slot = GameSlicePattern.Match(game);
-        if (!slot.Success) return;
-        int target = int.Parse(slot.Groups[1].Value);
-
-        var path = Path(root);
-        if (Io.ReadOrNull(path) is not { } text) return;
-        var m = TsBlockParser.ArrayMatch(text, "GAME_CARDS");
-        if (!m.Success) return;
-
-        var blocks = TsBlockParser.AllBlocks(m.Groups[2].Value);
-
-        var removed = new List<string>();
-        if (blocks.Count > target)
-        {
-            for (int i = target; i < blocks.Count; i++)
-                removed.Add(TsBlockParser.QuotedVal(blocks[i], "src"));
-            blocks = blocks.Take(target).ToList();
-        }
-        else
-        {
-            for (int i = blocks.Count; i < target; i++)
-            {
-                var (width, height) = ImageSizeCatalog.Size($"game-{i}");
-                blocks.Add($"{{ alt: \"\", src: \"/images/game{i + 1}.webp\", width: {width}, height: {height} }}");
-            }
-        }
-
-        blocks = blocks.Select((b, i) => NormalizeImageBlock(b, ImageSizeCatalog.Size($"game-{i}"))).ToList();
-        WriteArrayBody(path, text, m, blocks);
-        DeleteAll(removed, deleteFile);
     }
 
     public static void NormalizeStandardDimensions(string root)
@@ -277,66 +226,6 @@ internal static class ImagesStore
         var after = block[insertAt..];
         var comma = before.EndsWith(',') ? "" : ",";
         return $"{before}{comma}\n  {key}: {value},\n{after}";
-    }
-
-    public static void SyncSeoImages(string root, Action<string> deleteFile)
-    {
-        if (Io.ReadOrNull(SeoFile(root)) is not { } seo) return;
-        int target = seo.Contains("SEO_ARTICLE_IMAGES")
-            ? SeoImageNumbers(root).Count
-            : 0;
-
-        var path = Path(root);
-        if (Io.ReadOrNull(path) is not { } text) return;
-
-        var m = SeoImagesBlock.Match(text);
-        if (!m.Success) return;
-        var body = m.Groups[2].Value;
-
-        var existing = new Dictionary<int, string>();
-        foreach (Match km in SeoKeyPattern.Matches(body))
-            if (TsBlockParser.FirstBlock(body[km.Index..], $"\"seo-{km.Groups[1].Value}\":") is { } block)
-                existing[int.Parse(km.Groups[1].Value)] = block;
-
-        var removed = existing.Where(kv => kv.Key > target)
-            .Select(kv => TsBlockParser.QuotedVal(kv.Value, "src")).ToList();
-
-        var sb = new StringBuilder("\n");
-        for (int k = 1; k <= target; k++)
-        {
-            var block = existing.TryGetValue(k, out var b)
-                ? WhitespaceRun.Replace(b, " ").Trim()
-                : NewImageBlock($"/images/seo{k}.webp", "", $"seo-{k}");
-            block = NormalizeImageBlock(block, ImageSizeCatalog.Size($"seo-{k}"));
-            sb.Append($"  \"seo-{k}\": {block},\n");
-        }
-
-        var updated = text[..m.Groups[2].Index] + sb + text[(m.Groups[2].Index + m.Groups[2].Length)..];
-        if (updated != text) Io.Write(path, updated);
-        DeleteAll(removed, deleteFile);
-    }
-    public static void SyncPromoImages(string root, int target, Action<string> deleteFile)
-    {
-        var removed = new List<string>();
-        RewritePromos(root, blocks =>
-        {
-            if (blocks.Count > target)
-            {
-                for (int i = target; i < blocks.Count; i++)
-                    removed.Add(TsBlockParser.QuotedVal(blocks[i], "src"));
-                blocks.RemoveRange(target, blocks.Count - target);
-            }
-            else
-            {
-                for (int i = blocks.Count; i < target; i++)
-                {
-                    var (width, height) = ImageSizeCatalog.Size($"promo-{i}");
-                    blocks.Add($"{{ src: \"/images/promo{i + 1}.webp\", alt: \"\", width: {width}, height: {height} }}");
-                }
-            }
-            return true;
-        });
-        DeleteAll(removed, deleteFile);
     }
 
     private static void WriteArrayBody(string path, string text, Match arrayMatch, List<string> blocks)
@@ -519,44 +408,6 @@ internal static class ImagesStore
     {
         var ob = TsBlockParser.FirstBlock(content, $"export const {name}");
         return ob is null ? null : TsBlockParser.FirstBlock(ob, $"\"{key}\":");
-    }
-
-    public static bool RewritePromos(string root, Func<List<string>, bool> transform)
-    {
-        var path = Path(root);
-        if (Io.ReadOrNull(path) is not { } text) return false;
-
-        var m = TsBlockParser.ArrayMatch(text, PromoArray);
-        if (!m.Success) return false;
-
-        var blocks = TsBlockParser.AllBlocks(m.Groups[2].Value);
-        if (!transform(blocks)) return false;
-
-        blocks = blocks.Select((b, i) => NormalizeImageBlock(b, ImageSizeCatalog.Size($"promo-{i}"))).ToList();
-
-        var rebuilt = "\n" + string.Join("\n",
-            blocks.Select(b => "  " + WhitespaceRun.Replace(b, " ").Trim() + ",")) + "\n";
-
-        var updated = text[..m.Groups[2].Index] + rebuilt + text[(m.Groups[2].Index + m.Groups[2].Length)..];
-        Io.Write(path, updated);
-        return true;
-    }
-
-    public static int NextPromoNumber(IEnumerable<string> blocks)
-    {
-        int max = 0;
-        foreach (var b in blocks)
-        {
-            var mm = PromoNumberPattern.Match(TsBlockParser.QuotedVal(b, "src"));
-            if (mm.Success && int.TryParse(mm.Groups[1].Value, out var n) && n > max) max = n;
-        }
-        return max + 1;
-    }
-
-    public static string NewImageBlock(string src, string alt, string id)
-    {
-        var (width, height) = ImageSizeCatalog.Size(id);
-        return $"{{ src: \"{src}\", alt: \"{alt}\", width: {width}, height: {height} }}";
     }
 
     public static void SaveEntry(string root, string oldSrc, string newSrc, string newAlt, bool hasAlt,

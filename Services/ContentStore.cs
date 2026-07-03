@@ -303,6 +303,32 @@ internal static class ContentStore
         return 1;
     }
 
+    private static readonly Regex SiteThemeLine = new(
+        @"export\s+const\s+SITE_THEME\s*=\s*""[^""]*""", RegexOptions.Compiled);
+
+    public static int SaveTheme(string root, string themeLabel)
+    {
+        if (string.IsNullOrWhiteSpace(themeLabel)) return 0;
+        var path = Src(root, SiteConfigRel);
+        if (Io.ReadOrNull(path) is not { } content) return 0;
+
+        var escaped = Escape(themeLabel);
+        string updated;
+        if (SiteThemeLine.IsMatch(content))
+            updated = SiteThemeLine.Replace(content, $"export const SITE_THEME = \"{escaped}\"");
+        else if (BrandNamePrefix.Match(content) is { Success: true } brandMatch)
+        {
+            var lineEnd = content.IndexOf('\n', brandMatch.Index);
+            var insertAt = lineEnd < 0 ? content.Length : lineEnd + 1;
+            updated = content.Insert(insertAt, $"export const SITE_THEME = \"{escaped}\";\n");
+        }
+        else return 0;
+
+        if (updated == content) return 0;
+        Io.Write(path, updated);
+        return 1;
+    }
+
     private static string ReplaceFirst(string content, string find, string repl)
     {
         var idx = content.IndexOf(find, StringComparison.Ordinal);
