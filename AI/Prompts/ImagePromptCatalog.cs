@@ -35,7 +35,7 @@ internal static class ImagePromptCatalog
                     "Not too minimal, not cluttered, no slogan, no separate icon, no multi-part layout. " +
                     "May or may not be a background image behind the company name. " +
                     "Use medium-to-bold lettering for strong readability on dark and light backgrounds. " +
-            $"Colors: {palette.Primary}, {palette.Secondary}, {palette.Accent}, plus gold / silver if needed. " +
+            $"Colors: primary:{palette.Primary}, secondary:{palette.Secondary}, accent:{palette.Accent}, plus gold / silver if needed. " +
             $"{FlatBgEn} 512x512px.";
 
             return
@@ -48,7 +48,7 @@ internal static class ImagePromptCatalog
                 "Not too minimal, not cluttered, no slogan, no separate icon, no multi-part layout.\n" +
                 "May or may not be a background image behind the company name.\n" +
                 "Use medium-to-bold lettering for strong readability on dark and light backgrounds.\n" +
-            $"Colors: {palette.Primary}, {palette.Secondary}, {palette.Accent}.\n" +
+            $"Colors: primary:{palette.Primary}, secondary:{palette.Secondary}, accent:{palette.Accent}.\n" +
             $"{FlatBgEn} 512x512px.";
         }
 
@@ -86,7 +86,7 @@ internal static class ImagePromptCatalog
 
         var transparent = imageType is "button" or "transparent";
         var transparentNote = transparent
-            ? "สำคัญ: พื้นหลังสีพื้นเรียบเพียงสีเดียว ตัดกับตัวละครอย่างชัดเจน โดยใช้สีที่ไม่ซ้ำและไม่มีอยู่ในตัวละครหรือเอฟเฟกต์ใดๆ ไม่มีลวดลาย ไม่มีเงา ไม่มีไล่สี เพื่อให้แยกตัวละครและลบพื้นหลังได้ง่าย\n"
+            ? "สำคัญ: พื้นหลังสีพื้นเรียบเพียงสีเดียว ตัดกับตัวละครอย่างชัดเจน และห้ามใช้สีสีหลัก สีรอง และสีเน้น โดยใช้สีที่ไม่ซ้ำและไม่มีอยู่ในตัวละครหรือเอฟเฟกต์ใดๆ ไม่มีลวดลาย ไม่มีเงา ไม่มีไล่สี เพื่อให้แยกตัวละครและลบพื้นหลังได้ง่าย\n"
             : "";
 
         return
@@ -111,7 +111,7 @@ internal static class ImagePromptCatalog
             ? $"และนำรูปโลโก้ค่ายเกมที่แนบมาวางไว้ในรูปด้วย แสดงโลโก้เป็นองค์ประกอบที่แยกออกจากตัวละคร แต่ให้วางทับซ้อนกับตัวละครในเชิงภาพ โดยห้ามนำโลโก้ไปรวมเป็นส่วนหนึ่งของชุด เกราะ สัญลักษณ์กลางอก ผ้าคลุม เข็มขัด หรืออุปกรณ์เสริม วางโลโก้ให้ทับซ้อนอยู่บริเวณส่วนล่างของตัวละคร ห้ามวางโลโก้ไว้ตรงกลางหน้าอก ให้วางเอาไว้บริเวณล่างของรูป และสร้างกรอบให้กับโลโก้ที่แนบไปให้เขากับธีม{style.Name} เพื่อทำให้โลโก้กับตัวละครดูกลมกลืนกัน ให้ขนาดของโลโก้คิดเป็น 25%ของภาพ"
             : "";
         var transparentNote = transparent
-            ? "สำคัญ: พื้นหลังสีพื้นเรียบเพียงสีเดียว ตัดกับตัวละครหรือโลโก้อย่างชัดเจน โดยใช้สีที่ไม่ซ้ำและไม่มีอยู่ในตัวละครหรือเอฟเฟกต์ใดๆ ไม่มีลวดลาย ไม่มีเงา ไม่มีไล่สี เพื่อให้แยกตัวละครและลบพื้นหลังได้ง่าย\n"
+            ? "สำคัญ: พื้นหลังสีพื้นเรียบเพียงสีเดียว ตัดกับตัวละครหรือโลโก้อย่างชัดเจน และห้ามใช้สีสีหลัก สีรอง และสีเน้น โดยใช้สีที่ไม่ซ้ำและไม่มีอยู่ในตัวละครหรือเอฟเฟกต์ใดๆ ไม่มีลวดลาย ไม่มีเงา ไม่มีไล่สี เพื่อให้แยกตัวละครและลบพื้นหลังได้ง่าย\n"
             : "";
         var request = transparent
             ? $"ขอรูปการ์ดเกมแนวตั้งเป็น{subject}เพียงตัวเดียว ให้แต่งกายและออกแบบตัวละครให้เข้ากับธีม{style.Name} ไม่ใช่ปุ่ม ไม่ใช่โลโก้ ไม่มีข้อความ ไม่มีตัวเลข{provider}"
@@ -140,7 +140,7 @@ internal static class ImagePromptCatalog
             "คงสไตล์ รูปทรง สี ขนาด และองค์ประกอบทั้งหมดให้เหมือนรูปที่แนบไปทุกประการ เปลี่ยนเฉพาะข้อความเท่านั้น\n" +
             "ห้ามวาดเหรียญ ทองคำ ธนบัตร หรือสิ่งของจริงใด ๆ\n" +
             $"{langNote}\n" +
-            "สำคัญ: พื้นหลังสีพื้นเรียบเพียงสีเดียว ตัดกับตัวละครอย่างชัดเจน โดยใช้สีที่ไม่ซ้ำและไม่มีอยู่ในตัวละครหรือเอฟเฟกต์ใดๆ ไม่มีลวดลาย ไม่มีเงา ไม่มีไล่สี เพื่อให้แยกตัวละครและลบพื้นหลังได้ง่าย\n" +
+            "สำคัญ: พื้นหลังสีพื้นเรียบเพียงสีเดียว ตัดกับตัวละครอย่างชัดเจน และห้ามใช้สีสีหลัก สีรอง และสีเน้น โดยใช้สีที่ไม่ซ้ำและไม่มีอยู่ในตัวละครหรือเอฟเฟกต์ใดๆ ไม่มีลวดลาย ไม่มีเงา ไม่มีไล่สี เพื่อให้แยกตัวละครและลบพื้นหลังได้ง่าย\n" +
             $"ขนาดภาพ: {item.Width}x{item.Height}";
     }
 
@@ -148,7 +148,7 @@ internal static class ImagePromptCatalog
 
     private const string FlatBgEn =
         "Important: use a flat solid single-color background that contrasts sharply with the logo, " +
-        "using a unique color not present in the logo or any effects — no patterns, no shadows, no gradients — " +
+        "using a unique color not present in the logo or any effects and not the primary, secondary, or accent colors — no patterns, no shadows, no gradients — " +
         "so the logo can be easily isolated and the background removed.";
 
     private const string BgSubtle =
