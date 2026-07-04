@@ -9,11 +9,18 @@ internal static class LayoutComposer
         ComponentStore.EnsureSeeded();
         SectionCatalog.Reload();
 
+        var allowedButton = PickButtonSlot(rng);
+        var buttonPlaced = false;
+
         foreach (var slot in ShellSlot.All)
         {
             var variants = SectionCatalog.All.Where(d => d.Slot == slot).ToList();
             if (variants.Count == 0) continue;
-            ComponentStore.CopyToProject(projectPath, PickVariant(variants, rng));
+            var pool = ButtonPool(variants, IsSlotAllowed(allowedButton, true, slot), false);
+            if (pool.Count == 0) pool = variants.ToList();
+            var pick = PickVariant(pool, rng);
+            if (pick.HasButtons) buttonPlaced = true;
+            ComponentStore.CopyToProject(projectPath, pick);
         }
 
         var groups = SectionCatalog.All
@@ -30,19 +37,23 @@ internal static class LayoutComposer
             var required = variants.Any(v => v.Required);
             if (!required && rng.Next(100) < OptionalSkipPercent) continue;
 
-            var pool = transparentUsed
-                ? variants.Where(v => !UsesTransparentImage(v)).ToList()
-                : variants;
+            var pool = ButtonPool(variants, IsSlotAllowed(allowedButton, false, variants[0].Kind), transparentUsed);
             if (pool.Count == 0)
             {
                 if (!required) continue;
-                pool = variants;
+                pool = variants.ToList();
             }
 
             var pick = PickVariant(pool, rng);
             if (UsesTransparentImage(pick)) transparentUsed = true;
+            if (pick.HasButtons) buttonPlaced = true;
             chosen.Add(pick);
         }
+
+        if (!buttonPlaced && allowedButton is not null)
+            buttonPlaced = ForceButton(projectPath, chosen, transparentUsed, ref transparentUsed);
+
+        EnsurePromotionForSeoTextOnly(chosen, transparentUsed, rng, ref transparentUsed);
 
         var ordered = chosen;
         Shuffle(ordered, rng);
@@ -96,6 +107,88 @@ internal static class LayoutComposer
     private static bool UsesTransparentImage(SectionDefinition def) =>
         string.Equals(def.Spec.ImageType, "transparent", StringComparison.OrdinalIgnoreCase)
         || def.Images.Any(img => img.Role.Contains("transparent", StringComparison.OrdinalIgnoreCase));
+
+    private sealed record ButtonKey(bool IsShell, string Name);
+
+    private static bool IsSlotAllowed(ButtonKey? allowed, bool isShell, string key) =>
+        allowed is { IsShell: var shell, Name: var name }
+        && shell == isShell
+        && string.Equals(name, key, StringComparison.Ordinal);
+
+    private static List<SectionDefinition> ButtonPool(
+        IReadOnlyList<SectionDefinition> variants, bool isAllowed, bool transparentUsed)
+    {
+        var byButton = isAllowed
+            ? variants.Where(v => v.HasButtons)
+            : variants.Where(v => !v.HasButtons);
+
+        var pool = byButton.Where(v => !transparentUsed || !UsesTransparentImage(v)).ToList();
+        if (pool.Count > 0) return pool;
+        pool = byButton.ToList();
+        return pool.Count > 0 ? pool : variants.ToList();
+    }
+
+    private static bool ForceButton(
+        string projectPath, List<SectionDefinition> chosen, bool transparentUsed, ref bool transparentUsedRef)
+    {
+        var heroIdx = chosen.FindIndex(c => string.Equals(c.Kind, "Hero", StringComparison.Ordinal));
+        if (heroIdx >= 0)
+        {
+            var heroButton = SectionCatalog.All.FirstOrDefault(d =>
+                string.Equals(d.Kind, "Hero", StringComparison.Ordinal)
+                && d.HasButtons && (!transparentUsed || !UsesTransparentImage(d)));
+            if (heroButton is not null)
+            {
+                if (UsesTransparentImage(heroButton)) transparentUsedRef = true;
+                chosen[heroIdx] = heroButton;
+                return true;
+            }
+        }
+
+        var bannerButton = SectionCatalog.All.FirstOrDefault(d =>
+            d.Slot != "body" && d.HasButtons);
+        if (bannerButton is not null)
+        {
+            ComponentStore.CopyToProject(projectPath, bannerButton);
+            return true;
+        }
+        return false;
+    }
+
+    private static void EnsurePromotionForSeoTextOnly(
+        List<SectionDefinition> chosen, bool transparentUsed, Random rng, ref bool transparentUsedRef)
+    {
+        var seo = chosen.FirstOrDefault(c => string.Equals(c.Kind, "Seo", StringComparison.Ordinal));
+        if (seo is null || HasImages(seo)) return;
+        if (chosen.Any(c => string.Equals(c.Kind, "Promotion", StringComparison.Ordinal))) return;
+
+        var pool = SectionCatalog.ForKind("Promotion")
+            .Where(v => !transparentUsed || !UsesTransparentImage(v))
+            .ToList();
+        if (pool.Count == 0) pool = SectionCatalog.ForKind("Promotion").ToList();
+        if (pool.Count == 0) return;
+
+        var pick = PickVariant(pool, rng);
+        if (UsesTransparentImage(pick)) transparentUsedRef = true;
+        chosen.Add(pick);
+    }
+
+    private static bool HasImages(SectionDefinition def) =>
+        def.Images.Count > 0 || def.Spec.ImageCount > 0;
+
+    private static ButtonKey? PickButtonSlot(Random rng)
+    {
+        var candidates = new List<ButtonKey>();
+        foreach (var slot in ShellSlot.All)
+            if (SectionCatalog.All.Any(d => d.Slot == slot && d.HasButtons))
+                candidates.Add(new ButtonKey(true, slot));
+        foreach (var kind in SectionCatalog.All
+                     .Where(d => d.Slot == "body" && d.HasButtons)
+                     .Select(d => d.Kind)
+                     .Distinct(StringComparer.Ordinal))
+            candidates.Add(new ButtonKey(false, kind));
+        return candidates.Count == 0 ? null : candidates[rng.Next(candidates.Count)];
+    }
 
     private static string? FolderBucket(SectionDefinition def)
     {

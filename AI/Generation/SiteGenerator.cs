@@ -13,13 +13,14 @@ internal static class SiteGenerator
         if (string.IsNullOrWhiteSpace(brand)) return new(false, "กรุณากรอกชื่อแบรนด์", null);
         if (string.IsNullOrWhiteSpace(apiKey)) return new(false, "กรุณาตั้งค่า OpenAI API Key ใน TEMO.AI ก่อน", null);
 
-        var templates = TemplateStore.List();
-        if (templates.Count == 0) return new(false, "ยังไม่มี Template — อัปเดต Template ก่อน", null);
+        var template = TemplateStore.List()
+            .FirstOrDefault(t => string.Equals(Path.GetFileName(t), "EX.1", StringComparison.OrdinalIgnoreCase));
+        if (template is null || !Directory.Exists(template))
+            return new(false, "ไม่พบ Template EX.1 — กรุณาอัปเดต Template ก่อน", null);
 
         var rng = new Random();
         var render = ImageRenderCatalog.Random(rng);
         options = options with { Style = ImageStyleCatalog.RandomForRender(rng, render), Render = render };
-        var template = templates[rng.Next(templates.Count)];
         var dest = UniqueProjectPath(brand);
         var genLog = new GenerationLog(dest, brand);
         var usage = new UsageTracker();
@@ -42,6 +43,11 @@ internal static class SiteGenerator
             log("กำลังสร้างโปรเจค (คัดลอกต้นแบบ)…");
             genLog.Line("กำลังคัดลอกต้นแบบ");
             await Task.Run(() => TemplateStore.Copy(template, dest), ct);
+            if (!File.Exists(Path.Combine(dest, "package.json")) || !Directory.Exists(Path.Combine(dest, "src")))
+            {
+                genLog.Error("ต้นแบบไม่สมบูรณ์ — กรุณาอัปเดต Template แล้วลองอีกครั้ง");
+                return Done(false, "ต้นแบบไม่สมบูรณ์ — กรุณาอัปเดต Template", dest);
+            }
             AstroProjectSettings.DisableDevToolbar(dest);
             ApplyKeywords(dest, options.Keywords);
 

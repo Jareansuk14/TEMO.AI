@@ -42,7 +42,7 @@ internal static class ImageUsage
         && File.Exists(ProjectPaths.Public(root, src));
 
     private static readonly HashSet<string> CoreConsts = new(StringComparer.Ordinal)
-        { "BANNER", "BACKGROUND", "LOGO", "ACTION_BUTTONS", "PLAY_BUTTON", "LINE_QR" };
+        { "BANNER", "BACKGROUND", "LOGO" };
 
     public static bool ConstNameUsed(string usageText, string tsConst)
     {

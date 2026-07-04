@@ -1,7 +1,13 @@
+using System.Text.RegularExpressions;
+
 namespace TEMO.AI;
 
 internal static class ComponentStore
 {
+    private static readonly Regex LoginRegisterButtonPattern = new(
+        @"ACTION_BUTTONS\.(login|register)|\{\s*[^}]*\b(login|register)\b[^}]*\}\s*=\s*ACTION_BUTTONS",
+        RegexOptions.Compiled);
+
     public static string Root => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Component");
 
@@ -132,6 +138,21 @@ internal static class ComponentStore
             var manifest = JsonFile.Read<ComponentManifest>(manifestPath);
             if (manifest is null || string.IsNullOrWhiteSpace(manifest.ComponentName)) return null;
 
+            var astroFile = string.IsNullOrWhiteSpace(manifest.AstroFile) ? $"{manifest.ComponentName}.astro" : manifest.AstroFile;
+            var cssFile = string.IsNullOrWhiteSpace(manifest.CssFile) ? $"{manifest.ComponentName}.css" : manifest.CssFile;
+
+            var hasButtons = false;
+            try
+            {
+                var astroPath = Path.Combine(dir, astroFile);
+                if (File.Exists(astroPath))
+                {
+                    var astroText = File.ReadAllText(astroPath);
+                    hasButtons = LoginRegisterButtonPattern.IsMatch(astroText);
+                }
+            }
+            catch { }
+
             return new SectionDefinition(
                 manifest.Kind,
                 manifest.Variant,
@@ -140,8 +161,8 @@ internal static class ComponentStore
                 $"@/components/sections/{manifest.Kind}.astro",
                 $"@/styles/sections/{manifest.Kind}.css",
                 dir,
-                string.IsNullOrWhiteSpace(manifest.AstroFile) ? $"{manifest.ComponentName}.astro" : manifest.AstroFile,
-                string.IsNullOrWhiteSpace(manifest.CssFile) ? $"{manifest.ComponentName}.css" : manifest.CssFile,
+                astroFile,
+                cssFile,
                 manifest.HasExternalLink,
                 string.IsNullOrWhiteSpace(manifest.Slot) ? "body" : manifest.Slot,
                 manifest.Required,
@@ -156,7 +177,8 @@ internal static class ComponentStore
                     string.IsNullOrWhiteSpace(manifest.ImageType) ? "" : manifest.ImageType.Trim().ToLowerInvariant(),
                     string.IsNullOrWhiteSpace(manifest.ImageGroup) ? "" : manifest.ImageGroup.Trim(),
                     manifest.ImageCount,
-                    manifest.HeadingCount));
+                    manifest.HeadingCount),
+                hasButtons);
         }
         catch
         {

@@ -19,7 +19,8 @@ internal sealed record SectionDefinition(
     bool Repeatable,
     IReadOnlyList<ManifestField> Fields,
     IReadOnlyList<ManifestImage> Images,
-    ContentSpec Spec);
+    ContentSpec Spec,
+    bool HasButtons);
 
 internal sealed record ContentSpec(
     string ImageRatio,
