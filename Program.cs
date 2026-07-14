@@ -11,6 +11,7 @@ internal static class Program
 
         VelopackApp.Build().Run();
 
+        ExtractCacheCleanupService.CleanupOldExtractCaches();
         CleanupLegacyExtractCache();
         EnsureNodeAvailable();
 
