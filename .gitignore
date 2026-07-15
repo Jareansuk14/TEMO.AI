@@ -30,9 +30,13 @@ project.fragment.lock.json
 artifacts/
 *.binlog
 
-# MSBuild / NuGet
+# Velopack / installer packages (do not commit — upload via GitHub Releases)
 *.nupkg
 *.snupkg
+*-win-Setup.exe
+*-win-Portable.zip
+
+# MSBuild / NuGet
 **/[Pp]ackages/*
 !**/[Pp]ackages/build/
 *.nuget.props
@@ -82,3 +86,9 @@ publish/
 appsettings.*.local.json
 secrets.json
 *.local.config
+*.env
+
+# Runtime data
+Data/
+*.db
+*.sqlite
