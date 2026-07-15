@@ -26,10 +26,50 @@ if exist "%PUBLISH_DIR%" rmdir /s /q "%PUBLISH_DIR%"
 if exist "%RELEASES_DIR%" rmdir /s /q "%RELEASES_DIR%"
 mkdir "%RELEASES_DIR%"
 
+set "BIN_DIR=%CD%\bin\Release\net9.0-windows\win-x64"
+
+echo Building Release output...
+dotnet build "%PROJECT%" ^
+  -c Release ^
+  -r %RUNTIME% ^
+  --self-contained true ^
+  /p:DebugType=None ^
+  /p:DebugSymbols=false
+
+if errorlevel 1 exit /b 1
+
+echo.
+echo Installing/updating Obfuscar...
+dotnet tool update -g Obfuscar.GlobalTool
+if errorlevel 1 dotnet tool install -g Obfuscar.GlobalTool
+if errorlevel 1 (
+  echo Obfuscar is required for the obfuscation step.
+  exit /b 1
+)
+
+echo.
+echo Obfuscating TEMO.AI.dll...
+obfuscar.console "%CD%\Obfuscar.xml"
+if errorlevel 1 (
+  echo Obfuscation failed.
+  exit /b 1
+)
+
+echo.
+echo Copying obfuscated TEMO.AI.dll into build output...
+copy /Y "%BIN_DIR%\Obfuscated\TEMO.AI.dll" "%BIN_DIR%\TEMO.AI.dll" >nul
+if errorlevel 1 (
+  echo Failed to copy obfuscated TEMO.AI.dll.
+  exit /b 1
+)
+
+echo.
+echo Publishing single-file bundle...
 dotnet publish "%PROJECT%" ^
   -c Release ^
   -r %RUNTIME% ^
   --self-contained true ^
+  --no-build ^
   -o "%PUBLISH_DIR%" ^
   /p:PublishSingleFile=true ^
   /p:IncludeAllContentForSelfExtract=true ^

@@ -5,12 +5,10 @@ namespace TEMO.AI;
 
 internal static class AppUpdateService
 {
-    private const string GitHubRepoUrl = "https://github.com/Jareansuk14/TEMO.AI";
-
     public static async Task<bool> EnsureReadyToStartAsync()
     {
         var dialog = new AppUpdateDialog();
-        var manager = new UpdateManager(new GithubSource(GitHubRepoUrl, accessToken: null, prerelease: false));
+        var manager = new UpdateManager(new GithubSource(VaultGate.Get(Vk.V4), accessToken: null, prerelease: false));
 
         if (!manager.IsInstalled)
         {

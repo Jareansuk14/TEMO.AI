@@ -49,17 +49,16 @@ public partial class LoginWindow : Window
     private async Task DoLogin()
     {
         SetLoading(true);
-        var (ok, err, locked) = await AuthApiService.LoginAsync(TxtUsername.Text.Trim(), TxtPassword.Password);
+        var (ok, err, locked, session) = await AuthApiService.LoginAsync(TxtUsername.Text.Trim(), TxtPassword.Password);
         SetLoading(false);
-        if (ok)
+        if (ok && session?.Token != null)
         {
+            TokenManager.SetToken(session.Token, session.Username ?? TxtUsername.Text.Trim(), session.Role);
             LoginRememberService.Save(
                 TxtUsername.Text,
                 TxtPassword.Password,
                 ChkRememberUsername.IsChecked == true);
-            var main = new MainWindow();
-            System.Windows.Application.Current.MainWindow = main;
-            main.Show();
+            App.ShowMainWindow();
             Close();
         }
         else

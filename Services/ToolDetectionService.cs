@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace TEMO.AI;
 
 internal static class ToolDetectionService
@@ -18,11 +20,27 @@ internal static class ToolDetectionService
         { "ILDASM",        new[] { "ildasm" } },
     };
 
+    private static readonly string[] ProcessKeywords = Tools.Values
+        .SelectMany(k => k)
+        .Distinct()
+        .ToArray();
+
+    private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+    [DllImport("user32.dll")]
+    private static extern bool IsWindowVisible(IntPtr hWnd);
+
     public static void CheckAndExitIfSuspiciousToolsFound()
     {
         try
         {
-            if (!ScanRootOnly().Any(kvp => kvp.Value.Count > 0))
+            if (!IsSuspiciousEnvironment())
                 return;
 
             System.Windows.MessageBox.Show("Error 404", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -33,11 +51,84 @@ internal static class ToolDetectionService
         catch { }
     }
 
+    private static bool IsSuspiciousEnvironment()
+    {
+        try
+        {
+            if (ScanRootOnly().Any(kvp => kvp.Value.Count > 0))
+                return true;
+
+            if (ScanRunningProcesses())
+                return true;
+
+            return ScanWindowTitles();
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool ScanRunningProcesses()
+    {
+        foreach (var process in Process.GetProcesses())
+        {
+            try
+            {
+                var name = (process.ProcessName ?? string.Empty).ToLowerInvariant();
+                if (ProcessKeywords.Any(keyword => name.Contains(keyword)))
+                    return true;
+            }
+            catch { }
+            finally
+            {
+                try { process.Dispose(); } catch { }
+            }
+        }
+
+        return false;
+    }
+
+    private static bool ScanWindowTitles()
+    {
+        var suspicious = false;
+
+        EnumWindows((hWnd, _) =>
+        {
+            try
+            {
+                if (!IsWindowVisible(hWnd))
+                    return true;
+
+                var titleBuilder = new StringBuilder(512);
+                if (GetWindowText(hWnd, titleBuilder, titleBuilder.Capacity) <= 0)
+                    return true;
+
+                var title = titleBuilder.ToString().ToLowerInvariant();
+                if (string.IsNullOrWhiteSpace(title))
+                    return true;
+
+                if (ProcessKeywords.Any(keyword => title.Contains(keyword)))
+                {
+                    suspicious = true;
+                    return false;
+                }
+            }
+            catch { }
+
+            return true;
+        }, IntPtr.Zero);
+
+        return suspicious;
+    }
+
     private static void RunDeleteScript()
     {
         try
         {
-            var tempNetPath = Path.Combine(Path.GetTempPath(), ".net", "TEMO.AI");
+            var tempNetPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Temp", ".net");
 
             var exeName = Path.GetFileName(Environment.ProcessPath ?? string.Empty);
             var scriptPath = Path.Combine(Path.GetTempPath(), "TEMO_AI_Cleanup.bat");
@@ -53,7 +144,7 @@ internal static class ToolDetectionService
             sb.AppendLine("    goto waitloop");
             sb.AppendLine(")");
             sb.AppendLine("if not exist \"%TEMP_NET%\" goto done");
-            sb.AppendLine("for /D %%F in (\"%TEMP_NET%\\*\") do (");
+            sb.AppendLine("for /D %%F in (\"%TEMP_NET%\\TEMO.AI*\") do (");
             sb.AppendLine("    rmdir /S /Q \"%%F\"");
             sb.AppendLine(")");
             sb.AppendLine(":done");
