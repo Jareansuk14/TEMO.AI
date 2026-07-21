@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project baseDir="..\bin\Release\net9.0-windows\win-x64" outputDir="." xmlns="http://confuser.codeplex.com">
+  <module path="TEMO.AI.dll">
+    <rule pattern="true" inherit="false">
+      <protection id="anti debug" />
+      <protection id="anti dump" />
+      <protection id="constants" />
+      <protection id="ctrl flow" />
+      <protection id="ref proxy" />
+      <protection id="rename">
+        <argument name="mode" value="letters" />
+      </protection>
+    </rule>
+    <rule pattern="match-type-name('Program')" inherit="true">
+      <protection id="rename" action="remove" />
+      <protection id="ref proxy" action="remove" />
+      <protection id="ctrl flow" action="remove" />
+    </rule>
+  </module>
+</project>
